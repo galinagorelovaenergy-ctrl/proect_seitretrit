@@ -32,6 +32,8 @@
         <a href="#about">О программе</a>
         <a href="#hosts">Ведущие</a>
         <a href="#test">Тест</a>
+        <a href="#practice">Практика</a>
+        <a href="#future">Запрос</a>
         <a href="#practices">Диагностика</a>
         <a href="#place">Место</a>
         <a href="#price">Стоимость</a>
@@ -47,6 +49,8 @@
     <a href="#about">О программе</a>
     <a href="#hosts">Ведущие</a>
     <a href="#test">Тест</a>
+    <a href="#practice">Практика</a>
+    <a href="#future">Запрос</a>
     <a href="#practices">Диагностика</a>
     <a href="#place">Место</a>
     <a href="#price">Стоимость</a>
@@ -116,7 +120,7 @@
             <li>Посмотрим, как убеждения влияют на наши решения и действия.</li>
             <li>Выделим время для отдыха, природы и общения.</li>
           </ul>
-          <p class="test-invite"><a href="#hosts">Познакомьтесь с ведущими</a> · <a href="#test">проверьте, в каком напряжении вы живёте</a></p>
+          <p class="test-invite"><a href="#hosts">Познакомьтесь с ведущими</a> · <a href="#test">проверьте напряжение</a> · <a href="#practice">практика опоры</a> · <a href="#future">запрос из будущего</a></p>
         </div>
         <figure class="tilt-photo reveal" data-parallax="8">
           <div class="photo photo-about" role="img" aria-label="Лесной домик среди деревьев"></div>
@@ -204,7 +208,195 @@
             <p class="disclaimer">Это самопроверка фона напряжения, а не медицинская диагностика. При сильном тревожном состоянии или жалобах на здоровье нужна консультация специалиста.</p>
             <div class="test-actions">
               <button class="btn btn-ghost" type="button" id="testRestart">Пройти ещё раз</button>
-              <a class="btn" href="#contact">Обсудить участие</a>
+              <a class="btn" href="#practice">Практика опоры</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="practice-section" id="practice">
+      <div class="practice-bg" data-parallax="6" role="img" aria-label="Осенний лес"></div>
+      <div class="practice-mist" aria-hidden="true"></div>
+      <div class="practice-fireflies" aria-hidden="true">
+        <i></i><i></i><i></i><i></i><i></i>
+      </div>
+
+      <div class="wrap practice-stage">
+        <div class="practice-glass reveal" id="groundPractice">
+          <p class="chapter">после теста</p>
+
+          <div class="practice-panel is-on" data-practice="intro">
+            <h2>Короткая практика <em>опоры</em></h2>
+            <p class="lead">Четыре тихих шага среди осеннего леса. Можно сидеть или стоять. Ничего не нужно делать правильно — только замечать.</p>
+            <div class="orb-row">
+              <button class="orb" type="button" data-next="before">
+                <i></i>
+                <span>Начать</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="practice-panel" data-practice="before" hidden>
+            <p class="practice-mark">до практики</p>
+            <h2>Как сейчас ощущается <em>напряжение</em>?</h2>
+            <p class="lead">Выберите шар. Один — почти тихо. Десять — очень плотно.</p>
+            <div class="orb-scale" id="practiceBefore" role="group" aria-label="Напряжение до практики, от 1 до 10"></div>
+          </div>
+
+          <div class="practice-panel" data-practice="feet" hidden>
+            <p class="practice-mark">шаг 01</p>
+            <h2>Почувствуйте опору <em>под ногами</em></h2>
+            <p class="lead">Стопы на полу. Заметьте вес, точку касания и то, что вас держит. Не нужно давить сильнее — только почувствовать опору.</p>
+            <div class="orb-row">
+              <button class="orb" type="button" data-next="space">
+                <i></i>
+                <span>Дальше</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="practice-panel" data-practice="space" hidden>
+            <p class="practice-mark">шаг 02</p>
+            <h2>Обратитесь к <em>пространству</em></h2>
+            <p class="lead">Не анализируя, заметьте свет, звуки и края комнаты. Лес на фоне — только напоминание: вокруг всегда есть место, в котором вы уже находитесь.</p>
+            <div class="orb-row">
+              <button class="orb" type="button" data-next="breath">
+                <i></i>
+                <span>Дальше</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="practice-panel" data-practice="breath" hidden>
+            <p class="practice-mark">шаг 03</p>
+            <h2>Заметьте напряжение и <em>отпустите</em></h2>
+            <p class="lead">Шея, плечи, челюсть, живот. На вдохе просто найдите зажим. На выдохе чуть отпустите его — без усилия и без оценки.</p>
+            <div class="orb-row">
+              <button class="orb orb-breathe" type="button" data-next="want">
+                <i></i>
+                <span>Дальше</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="practice-panel" data-practice="want" hidden>
+            <p class="practice-mark">шаг 04</p>
+            <h2>Чего сейчас я <em>действительно хочу</em>?</h2>
+            <p class="lead">Задайте вопрос и подождите. Ответ может быть тихим: воды, паузы, тепла, тишины. Не нужно объяснять его себе.</p>
+            <div class="orb-row">
+              <button class="orb" type="button" data-next="after">
+                <i></i>
+                <span>Дальше</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="practice-panel" data-practice="after" hidden>
+            <p class="practice-mark">после практики</p>
+            <h2>Как теперь ощущается <em>напряжение</em>?</h2>
+            <p class="lead">Снова выберите шар. Это не оценка успеха — только сравнение фона до и после.</p>
+            <div class="orb-scale" id="practiceAfter" role="group" aria-label="Напряжение после практики, от 1 до 10"></div>
+          </div>
+
+          <div class="practice-panel" data-practice="result" hidden>
+            <p class="practice-mark">наблюдение</p>
+            <h2 id="practiceTitle">Фон до и после</h2>
+            <div class="practice-compare" id="practiceCompare"></div>
+            <p id="practiceNote" class="lead"></p>
+            <p class="disclaimer">Это короткая самопроверка ощущений, а не лечение и не диагностика. Если напряжение сильное или не отпускает, нужна консультация специалиста.</p>
+            <div class="orb-row">
+              <button class="orb" type="button" id="practiceRestart">
+                <i></i>
+                <span>Ещё раз</span>
+              </button>
+              <a class="orb" href="#future">
+                <i></i>
+                <span>К запросу</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="future-section" id="future">
+      <div class="future-sky" aria-hidden="true"></div>
+      <div class="future-grid" aria-hidden="true"></div>
+      <div class="future-orbit" aria-hidden="true"></div>
+      <div class="future-beam" aria-hidden="true"></div>
+
+      <div class="wrap future-stage">
+        <div class="future-shell reveal" id="futurePractice">
+          <p class="chapter">сигнал · позже</p>
+
+          <div class="future-panel is-on" data-future="intro">
+            <h2>Разговор с собой из <em>будущего</em></h2>
+            <p class="lead">Небольшая визуализация. Представьте себя, который уже получил те изменения и качества, которых вы хотите. Не нужно всё придумывать — только встретить ощущение.</p>
+            <div class="node-row">
+              <button class="node" type="button" data-future-next="meet">
+                <i></i>
+                <span>Открыть сигнал</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="future-panel" data-future="meet" hidden>
+            <p class="practice-mark">визуализация</p>
+            <h2>Встретьте себя, который <em>уже там</em></h2>
+            <p class="lead">Как этот человек стоит? Как дышит? Что в теле уже спокойно? Посмотрите на себя из будущего так, будто изменения уже произошли — и вам не нужно их доказывать.</p>
+            <div class="node-row">
+              <button class="node" type="button" data-future-next="intent">
+                <i></i>
+                <span>Дальше</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="future-panel" data-future="intent" hidden>
+            <p class="practice-mark">намерение</p>
+            <h2>Какое качество уже есть у <em>вас из будущего</em>?</h2>
+            <p class="lead">Выберите одно. Это не цель и не оценка — только то, с чем хочется вернуться домой.</p>
+            <div class="signal-set" id="futureIntents" role="group" aria-label="Намерение"></div>
+          </div>
+
+          <div class="future-panel" data-future="phrase" hidden>
+            <p class="practice-mark">фраза</p>
+            <h2>Когда я вернусь домой, мне хотелось бы…</h2>
+            <p class="lead">Допишите тихо. Коротко. Так, как сказали бы себе из будущего.</p>
+            <form class="future-form" id="futureForm">
+              <label for="futureWish">Когда я вернусь домой, мне хотелось бы</label>
+              <textarea id="futureWish" name="wish" maxlength="180" required placeholder="например, просыпаться без спешки и слышать себя"></textarea>
+              <button class="node" type="submit">
+                <i></i>
+                <span>Собрать карточку</span>
+              </button>
+            </form>
+          </div>
+
+          <div class="future-panel" data-future="card" hidden>
+            <p class="practice-mark">личный запрос</p>
+            <h2>Карточка, с которой можно <em>ехать</em></h2>
+            <article class="future-card" id="futureCard">
+              <div class="future-card-meta">
+                <span>сигнал 07</span>
+                <span>17–22 ноября</span>
+              </div>
+              <p class="future-card-intent" id="futureCardIntent"></p>
+              <p class="future-card-lead">Когда я вернусь домой, мне хотелось бы</p>
+              <p class="future-card-wish" id="futureCardWish"></p>
+              <p class="future-card-stamp">личный запрос на поездку · Новая точка энергии</p>
+            </article>
+            <p class="lead tight">Это формулировка для себя. Её можно взять в заявку — чтобы мы поняли, с каким запросом вы едете.</p>
+            <div class="node-row">
+              <button class="node" type="button" id="futureRestart">
+                <i></i>
+                <span>Ещё раз</span>
+              </button>
+              <a class="node" href="#contact" id="futureToContact">
+                <i></i>
+                <span>В заявку</span>
+              </a>
             </div>
           </div>
         </div>
@@ -495,6 +687,8 @@
         <a href="#about">О программе</a>
         <a href="#hosts">Ведущие</a>
         <a href="#test">Тест</a>
+        <a href="#practice">Практика</a>
+        <a href="#future">Запрос</a>
         <a href="#practices">Диагностика</a>
         <a href="#price">Стоимость</a>
         <a href="#contact">Связаться</a>

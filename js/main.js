@@ -276,6 +276,137 @@ document.getElementById("testRestart").addEventListener("click", () => {
 
 showTestStep();
 
+const practiceRoot = document.getElementById("groundPractice");
+const practiceBeforeBox = document.getElementById("practiceBefore");
+const practiceAfterBox = document.getElementById("practiceAfter");
+let practiceBefore = null;
+let practiceAfter = null;
+let practiceSummary = "";
+
+const showPractice = (step) => {
+  practiceRoot.querySelectorAll("[data-practice]").forEach((panel) => {
+    const on = panel.dataset.practice === step;
+    panel.hidden = !on;
+    panel.classList.toggle("is-on", on);
+  });
+};
+
+const fillPracticeScale = (box, onPick) => {
+  box.innerHTML = "";
+  for (let value = 1; value <= 10; value += 1) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "orb orb-mini";
+    button.style.setProperty("--heat", String((value - 1) / 9));
+    button.innerHTML = "<i></i><span>" + value + "</span>";
+    button.setAttribute("aria-label", "Напряжение " + value + " из 10");
+    button.addEventListener("click", () => {
+      box.querySelectorAll(".orb").forEach((item) => item.classList.toggle("is-on", item === button));
+      onPick(value);
+    });
+    box.appendChild(button);
+  }
+};
+
+const practiceNote = (before, after) => {
+  const diff = after - before;
+  if (diff <= -2) return "Фон стал заметно тише. Запомните это ощущение опоры — к нему можно возвращаться в обычном дне.";
+  if (diff < 0) return "Стало чуть легче. Даже небольшой сдвиг уже наблюдение, а не оценка «получилось / нет».";
+  if (diff === 0) return "Цифра та же. Иногда внимание просто проявляет то, что уже было, — и это тоже результат.";
+  return "Тело могло отозваться сильнее. Это тоже внимание, не ошибка и не ухудшение.";
+};
+
+const finishPractice = () => {
+  practiceSummary = "до " + practiceBefore + ", после " + practiceAfter;
+  document.getElementById("practiceTitle").textContent = "Фон до и после";
+  document.getElementById("practiceCompare").innerHTML =
+    "<div class=\"practice-score\"><b>" + practiceBefore + "</b><span>до практики</span></div>" +
+    "<div class=\"practice-score\"><b>" + practiceAfter + "</b><span>после практики</span></div>";
+  document.getElementById("practiceNote").textContent = practiceNote(practiceBefore, practiceAfter);
+  showPractice("result");
+};
+
+practiceRoot.querySelectorAll("[data-next]").forEach((button) => {
+  button.addEventListener("click", () => showPractice(button.dataset.next));
+});
+
+fillPracticeScale(practiceBeforeBox, (value) => {
+  practiceBefore = value;
+  window.setTimeout(() => showPractice("feet"), 220);
+});
+
+fillPracticeScale(practiceAfterBox, (value) => {
+  practiceAfter = value;
+  window.setTimeout(finishPractice, 220);
+});
+
+document.getElementById("practiceRestart").addEventListener("click", () => {
+  practiceBefore = null;
+  practiceAfter = null;
+  practiceSummary = "";
+  practiceRoot.querySelectorAll(".orb-mini").forEach((button) => button.classList.remove("is-on"));
+  showPractice("intro");
+});
+
+const FUTURE_INTENTS = ["тишина", "опора", "ясность", "лёгкость", "тепло", "цельность"];
+const futureRoot = document.getElementById("futurePractice");
+const futureIntents = document.getElementById("futureIntents");
+const futureForm = document.getElementById("futureForm");
+const futureWish = document.getElementById("futureWish");
+let futureIntent = "";
+let futureSummary = "";
+
+const showFuture = (step) => {
+  futureRoot.querySelectorAll("[data-future]").forEach((panel) => {
+    const on = panel.dataset.future === step;
+    panel.hidden = !on;
+    panel.classList.toggle("is-on", on);
+  });
+};
+
+futureRoot.querySelectorAll("[data-future-next]").forEach((button) => {
+  button.addEventListener("click", () => showFuture(button.dataset.futureNext));
+});
+
+FUTURE_INTENTS.forEach((label) => {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "signal";
+  button.textContent = label;
+  button.addEventListener("click", () => {
+    futureIntent = label;
+    futureIntents.querySelectorAll(".signal").forEach((item) => item.classList.toggle("is-on", item === button));
+    window.setTimeout(() => showFuture("phrase"), 180);
+  });
+  futureIntents.appendChild(button);
+});
+
+futureForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  if (!futureForm.reportValidity()) return;
+  const wish = futureWish.value.trim();
+  if (!wish || !futureIntent) return;
+  futureSummary = "намерение — " + futureIntent + ". Когда я вернусь домой, мне хотелось бы " + wish;
+  document.getElementById("futureCardIntent").textContent = "намерение · " + futureIntent;
+  document.getElementById("futureCardWish").textContent = wish;
+  showFuture("card");
+});
+
+document.getElementById("futureRestart").addEventListener("click", () => {
+  futureIntent = "";
+  futureSummary = "";
+  futureWish.value = "";
+  futureIntents.querySelectorAll(".signal").forEach((item) => item.classList.remove("is-on"));
+  showFuture("intro");
+});
+
+document.getElementById("futureToContact").addEventListener("click", () => {
+  const field = document.getElementById("message");
+  if (field && futureSummary && !field.value.trim()) {
+    field.value = futureSummary;
+  }
+});
+
 contactForm.addEventListener("submit", (event) => {
   event.preventDefault();
   if (!contactForm.reportValidity()) return;
@@ -293,7 +424,9 @@ contactForm.addEventListener("submit", (event) => {
     "",
     "Интенсив: 17–22 ноября",
     "Стоимость: 50 000 рублей",
-    testSummary ? "Тест на напряжение: " + testSummary : ""
+    testSummary ? "Тест на напряжение: " + testSummary : "",
+    practiceSummary ? "Практика опоры: " + practiceSummary : "",
+    futureSummary ? "Запрос из будущего: " + futureSummary : ""
   ].join("\n");
 
   formStatus.style.display = "block";
