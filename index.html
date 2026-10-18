@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0908">
+  <meta name="description" content="Пятидневный авторский интенсив в Адыгее: здоровье, красота, молодость и стройность. Психологические, телесные и энергетические практики, проживание и питание. 17–22 ноября.">
+  <meta name="author" content="Путь к себе">
+  <meta property="og:title" content="Здоровье, красота, молодость и стройность — интенсив в Адыгее">
+  <meta property="og:description" content="17–22 ноября, лесной домик под Майкопом. Программа, проживание, питание и три процедуры аппаратного омоложения. 50 000 ₽.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ru_RU">
+  <title>Путь к себе — интенсив в Адыгее, 17–22 ноября</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230b0908'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='26' fill='%23c07a3a' font-family='Georgia'%3E%D0%9F%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,500;0,600;1,500;1,600&family=Geologica:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="cursor" id="cursor" aria-hidden="true"></div>
+  <div class="progress" id="progress" aria-hidden="true"></div>
+
+  <header class="header" id="header">
+    <div class="wrap header-inner">
+      <a class="brand" href="#home">
+        Путь к себе
+        <small>гербарий ноября</small>
+      </a>
+      <nav class="nav" aria-label="Основная навигация">
+        <a href="#about">О программе</a>
+        <a href="#practices">Диагностика</a>
+        <a href="#place">Место</a>
+        <a href="#price">Стоимость</a>
+      </nav>
+      <a class="btn" href="#contact">Записаться</a>
+      <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="mobileNav" aria-label="Открыть меню">
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <nav class="mobile-nav" id="mobileNav" hidden>
+    <a href="#about">О программе</a>
+    <a href="#practices">Диагностика</a>
+    <a href="#place">Место</a>
+    <a href="#price">Стоимость</a>
+    <a class="btn btn-ink" href="#contact">Записаться</a>
+  </nav>
+
+  <main>
+    <section class="hero" id="home">
+      <p class="hero-issue">выпуск · ноябрь</p>
+      <div class="wrap hero-stage">
+        <div class="hero-type">
+          <p class="hero-kicker load" style="--d:.08s">17–22 ноября · Адыгея</p>
+          <h1>
+            <span class="line load" style="--d:.18s">Здоровье,</span>
+            <span class="line load" style="--d:.3s">красота,</span>
+            <span class="line load italic" style="--d:.42s">молодость</span>
+            <span class="line load" style="--d:.54s">и стройность</span>
+          </h1>
+          <p class="hero-lead load" style="--d:.7s">Пять дней для себя среди осеннего леса, прудов и тишины. Психологические, телесные и энергетические практики, внимание к внутреннему напряжению, мышлению и заботе о собственном теле.</p>
+          <div class="hero-actions load" style="--d:.84s">
+            <a class="btn" href="#contact">Узнать подробности</a>
+            <a class="btn btn-ghost" href="#about">Познакомиться с программой</a>
+          </div>
+        </div>
+        <figure class="hero-shard load" style="--d:.36s" data-parallax="12">
+          <div class="hero-photo" role="img" aria-label="Лес под Майкопом"></div>
+          <figcaption>лес под Майкопом · 5 суток</figcaption>
+        </figure>
+      </div>
+      <ul class="hero-meta load" style="--d:.96s">
+        <li>Лесной домик под Майкопом</li>
+        <li>Проживание и питание включены</li>
+        <li>Три процедуры аппаратного омоложения</li>
+      </ul>
+    </section>
+
+    <div class="dates" id="dates" aria-label="Даты интенсива">
+      <span data-day="17"><b>17</b> заезд</span>
+      <span data-day="18"><b>18</b> практики</span>
+      <span data-day="19"><b>19</b> тело</span>
+      <span data-day="20"><b>20</b> энергия</span>
+      <span data-day="21"><b>21</b> красота</span>
+      <span data-day="22"><b>22</b> итог</span>
+    </div>
+
+    <section class="ribbon">
+      <div class="wrap ribbon-row">
+        <p><i>01</i> Психология и эмоциональное состояние</p>
+        <p><i>02</i> Телесные и энергетические практики</p>
+        <p><i>03</i> Осенняя природа и спокойная обстановка</p>
+        <p><i>04</i> Проживание и питание включены</p>
+      </div>
+    </section>
+
+    <section class="sheet" id="about">
+      <div class="wrap about-layout">
+        <div class="sheet-card reveal">
+          <p class="chapter">01 / время для себя</p>
+          <h2>Когда хочется не просто отдохнуть, а почувствовать себя <em>по-новому</em></h2>
+          <p>Мы часто привыкаем жить в напряжении, постоянно решать задачи, контролировать происходящее и заботиться обо всех, кроме себя.</p>
+          <p>Постепенно накапливается усталость, на себя остаётся всё меньше времени, а желания и планы откладываются до лучших времён.</p>
+          <p>Этот интенсив — возможность остановиться, сменить привычную обстановку и уделить внимание своему эмоциональному состоянию, телесным ощущениям, мышлению и повседневным привычкам.</p>
+          <ul class="check-list">
+            <li>Исследуем привычные реакции и внутреннее напряжение.</li>
+            <li>Будем учиться замечать сигналы тела.</li>
+            <li>Познакомимся с практиками расслабления и саморегуляции.</li>
+            <li>Посмотрим, как убеждения влияют на наши решения и действия.</li>
+            <li>Выделим время для отдыха, природы и общения.</li>
+          </ul>
+        </div>
+        <figure class="tilt-photo reveal" data-parallax="8">
+          <div class="photo photo-about" role="img" aria-label="Лесной домик среди деревьев"></div>
+          <figcaption>домик в лесу</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="ink" id="program">
+      <div class="wrap">
+        <div class="ink-head reveal">
+          <p class="chapter">02 / направления</p>
+          <h2>Работаем с состоянием <em>комплексно</em></h2>
+          <p class="lead">В программе соединяются психологические, телесные и энергетические практики, лекции и специальные процедуры. Каждое направление помогает по-своему взглянуть на привычки, ощущения и заботу о себе.</p>
+        </div>
+        <div class="weave">
+          <article class="card tall reveal">
+            <div class="num">01</div>
+            <h3>Психология и эмоции</h3>
+            <p>Исследование внутренних ограничений, эмоциональных реакций и привычных сценариев. Практики осознанности, внимания к своим чувствам и саморегуляции.</p>
+          </article>
+          <article class="card reveal delay-1">
+            <div class="num">02</div>
+            <h3>Тело и расслабление</h3>
+            <p>Мягкие телесные практики, внимание к ощущениям, освоение способов расслабления и восстановление контакта с собственными потребностями.</p>
+          </article>
+          <article class="card reveal delay-2">
+            <div class="num">03</div>
+            <h3>Энергетические практики</h3>
+            <p>Погружения, работа с внутренними образами, вниманием и ощущениями. Практики, направленные на субъективное переживание наполненности, спокойствия и внутренней устойчивости.</p>
+          </article>
+          <article class="card shift reveal">
+            <div class="num">04</div>
+            <h3>Меридианная система</h3>
+            <p>Оценка по используемому в программе методу Фолля в начале и в конце интенсива. Знакомство с подходами традиционной восточной практики и работой с телесными ощущениями.</p>
+          </article>
+          <article class="card reveal delay-1">
+            <div class="num">05</div>
+            <h3>Мышление и реальность</h3>
+            <p>Лекции о восприятии, убеждениях, намерениях и поведении. Разберём, как замечать привычные установки и менять способы действовать в повседневной жизни.</p>
+          </article>
+          <article class="card wide reveal delay-2">
+            <div class="num">06</div>
+            <h3>Красота и забота о себе</h3>
+            <p>Внимание к привычкам, отношению к внешности и собственным потребностям. В программу также входят три процедуры аппаратного омоложения по методу Тихомирова Д. Д.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="sheet practices" id="practices">
+      <div class="wrap">
+        <div class="ink-head reveal">
+          <p class="chapter">03 / диагностика · практики · оценка</p>
+          <h2>От входной диагностики к итоговой оценке</h2>
+          <p class="lead">Мы начнём с оценки по используемой в программе меридианной методике, затем будем знакомиться с разными практиками и уделять внимание самочувствию. В завершение повторим измерения и обсудим полученные результаты вместе с субъективными изменениями, которые вы заметили за время интенсива.</p>
+        </div>
+
+        <div class="stem">
+          <article class="leaf left reveal">
+            <span class="pin">01</span>
+            <span class="stage-tag">Начало интенсива</span>
+            <h3>Входная диагностика</h3>
+            <p>В начале программы проведём оценку меридианной системы по методу Фолля. Рассмотрим полученные измерения и обсудим, каким направлениям практической работы уделить внимание.</p>
+            <p>Это исходная точка программы, с которой можно сопоставить результаты повторной оценки.</p>
+          </article>
+          <article class="leaf right reveal delay-1">
+            <span class="pin">02</span>
+            <span class="stage-tag">Основная программа</span>
+            <h3>Практики и внимание</h3>
+            <p>В течение интенсива будем сочетать телесные и энергетические практики, элементы Су-Джок, методы расслабления и предусмотренные программой процедуры прогревания.</p>
+            <p>Практики будут подбираться с учётом самочувствия, противопоказаний и возможностей участников.</p>
+          </article>
+          <article class="leaf left reveal delay-2">
+            <span class="pin">03</span>
+            <span class="stage-tag">Завершение интенсива</span>
+            <h3>Повторная диагностика</h3>
+            <p>В конце интенсива повторим оценку тем же методом. Сопоставим два набора измерений и обсудим, какие изменения в самочувствии, телесных ощущениях и эмоциональном состоянии вы заметили.</p>
+            <p>Результаты измерений и личные ощущения будем рассматривать отдельно, не подменяя ими медицинскую диагностику.</p>
+          </article>
+        </div>
+
+        <div class="method-split">
+          <figure class="tilt-photo reveal" data-parallax="7">
+            <div class="photo photo-method" role="img" aria-label="Тихий пруд среди осеннего леса"></div>
+            <figcaption>тишина пруда</figcaption>
+          </figure>
+          <div class="reveal">
+            <p class="chapter">методы</p>
+            <h2>Внимание к телу на нескольких уровнях</h2>
+            <p class="lead tight">Мы будем не просто знакомиться с разными подходами, а уделять время собственным ощущениям, осваивать способы расслабления и исследовать, что помогает лично вам чувствовать себя спокойнее и устойчивее.</p>
+            <div class="method-list">
+              <div class="method">
+                <b>Ф</b>
+                <div>
+                  <h3>Метод Фолля</h3>
+                  <p>Оценка по используемой в программе альтернативной методике в начале и в конце интенсива. Результаты станут частью обсуждения вашего опыта, но не подтверждают и не исключают заболевания органов.</p>
+                </div>
+              </div>
+              <div class="method">
+                <b>С</b>
+                <div>
+                  <h3>Су-Джок</h3>
+                  <p>Познакомимся с элементами метода, в котором используются определённые точки кистей и стоп. Практики будут проводиться с учётом состояния участников и индивидуальных ограничений.</p>
+                </div>
+              </div>
+              <div class="method">
+                <b>М</b>
+                <div>
+                  <h3>Мокса — прогревание полынью</h3>
+                  <p>Рассмотрим традиционный метод прогревания определённых участков тела с помощью полынных материалов. Конкретный формат процедуры будет определён организатором. Прогревание возможно только при соблюдении протокола безопасности и отсутствии противопоказаний.</p>
+                </div>
+              </div>
+              <div class="method">
+                <b>Т</b>
+                <div>
+                  <h3>Телесные и энергетические практики</h3>
+                  <p>Работа с вниманием, дыханием, внутренними образами и ощущениями. Освоение способов саморегуляции, расслабления и внимательного отношения к собственным потребностям.</p>
+                </div>
+              </div>
+              <div class="method">
+                <b>Н</b>
+                <div>
+                  <h3>Наблюдение за самочувствием</h3>
+                  <p>Будем обращать внимание на изменения в ощущении напряжения, качестве отдыха, эмоциональном состоянии и повседневных привычках в течение программы.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="quote reveal">
+          <h3>Не универсальный рецепт, а внимание к вашим особенностям</h3>
+          <p>У каждого человека свой опыт и своё самочувствие. В течение пяти дней мы будем пробовать разные практики, замечать собственные реакции и находить подходящие способы заботы о себе, которые можно использовать и после возвращения домой.</p>
+        </aside>
+        <p class="disclaimer"><strong>Важно.</strong> Метод Фолля не является научно подтверждённым способом диагностики заболеваний внутренних органов. Его результаты не позволяют достоверно установить причины боли или выявить заболевания. Су-Джок и прогревание не заменяют обследование и лечение у врача. Тепловые процедуры требуют проверки противопоказаний, контроля температуры и соблюдения правил безопасности. При наличии жалоб на здоровье необходима медицинская оценка.</p>
+      </div>
+    </section>
+
+    <section class="bonus" id="bonus">
+      <div class="wrap bonus-layout">
+        <div class="glyph" aria-hidden="true">3</div>
+        <figure class="leaf-photo reveal" data-parallax="10">
+          <div class="photo photo-bonus" role="img" aria-label="Естественный свет и внимание к красоте"></div>
+        </figure>
+        <div class="bonus-copy reveal">
+          <p class="chapter">04 / бонус участницам</p>
+          <h2>Дополнительное внимание к <em>красоте и молодости</em></h2>
+          <p>Помимо основной программы, участниц ждут три процедуры аппаратного омоложения по методу Тихомирова Д. Д.</p>
+          <p class="bonus-count">три процедуры</p>
+          <span class="bonus-caption">включены в стоимость участия</span>
+          <p>Это дополнительная возможность уделить время эстетическому уходу и познакомиться с аппаратной методикой.</p>
+          <p>Перед проведением процедур необходимо уточнить используемое оборудование, протокол, противопоказания и возможность участия с учётом индивидуальных особенностей.</p>
+          <a class="btn" href="#contact">Узнать о процедурах</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="place" id="place">
+      <div class="place-photo" data-parallax="6" role="img" aria-label="Горный пейзаж Адыгеи"></div>
+      <div class="place-card reveal">
+        <p class="chapter">05 / Адыгея · под Майкопом</p>
+        <h2>Место, где можно <em>замедлиться</em></h2>
+        <p>Лесной домик среди осенней природы, пруды, свежий воздух и тишина. Здесь можно ненадолго выйти из привычного ритма и посвятить время себе.</p>
+        <p>Смена обстановки помогает выделить пространство для отдыха, внимательнее прислушаться к собственным потребностям и побыть вдали от повседневной суеты.</p>
+        <div class="place-facts">
+          <span>Проживание в лесном домике</span>
+          <span>Питание на время интенсива</span>
+          <span>Время для отдыха и прогулок</span>
+          <span>Практики и занятия по программе</span>
+        </div>
+        <a class="btn" href="#contact">Получить подробности</a>
+      </div>
+    </section>
+
+    <section class="ink price-section" id="price">
+      <div class="wrap">
+        <div class="ink-head reveal">
+          <p class="chapter">06 / участие</p>
+          <h2>Пять дней, посвящённых себе</h2>
+          <p class="lead">Одна стоимость за программу, проживание, питание и специальный бонус.</p>
+        </div>
+        <article class="ticket reveal">
+          <div class="ticket-side">
+            <p class="price-label">полный билет</p>
+            <div class="price">50 000 ₽</div>
+            <p>17–22 ноября · Адыгея, под Майкопом</p>
+          </div>
+          <div class="ticket-main">
+            <ul class="included">
+              <li>Пятидневная программа интенсива</li>
+              <li>Проживание в лесном домике</li>
+              <li>Питание на время участия</li>
+              <li>Психологические практики</li>
+              <li>Телесные и энергетические практики</li>
+              <li>Лекции и практическая работа</li>
+              <li>Входная и итоговая оценка по методу Фолля</li>
+              <li>Практики Су-Джок по программе</li>
+              <li>Знакомство с методом мокса-прогревания</li>
+              <li>Три процедуры аппаратного омоложения</li>
+            </ul>
+            <a class="btn btn-ink" href="#contact">Оставить заявку</a>
+            <p class="price-note">До записи уточните точные даты заезда и выезда, условия размещения, состав питания, порядок оплаты и противопоказания к отдельным процедурам.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="sheet contact" id="contact">
+      <div class="wrap contact-grid">
+        <div class="contact-copy reveal">
+          <p class="chapter">07 / письмо</p>
+          <h2>Давайте обсудим ваше участие</h2>
+          <p>Если вам откликается идея уделить несколько дней себе, своему состоянию и заботе о теле, оставьте заявку.</p>
+          <p>Вы сможете задать вопросы о диагностике, практиках, проживании, питании и аппаратных процедурах, прежде чем принимать решение.</p>
+          <p class="facts">
+            <strong>Даты</strong> 17–22 ноября<br>
+            <strong>Место</strong> Адыгея, под Майкопом<br>
+            <strong>Стоимость</strong> 50 000 ₽
+          </p>
+        </div>
+        <form class="letter reveal" id="contactForm">
+          <p class="letter-head">черновик заявки</p>
+          <div class="field">
+            <label for="name">Как к вам обращаться?</label>
+            <input id="name" name="name" type="text" placeholder="Ваше имя" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="userContact">Телефон или Telegram</label>
+            <input id="userContact" name="contact" type="text" placeholder="+7 ... или @username" required>
+          </div>
+          <div class="field">
+            <label for="message">Что хотелось бы уточнить?</label>
+            <textarea id="message" name="message" placeholder="Например, расскажите подробнее о программе"></textarea>
+          </div>
+          <button class="btn btn-ink" type="submit">Подготовить заявку</button>
+          <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
+          <p class="privacy">Форма подготовит письмо на почту организатора. Перед отправкой вы сможете проверить сообщение.</p>
+        </form>
+      </div>
+    </section>
+
+    <section class="ink faq-section" id="faq">
+      <div class="wrap">
+        <div class="ink-head reveal">
+          <p class="chapter">на полях</p>
+          <h2>Частые вопросы</h2>
+        </div>
+        <div class="faq-list">
+          <div class="faq-item">
+            <button class="faq-q" type="button" aria-expanded="false">Что входит в стоимость 50 000 рублей? <b>+</b></button>
+            <div class="faq-a"><p>В стоимость входят программа интенсива, проживание, питание и три процедуры аппаратного омоложения. Также программа включает входную и итоговую оценку по методу Фолля и предусмотренные занятия и практики.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" type="button" aria-expanded="false">Зачем проводится диагностика дважды? <b>+</b></button>
+            <div class="faq-a"><p>В начале и в конце интенсива проводится оценка по используемой в программе методике. Это позволяет сопоставить результаты двух измерений и обсудить личные наблюдения за время участия. Метод Фолля не заменяет медицинскую диагностику.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" type="button" aria-expanded="false">Какие практики будут использоваться? <b>+</b></button>
+            <div class="faq-a"><p>Психологические, телесные и энергетические практики, лекции, элементы Су-Джок и предусмотренные программой процедуры прогревания. Конкретные процедуры зависят от формата программы, противопоказаний и условий безопасности.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" type="button" aria-expanded="false">Можно ли считать интенсив лечением? <b>+</b></button>
+            <div class="faq-a"><p>Нет. Интенсив посвящён психологическим, телесным и энергетическим практикам, а также эстетическому уходу. Он не заменяет медицинское обследование, лечение или консультацию врача.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" type="button" aria-expanded="false">Что нужно взять с собой? <b>+</b></button>
+            <div class="faq-a"><p>Перед поездкой организатор предоставит точный список. Обычно пригодятся удобная одежда для практик и прогулок, тёплая верхняя одежда, обувь для леса и личные вещи.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" type="button" aria-expanded="false">Как записаться? <b>+</b></button>
+            <div class="faq-a"><p>Заполните форму на странице. Откроется письмо на почту организатора — проверьте текст и нажмите «Отправить». Можно сразу написать на galinagorelovaenergy@gmail.com.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div>
+        <div class="brand">Путь к себе</div>
+        <div>Авторский интенсив в Адыгее</div>
+      </div>
+      <div class="footer-links">
+        <a href="#about">О программе</a>
+        <a href="#practices">Диагностика</a>
+        <a href="#price">Стоимость</a>
+        <a href="#contact">Связаться</a>
+      </div>
+      <div>© <span id="currentYear"></span></div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
