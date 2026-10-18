@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0b0908">
-  <meta name="description" content="Пятидневный авторский интенсив в Адыгее: здоровье, красота, молодость и стройность. Психологические, телесные и энергетические практики, проживание и питание. 17–22 ноября.">
-  <meta name="author" content="Путь к себе">
-  <meta property="og:title" content="Здоровье, красота, молодость и стройность — интенсив в Адыгее">
+  <meta name="description" content="Новая точка энергии — выездные программы. Пятидневный авторский интенсив в Адыгее: здоровье, красота, молодость и стройность. Ведущие: Александр Хурюмов и Галина Горелова.">
+  <meta name="author" content="Новая точка энергии">
+  <meta property="og:title" content="Новая точка энергии / Выездные программы">
   <meta property="og:description" content="17–22 ноября, лесной домик под Майкопом. Программа, проживание, питание и три процедуры аппаратного омоложения. 50 000 ₽.">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ru_RU">
-  <title>Путь к себе — интенсив в Адыгее, 17–22 ноября</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230b0908'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='26' fill='%23c07a3a' font-family='Georgia'%3E%D0%9F%3C/text%3E%3C/svg%3E">
+  <title>Новая точка энергии / Выездные программы — интенсив в Адыгее</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230b0908'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='26' fill='%23c07a3a' font-family='Georgia'%3E%D0%9D%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,500;0,600;1,500;1,600&family=Geologica:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -25,11 +25,13 @@
   <header class="header" id="header">
     <div class="wrap header-inner">
       <a class="brand" href="#home">
-        Путь к себе
-        <small>гербарий ноября</small>
+        Новая точка энергии
+        <small>выездные программы</small>
       </a>
       <nav class="nav" aria-label="Основная навигация">
         <a href="#about">О программе</a>
+        <a href="#hosts">Ведущие</a>
+        <a href="#test">Тест</a>
         <a href="#practices">Диагностика</a>
         <a href="#place">Место</a>
         <a href="#price">Стоимость</a>
@@ -43,6 +45,8 @@
 
   <nav class="mobile-nav" id="mobileNav" hidden>
     <a href="#about">О программе</a>
+    <a href="#hosts">Ведущие</a>
+    <a href="#test">Тест</a>
     <a href="#practices">Диагностика</a>
     <a href="#place">Место</a>
     <a href="#price">Стоимость</a>
@@ -112,11 +116,98 @@
             <li>Посмотрим, как убеждения влияют на наши решения и действия.</li>
             <li>Выделим время для отдыха, природы и общения.</li>
           </ul>
+          <p class="test-invite"><a href="#hosts">Познакомьтесь с ведущими</a> · <a href="#test">проверьте, в каком напряжении вы живёте</a></p>
         </div>
         <figure class="tilt-photo reveal" data-parallax="8">
           <div class="photo photo-about" role="img" aria-label="Лесной домик среди деревьев"></div>
           <figcaption>домик в лесу</figcaption>
         </figure>
+      </div>
+    </section>
+
+    <section class="ink hosts-section" id="hosts">
+      <div class="wrap">
+        <div class="hosts-intro reveal">
+          <p class="chapter">ведущие</p>
+          <h2>Кто ведёт <em>программу</em></h2>
+          <p class="lead">Два взгляда на состояние: через тело, практики Востока и биорезонанс — и через психологию, биологию и мягкую работу с реальностью.</p>
+        </div>
+
+        <div class="hosts-panel reveal">
+          <div class="host-switch" role="tablist" aria-label="Ведущие программы">
+            <button class="btn btn-pearl is-on" type="button" id="hostBtnAlex" data-host="alex" role="tab" aria-selected="true" aria-controls="hostAlex">Александр Хурюмов</button>
+            <button class="btn btn-pearl" type="button" id="hostBtnGalina" data-host="galina" role="tab" aria-selected="false" aria-controls="hostGalina">Галина Горелова</button>
+          </div>
+
+          <article class="host-bio is-on" id="hostAlex" data-host="alex" role="tabpanel" aria-labelledby="hostBtnAlex">
+            <p class="host-role">Психосоматолог · нутрициолог</p>
+            <h3>Александр Хурюмов</h3>
+            <p>Работает с телом и состоянием через БРТ — биорезонансную терапию, рефлексотерапию, гомеопатию и подходы академии Суджок.</p>
+            <p>Получил диплом клинического массажиста в Швейцарии, после чего много лет вёл личную практику в Лугано.</p>
+          </article>
+
+          <article class="host-bio" id="hostGalina" data-host="galina" role="tabpanel" aria-labelledby="hostBtnGalina" hidden>
+            <p class="host-role">Биолог · психосоматолог · психолог</p>
+            <h3>Галина Горелова</h3>
+            <p>Биолог, психосоматолог, психолог. Специалист по формированию реальности методом биорезонансной релаксации.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="ink test-section" id="test">
+      <div class="wrap test-layout">
+        <div class="test-intro reveal">
+          <p class="chapter">на полях</p>
+          <h2>В каком напряжении вы <em>живёте</em></h2>
+          <p class="lead">Пять коротких вопросов о привычном фоне. Это не диагноз и не оценка характера — только способ заметить, насколько день уже держит вас.</p>
+        </div>
+
+        <div class="test-card reveal" id="tensionTest">
+          <div class="test-track" aria-hidden="true">
+            <i data-dot="0" class="is-on"></i>
+            <i data-dot="1"></i>
+            <i data-dot="2"></i>
+            <i data-dot="3"></i>
+            <i data-dot="4"></i>
+          </div>
+          <p class="test-count" id="testCount">вопрос 1 из 5</p>
+
+          <div class="test-steps" id="testSteps">
+            <div class="test-q is-on" data-q="0">
+              <h3>Как часто утро начинается с ощущения, что день уже давит?</h3>
+              <div class="test-opts"></div>
+            </div>
+            <div class="test-q" data-q="1">
+              <h3>Как часто чувствуете зажим в теле — шея, плечи или челюсть?</h3>
+              <div class="test-opts"></div>
+            </div>
+            <div class="test-q" data-q="2">
+              <h3>Как часто день проходит без настоящей паузы для себя?</h3>
+              <div class="test-opts"></div>
+            </div>
+            <div class="test-q" data-q="3">
+              <h3>Как часто вечером мысли крутятся и не отпускают день?</h3>
+              <div class="test-opts"></div>
+            </div>
+            <div class="test-q" data-q="4">
+              <h3>Как часто свои желания откладываете «на потом»?</h3>
+              <div class="test-opts"></div>
+            </div>
+          </div>
+
+          <div class="test-result" id="testResult" hidden>
+            <p class="chapter" id="testLevelMark">результат</p>
+            <h3 id="testLevel"></h3>
+            <p id="testLead"></p>
+            <ol class="test-tips" id="testTips"></ol>
+            <p class="disclaimer">Это самопроверка фона напряжения, а не медицинская диагностика. При сильном тревожном состоянии или жалобах на здоровье нужна консультация специалиста.</p>
+            <div class="test-actions">
+              <button class="btn btn-ghost" type="button" id="testRestart">Пройти ещё раз</button>
+              <a class="btn" href="#contact">Обсудить участие</a>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -374,6 +465,10 @@
             <div class="faq-a"><p>Психологические, телесные и энергетические практики, лекции, элементы Су-Джок и предусмотренные программой процедуры прогревания. Конкретные процедуры зависят от формата программы, противопоказаний и условий безопасности.</p></div>
           </div>
           <div class="faq-item">
+            <button class="faq-q" type="button" aria-expanded="false">Тест ставит диагноз? <b>+</b></button>
+            <div class="faq-a"><p>Нет. Это короткая самопроверка привычного фона напряжения. Результат помогает заметить своё состояние, но не заменяет консультацию врача или психолога.</p></div>
+          </div>
+          <div class="faq-item">
             <button class="faq-q" type="button" aria-expanded="false">Можно ли считать интенсив лечением? <b>+</b></button>
             <div class="faq-a"><p>Нет. Интенсив посвящён психологическим, телесным и энергетическим практикам, а также эстетическому уходу. Он не заменяет медицинское обследование, лечение или консультацию врача.</p></div>
           </div>
@@ -393,11 +488,13 @@
   <footer class="footer">
     <div class="wrap footer-inner">
       <div>
-        <div class="brand">Путь к себе</div>
-        <div>Авторский интенсив в Адыгее</div>
+        <div class="brand">Новая точка энергии</div>
+        <div>Выездные программы</div>
       </div>
       <div class="footer-links">
         <a href="#about">О программе</a>
+        <a href="#hosts">Ведущие</a>
+        <a href="#test">Тест</a>
         <a href="#practices">Диагностика</a>
         <a href="#price">Стоимость</a>
         <a href="#contact">Связаться</a>

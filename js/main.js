@@ -128,11 +128,153 @@ if (cursor && finePointer && !reduceMotion) {
     cursor.style.top = event.clientY + "px";
   });
 
-  document.querySelectorAll("a, button, input, textarea").forEach((node) => {
-    node.addEventListener("pointerenter", () => cursor.classList.add("is-on"));
-    node.addEventListener("pointerleave", () => cursor.classList.remove("is-on"));
+  document.addEventListener("pointerover", (event) => {
+    if (event.target.closest("a, button, input, textarea, label")) {
+      cursor.classList.add("is-on");
+    }
+  });
+
+  document.addEventListener("pointerout", (event) => {
+    if (event.target.closest("a, button, input, textarea, label")) {
+      cursor.classList.remove("is-on");
+    }
   });
 }
+
+const hostButtons = [...document.querySelectorAll("[data-host].btn-pearl")];
+const hostBios = [...document.querySelectorAll(".host-bio")];
+
+const showHost = (id) => {
+  hostButtons.forEach((button) => {
+    const on = button.dataset.host === id;
+    button.classList.toggle("is-on", on);
+    button.setAttribute("aria-selected", String(on));
+  });
+  hostBios.forEach((bio) => {
+    const on = bio.dataset.host === id;
+    bio.hidden = !on;
+    bio.classList.toggle("is-on", on);
+  });
+};
+
+hostButtons.forEach((button) => {
+  button.addEventListener("click", () => showHost(button.dataset.host));
+});
+
+const TEST_ANSWERS = ["Почти никогда", "Иногда", "Часто", "Почти всегда"];
+const TEST_LEVELS = [
+  {
+    max: 4,
+    mark: "тихий фон",
+    title: "Тихий фон напряжения",
+    lead: "Похоже, вы уже умеете замечать паузы. Напряжение есть, но оно не держит весь день.",
+    tips: [
+      "Сохраните короткий ритуал замедления: несколько минут без экрана утром или вечером.",
+      "Замечайте, в какой части тела появляется зажим — этого уже достаточно, чтобы он слабел.",
+      "Если хочется углубить это состояние, пять дней в другой обстановке дают больше пространства для тишины."
+    ]
+  },
+  {
+    max: 9,
+    mark: "привычный фон",
+    title: "Привычное напряжение",
+    lead: "Тело и мысли уже сигналят, но вы всё ещё держите ритм. Фон стал привычным — и потому его легко не замечать.",
+    tips: [
+      "В середине дня остановитесь на три минуты: плечи вниз, внимание к дыханию, без телефона.",
+      "Вечером запишите один пункт, который можно не решать до утра.",
+      "Смена места и мягкие практики помогают увидеть, где напряжение стало автоматическим."
+    ]
+  },
+  {
+    max: 15,
+    mark: "высокая плотность",
+    title: "Жизнь на пределе",
+    lead: "Похоже, вы давно живёте в режиме «надо». Это не диагноз — только наблюдение о плотности дней.",
+    tips: [
+      "Начните с малого: десять минут без экрана, лёжа или сидя, и отметьте, где тело держит.",
+      "Если есть сильная тревога, бессонница или жалобы на здоровье, сначала поговорите со специалистом.",
+      "Если откликается идея остановиться в другой обстановке, напишите нам и уточните, подходит ли формат."
+    ]
+  }
+];
+
+const testCard = document.getElementById("tensionTest");
+const testSteps = document.getElementById("testSteps");
+const testResult = document.getElementById("testResult");
+const testCount = document.getElementById("testCount");
+const testTips = document.getElementById("testTips");
+let testScores = [null, null, null, null, null];
+let testStep = 0;
+let testSummary = "";
+
+const questions = [...testCard.querySelectorAll(".test-q")];
+
+questions.forEach((question, index) => {
+  const box = question.querySelector(".test-opts");
+  TEST_ANSWERS.forEach((label, value) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = label;
+    button.addEventListener("click", () => chooseTestAnswer(index, value, button));
+    box.appendChild(button);
+  });
+});
+
+const showTestStep = () => {
+  questions.forEach((question, index) => {
+    question.classList.toggle("is-on", index === testStep && !testSummary);
+  });
+  testCount.textContent = "вопрос " + (testStep + 1) + " из " + questions.length;
+  testCard.querySelectorAll(".test-track i").forEach((dot, index) => {
+    dot.classList.toggle("is-on", index === testStep && !testSummary);
+    dot.classList.toggle("is-done", index < testStep || Boolean(testSummary));
+  });
+};
+
+const chooseTestAnswer = (index, value, button) => {
+  testScores[index] = value;
+  button.parentElement.querySelectorAll("button").forEach((item) => {
+    item.classList.toggle("is-picked", item === button);
+  });
+
+  window.setTimeout(() => {
+    if (index < questions.length - 1) {
+      testStep = index + 1;
+      showTestStep();
+      return;
+    }
+    finishTest();
+  }, 180);
+};
+
+const finishTest = () => {
+  const total = testScores.reduce((sum, value) => sum + Number(value), 0);
+  const level = TEST_LEVELS.find((item) => total <= item.max);
+  testSummary = level.title + " (" + total + " из 15)";
+
+  document.getElementById("testLevelMark").textContent = level.mark;
+  document.getElementById("testLevel").textContent = level.title;
+  document.getElementById("testLead").textContent = level.lead;
+  testTips.innerHTML = level.tips.map((tip) => "<li>" + tip + "</li>").join("");
+
+  testSteps.hidden = true;
+  testCount.hidden = true;
+  testResult.hidden = false;
+  showTestStep();
+};
+
+document.getElementById("testRestart").addEventListener("click", () => {
+  testScores = [null, null, null, null, null];
+  testStep = 0;
+  testSummary = "";
+  testSteps.hidden = false;
+  testCount.hidden = false;
+  testResult.hidden = true;
+  testCard.querySelectorAll(".test-opts button").forEach((button) => button.classList.remove("is-picked"));
+  showTestStep();
+});
+
+showTestStep();
 
 contactForm.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -150,7 +292,8 @@ contactForm.addEventListener("submit", (event) => {
     "Вопрос: " + (message || "Нет дополнительных вопросов"),
     "",
     "Интенсив: 17–22 ноября",
-    "Стоимость: 50 000 рублей"
+    "Стоимость: 50 000 рублей",
+    testSummary ? "Тест на напряжение: " + testSummary : ""
   ].join("\n");
 
   formStatus.style.display = "block";
