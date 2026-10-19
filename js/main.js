@@ -115,6 +115,13 @@ if (!reduceMotion) {
       const speed = Number(layer.dataset.parallax) || 8;
       const rect = layer.getBoundingClientRect();
       const offset = (rect.top - window.innerHeight / 2) / 40;
+      const narrow = window.matchMedia("(max-width: 980px)").matches;
+      if (narrow) {
+        layer.style.transform = layer.classList.contains("tilt-photo")
+          ? "rotate(.6deg)"
+          : "none";
+        return;
+      }
       if (layer.classList.contains("tilt-photo")) {
         layer.style.transform = "rotate(2.4deg) translateY(" + (28 + offset * speed) + "px)";
       } else if (layer.classList.contains("hero-slip")) {

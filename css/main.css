@@ -20,7 +20,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 92px;
+  scroll-padding-top: 104px;
 }
 
 body {
@@ -219,15 +219,7 @@ h2 em {
   position: fixed;
   z-index: 40;
   inset: 0 0 auto;
-  padding: 18px 0;
-  mix-blend-mode: difference;
-}
-
-.header.is-solid {
-  mix-blend-mode: normal;
-  background: color-mix(in srgb, var(--ink) 88%, transparent);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(239, 230, 212, .08);
+  padding: 14px 0;
 }
 
 .header-inner {
@@ -237,10 +229,51 @@ h2 em {
   gap: 24px;
 }
 
+.brand-copy,
+.nav,
+.header .btn,
+.menu-toggle {
+  mix-blend-mode: difference;
+}
+
+.header.is-solid {
+  background: color-mix(in srgb, var(--ink) 88%, transparent);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(239, 230, 212, .08);
+}
+
+.header.is-solid .brand-copy,
+.header.is-solid .nav,
+.header.is-solid .btn,
+.header.is-solid .menu-toggle {
+  mix-blend-mode: normal;
+}
+
 .brand {
-  font-size: clamp(18px, 1.7vw, 26px);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: clamp(17px, 1.7vw, 26px);
   line-height: 1.08;
-  max-width: 18em;
+  max-width: 22em;
+}
+
+.brand-mark {
+  flex: 0 0 auto;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background:
+    linear-gradient(180deg, transparent 58%, rgba(11, 9, 8, .32)),
+    url("../img/adygea-pause.jpg") 48% 68%/cover;
+  box-shadow:
+    0 0 0 2px rgba(239, 230, 212, .55),
+    0 0 0 5px rgba(11, 9, 8, .22),
+    0 8px 18px rgba(11, 9, 8, .28);
+}
+
+.brand-copy {
+  min-width: 0;
 }
 
 .brand small {
@@ -946,7 +979,7 @@ h2 em {
   flex-wrap: wrap;
 }
 
-.footer .brand { color: var(--linen); font-size: 26px; }
+.footer .brand { color: var(--linen); font-size: 26px; display: block; }
 
 .load {
   opacity: 0;
@@ -1680,7 +1713,7 @@ h2 em {
     display: none;
     position: fixed;
     z-index: 39;
-    inset: 82px 16px auto;
+    inset: 96px 16px auto;
     padding: 22px;
     background: var(--sheet);
     color: var(--ink);
@@ -1716,22 +1749,79 @@ h2 em {
     cursor: pointer;
   }
 
-  .hero-collage { margin-bottom: 0; min-height: auto; }
-  .hero-shard { min-height: 52vh; }
-  .hero-photo { min-height: 52vh; }
-  .hero-slip {
-    left: 12px;
-    bottom: 18px;
-    width: min(210px, 46%);
+  html { scroll-padding-top: 96px; }
+
+  .header { padding: 10px 0; }
+
+  .brand {
+    align-items: center;
+    gap: 10px;
+    max-width: calc(100% - 58px);
   }
-  .hero-path { min-height: 28vh; }
+
+  .brand-mark {
+    width: 48px;
+    height: 48px;
+  }
+
+  .hero {
+    min-height: auto;
+    padding: 108px 0 28px;
+    overflow: hidden;
+  }
+
+  .hero-stage {
+    min-height: auto;
+    align-items: start;
+    gap: 28px;
+  }
+
+  .hero-collage {
+    margin: 8px 0 0;
+    min-height: auto;
+  }
+
+  .hero-shard {
+    display: none;
+  }
+
+  .hero-slip {
+    position: relative;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .hero-path {
+    min-height: 62vh;
+    clip-path: polygon(0 3%, 100% 0, 100% 100%, 0 97%);
+    background-position: 48% 46%;
+  }
+
+  .photo-about { background-position: center 58%; }
+  .photo-method { background-position: center 52%; }
+  .photo-bonus { background-position: center 64%; }
+  .place-photo { background-position: center 48%; }
+  .practice-bg { background-position: center 72%; }
+
+  .tilt-photo {
+    transform: rotate(.6deg);
+    margin: 8px 6px 12px;
+  }
+
   .hero h1 .italic { padding-left: 0; }
   .card.tall, .card.wide, .card.shift { grid-row: auto; grid-column: auto; margin-top: 0; }
   .stem::before { left: 18px; }
   .leaf { width: 100%; margin-left: 28px; }
   .leaf.left .pin, .leaf.right .pin { left: -17px; right: auto; }
   .place { min-height: auto; padding: 40px 0 80px; }
-  .photo, .leaf-photo .photo { min-height: 360px; }
+  .photo { min-height: 360px; }
+  .leaf-photo .photo {
+    clip-path: ellipse(48% 50% at 50% 48%);
+    min-height: 420px;
+  }
   .hero-issue { display: none; }
 }
 
@@ -1745,6 +1835,9 @@ h2 em {
   .orb-mini i { width: 46px; height: 46px; }
   .host-switch .btn-pearl { width: 100%; }
   .hero-actions .btn { width: 100%; }
+  .brand { gap: 10px; max-width: calc(100% - 54px); }
+  .brand-mark { width: 46px; height: 46px; }
+  .brand small { letter-spacing: .14em; }
   .footer-inner { flex-direction: column; align-items: flex-start; }
 }
 
