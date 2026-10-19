@@ -253,6 +253,11 @@ h2 em {
   opacity: .55;
 }
 
+.brand .brand-retreat {
+  margin-top: 3px;
+  opacity: .72;
+}
+
 .nav {
   display: flex;
   gap: 18px;
@@ -369,27 +374,55 @@ h2 em {
   margin-top: 28px;
 }
 
-.hero-shard {
+.hero-collage {
   position: relative;
-  min-height: 68vh;
+  min-height: 72vh;
   margin-bottom: -70px;
 }
 
-.hero-photo {
+.hero-shard {
+  position: relative;
+  min-height: 72vh;
+}
+
+.hero-photo,
+.hero-path {
   height: 100%;
-  min-height: 68vh;
-  clip-path: polygon(16% 0, 100% 0, 100% 100%, 0 88%);
-  background:
-    linear-gradient(180deg, transparent 40%, rgba(11, 9, 8, .45)),
-    url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1800&q=80") center/cover;
   filter: saturate(1.05) contrast(1.05);
 }
 
+.hero-photo {
+  min-height: 72vh;
+  clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 90%);
+  background:
+    linear-gradient(180deg, transparent 46%, rgba(11, 9, 8, .42)),
+    url("../img/adygea-pause.jpg") 42% 28%/cover;
+}
+
+.hero-slip {
+  position: absolute;
+  left: -10%;
+  bottom: 6%;
+  z-index: 2;
+  width: min(280px, 48%);
+  transform: rotate(-5.2deg);
+  box-shadow: 18px 22px 40px rgba(11, 9, 8, .35);
+}
+
+.hero-path {
+  min-height: 42vh;
+  clip-path: polygon(0 7%, 100% 0, 96% 100%, 0 94%);
+  background:
+    linear-gradient(180deg, transparent 50%, rgba(11, 9, 8, .4)),
+    url("../img/adygea-path.jpg") 48% 30%/cover;
+}
+
 .hero-shard figcaption,
+.hero-slip figcaption,
 .tilt-photo figcaption {
   position: absolute;
-  right: 18px;
-  bottom: 28px;
+  right: 14px;
+  bottom: 18px;
   font-size: 11px;
   letter-spacing: .18em;
   text-transform: uppercase;
@@ -500,9 +533,9 @@ h2 em {
   background: #c9bba6 center/cover no-repeat;
 }
 
-.photo-about { background-image: url("https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1400&q=80"); }
-.photo-method { background-image: url("https://images.unsplash.com/photo-1477414343800-2c2d4d80cecc?auto=format&fit=crop&w=1400&q=80"); }
-.photo-bonus { background-image: url("https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=1400&q=80"); }
+.photo-about { background-image: url("../img/adygea-about.jpg"); background-position: center 42%; }
+.photo-method { background-image: url("../img/adygea-pond.jpg"); background-position: center 40%; }
+.photo-bonus { background-image: url("../img/adygea-lotus.jpg"); background-position: center 58%; }
 
 .check-list {
   margin-top: 28px;
@@ -711,8 +744,8 @@ h2 em {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(11, 9, 8, .2), rgba(11, 9, 8, .55)),
-    url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=80") center/cover;
+    linear-gradient(90deg, rgba(11, 9, 8, .2), rgba(11, 9, 8, .5)),
+    url("../img/adygea-place.jpg") center 38%/cover;
 }
 
 .place-card {
@@ -1106,8 +1139,8 @@ h2 em {
   inset: -10% 0;
   background:
     linear-gradient(180deg, rgba(11, 9, 8, .12), transparent 34%, rgba(11, 9, 8, .22)),
-    url("https://images.unsplash.com/photo-1476820865390-c52aeebb9891?auto=format&fit=crop&w=2200&q=80") center/cover;
-  filter: saturate(1.2) contrast(1.08);
+    url("../img/adygea-practice.jpg") center 42%/cover;
+  filter: saturate(1.12) contrast(1.06);
 }
 
 .practice-mist {
@@ -1683,8 +1716,15 @@ h2 em {
     cursor: pointer;
   }
 
-  .hero-shard { margin-bottom: 0; min-height: 46vh; }
-  .hero-photo { min-height: 46vh; }
+  .hero-collage { margin-bottom: 0; min-height: auto; }
+  .hero-shard { min-height: 52vh; }
+  .hero-photo { min-height: 52vh; }
+  .hero-slip {
+    left: 12px;
+    bottom: 18px;
+    width: min(210px, 46%);
+  }
+  .hero-path { min-height: 28vh; }
   .hero h1 .italic { padding-left: 0; }
   .card.tall, .card.wide, .card.shift { grid-row: auto; grid-column: auto; margin-top: 0; }
   .stem::before { left: 18px; }

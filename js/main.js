@@ -115,9 +115,13 @@ if (!reduceMotion) {
       const speed = Number(layer.dataset.parallax) || 8;
       const rect = layer.getBoundingClientRect();
       const offset = (rect.top - window.innerHeight / 2) / 40;
-      layer.style.transform = layer.classList.contains("tilt-photo")
-        ? "rotate(2.4deg) translateY(" + (28 + offset * speed) + "px)"
-        : "translateY(" + (offset * speed) + "px)";
+      if (layer.classList.contains("tilt-photo")) {
+        layer.style.transform = "rotate(2.4deg) translateY(" + (28 + offset * speed) + "px)";
+      } else if (layer.classList.contains("hero-slip")) {
+        layer.style.transform = "rotate(-5.2deg) translateY(" + (offset * speed) + "px)";
+      } else {
+        layer.style.transform = "translateY(" + (offset * speed) + "px)";
+      }
     });
   }, { passive: true });
 }
