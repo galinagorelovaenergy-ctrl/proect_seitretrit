@@ -1,5 +1,6 @@
 "use strict";
 
+(() => {
 const ADYGEA_ITEMS = [
   { src: "img/adygea-pause.jpg", alt: "Пауза на склоне Адыгеи", title: "Пауза", subtitle: "хребет" },
   { src: "img/adygea-path.jpg", alt: "Тропа в горах Адыгеи", title: "Тропа", subtitle: "тропа" },
@@ -659,3 +660,4 @@ if (heroCarousel) {
     label: "Фотографии Адыгеи"
   });
 }
+})();

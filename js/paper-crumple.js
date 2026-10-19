@@ -1,5 +1,6 @@
 "use strict";
 
+(() => {
 const spring = (value = 0) => ({ value, target: value, velocity: 0 });
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 const finite = (value, fallback) => (Number.isFinite(value) ? value : fallback);
@@ -868,3 +869,4 @@ window.mountPaperCrumple = (root, user) => {
     }
   };
 };
+})();
