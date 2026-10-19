@@ -100,6 +100,24 @@ const revealHashTarget = () => {
 revealHashTarget();
 window.addEventListener("hashchange", revealHashTarget);
 
+const printPlace = document.querySelector(".place-photo");
+if (printPlace) {
+  if (reduceMotion) {
+    printPlace.classList.add("is-printed");
+  } else if ("IntersectionObserver" in window) {
+    const printObserver = new IntersectionObserver((entries, current) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-printed");
+        current.unobserve(entry.target);
+      });
+    }, { threshold: 0.16, rootMargin: "40px 0px" });
+    printObserver.observe(printPlace);
+  } else {
+    printPlace.classList.add("is-printed");
+  }
+}
+
 document.querySelectorAll('a[href^="#"]').forEach((link) => {
   link.addEventListener("click", () => {
     const id = link.getAttribute("href").slice(1);
