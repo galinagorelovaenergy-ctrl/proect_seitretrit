@@ -14,10 +14,11 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230b0908'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='26' fill='%23c07a3a' font-family='Georgia'%3E%D0%9D%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,500;0,600;1,500;1,600&family=Caveat:wght@500;600&family=Geologica:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,500;0,600;0,800;1,500;1,600&family=Caveat:wght@500;600&family=Geologica:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/carousel.css">
   <link rel="stylesheet" href="css/paper-crumple.css">
+  <link rel="stylesheet" href="css/elastic-mesh.css">
 </head>
 <body>
   <div class="grain" aria-hidden="true"></div>
@@ -93,12 +94,30 @@
     </section>
 
     <div class="dates" id="dates" aria-label="Даты интенсива">
-      <span data-day="17"><b>17</b> заезд</span>
-      <span data-day="18"><b>18</b> практики</span>
-      <span data-day="19"><b>19</b> тело</span>
-      <span data-day="20"><b>20</b> энергия</span>
-      <span data-day="21"><b>21</b> красота</span>
-      <span data-day="22"><b>22</b> итог</span>
+      <span data-day="17" aria-label="17 ноября, заезд">
+        <span class="date-mesh" data-elastic="17&#10;заезд"></span>
+        <span class="date-fallback"><b>17</b> заезд</span>
+      </span>
+      <span data-day="18" aria-label="18 ноября, практики">
+        <span class="date-mesh" data-elastic="18&#10;практики"></span>
+        <span class="date-fallback"><b>18</b> практики</span>
+      </span>
+      <span data-day="19" aria-label="19 ноября, тело">
+        <span class="date-mesh" data-elastic="19&#10;тело"></span>
+        <span class="date-fallback"><b>19</b> тело</span>
+      </span>
+      <span data-day="20" aria-label="20 ноября, энергия">
+        <span class="date-mesh" data-elastic="20&#10;энергия"></span>
+        <span class="date-fallback"><b>20</b> энергия</span>
+      </span>
+      <span data-day="21" aria-label="21 ноября, красота">
+        <span class="date-mesh" data-elastic="21&#10;красота"></span>
+        <span class="date-fallback"><b>21</b> красота</span>
+      </span>
+      <span data-day="22" aria-label="22 ноября, итог">
+        <span class="date-mesh" data-elastic="22&#10;итог"></span>
+        <span class="date-fallback"><b>22</b> итог</span>
+      </span>
     </div>
 
     <section class="ribbon">
@@ -734,6 +753,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.min.js"></script>
   <script src="js/paper-crumple.js"></script>
+  <script src="js/elastic-mesh.js"></script>
   <script src="js/carousel.js"></script>
   <script src="js/main.js"></script>
 </body>

@@ -484,8 +484,12 @@ h2 em {
   color: var(--ink);
 }
 
-.dates span {
-  padding: 20px 8px;
+.dates [data-day] {
+  position: relative;
+  display: grid;
+  align-content: center;
+  min-height: 168px;
+  padding: 10px 6px 12px;
   border-right: 1px solid rgba(20, 16, 13, .12);
   text-align: center;
   font-size: 11px;
@@ -494,7 +498,7 @@ h2 em {
   transition: background .45s var(--ease), color .45s var(--ease), transform .45s var(--ease);
 }
 
-.dates span:last-child { border-right: 0; }
+.dates [data-day]:last-child { border-right: 0; }
 
 .dates b {
   display: block;
@@ -504,7 +508,7 @@ h2 em {
   letter-spacing: 0;
 }
 
-.dates span.is-on {
+.dates [data-day].is-on {
   background: var(--ink);
   color: var(--linen);
   transform: translateY(-3px);
@@ -1979,6 +1983,7 @@ h2 em {
   .wrap { width: calc(100% - 28px); }
   .sheet, .ink, .bonus { padding: 80px 0; }
   .dates { grid-template-columns: repeat(3, 1fr); }
+  .dates [data-day] { min-height: 132px; padding: 6px 4px 8px; }
   .sheet-card, .place-card, .letter, .ticket-side, .ticket-main, .test-card, .hosts-panel, .host-bio, .practice-glass, .future-card { padding: 26px 18px; }
   .node i { width: 70px; height: 70px; }
   .orb i { width: 76px; height: 76px; }
@@ -2016,7 +2021,7 @@ h2 em {
     transform: none;
   }
   .chapter::after { width: 3.6em; }
-  .dates span.is-on { transform: none; }
+  .dates [data-day].is-on { transform: none; }
   body { cursor: auto; }
   .cursor { display: none; }
 }

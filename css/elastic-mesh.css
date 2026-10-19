@@ -1,0 +1,50 @@
+.elastic-mesh {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.elastic-mesh-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.dates .date-mesh {
+  display: block;
+  width: 100%;
+  height: 136px;
+}
+
+.dates .date-fallback {
+  display: block;
+  padding-top: 8px;
+}
+
+.dates .date-mesh[data-status="ready"] + .date-fallback,
+.dates .date-mesh[data-status="loading"] + .date-fallback {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (max-width: 980px) {
+  .dates .date-mesh {
+    height: 120px;
+  }
+}
+
+@media (max-width: 640px) {
+  .dates .date-mesh {
+    height: 108px;
+  }
+}

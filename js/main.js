@@ -8,7 +8,7 @@ const contactForm = document.getElementById("contactForm");
 const formStatus = document.getElementById("formStatus");
 const cursor = document.getElementById("cursor");
 const progress = document.getElementById("progress");
-const datePins = [...document.querySelectorAll(".dates span")];
+const datePins = [...document.querySelectorAll(".dates [data-day]")];
 const ORGANIZER_EMAIL = "galinagorelovaenergy@gmail.com";
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const finePointer = window.matchMedia("(pointer: fine)").matches;
@@ -27,7 +27,14 @@ const setDatePin = () => {
     datePins.length - 1,
     Math.floor((window.scrollY / Math.max(1, document.documentElement.scrollHeight - window.innerHeight)) * datePins.length)
   );
-  datePins.forEach((pin, i) => pin.classList.toggle("is-on", i === index));
+  datePins.forEach((pin, i) => {
+    const on = i === index;
+    pin.classList.toggle("is-on", on);
+    pin.querySelector("[data-elastic]")?._elastic?.set({
+      color: on ? "#efe6d4" : "#c07a3a",
+      theme: on ? "dark" : "light"
+    });
+  });
 };
 
 const onScroll = () => {
