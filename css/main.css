@@ -81,7 +81,7 @@ button, input, textarea { font: inherit; }
 }
 
 .wrap {
-  width: min(1220px, calc(100% - 48px));
+  width: min(1220px, calc(100% - 72px));
   margin-inline: auto;
 }
 
@@ -467,21 +467,30 @@ h2 em {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   list-style: none;
-  margin-top: 28px;
+  margin-top: 32px;
+  padding: 4px 0 0;
   border-top: 1px solid rgba(239, 230, 212, .12);
 }
 
 .hero-meta li {
-  padding: 18px 16px 22px 0;
+  padding: 18px 28px 24px 0;
   font-size: 13px;
+  line-height: 1.45;
   color: rgba(239, 230, 212, .7);
+}
+
+.hero-meta li:last-child {
+  padding-right: 0;
+}
+
+.dates-band {
+  background: var(--linen);
+  color: var(--ink);
 }
 
 .dates {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  background: var(--linen);
-  color: var(--ink);
 }
 
 .dates [data-day] {
@@ -489,7 +498,8 @@ h2 em {
   display: grid;
   align-content: center;
   min-height: 168px;
-  padding: 10px 6px 12px;
+  padding: 12px 10px 14px;
+  overflow: hidden;
   border-right: 1px solid rgba(20, 16, 13, .12);
   text-align: center;
   font-size: 11px;
@@ -1944,8 +1954,12 @@ h2 em {
 
   .hero {
     min-height: auto;
-    padding: 108px 0 28px;
+    padding: 108px 0 20px;
     overflow: hidden;
+  }
+
+  .hero-meta li {
+    padding: 14px 8px 18px 0;
   }
 
   .hero-stage {
@@ -1980,16 +1994,17 @@ h2 em {
 }
 
 @media (max-width: 640px) {
-  .wrap { width: calc(100% - 28px); }
+  .wrap { width: calc(100% - 56px); }
   .sheet, .ink, .bonus { padding: 80px 0; }
   .dates { grid-template-columns: repeat(3, 1fr); }
-  .dates [data-day] { min-height: 132px; padding: 6px 4px 8px; }
+  .dates [data-day] { min-height: 132px; padding: 10px 8px 12px; }
   .sheet-card, .place-card, .letter, .ticket-side, .ticket-main, .test-card, .hosts-panel, .host-bio, .practice-glass, .future-card { padding: 26px 18px; }
   .node i { width: 70px; height: 70px; }
   .orb i { width: 76px; height: 76px; }
   .orb-mini i { width: 46px; height: 46px; }
   .host-switch .btn-pearl { width: 100%; }
-  .hero-actions .btn { width: 100%; }
+  .hero-actions .btn,
+  .hero-actions .specular-button { width: 100%; }
   .brand { gap: 10px; max-width: calc(100% - 54px); }
   .brand-mark { width: 46px; height: 46px; }
   .brand small { letter-spacing: .14em; }
@@ -2029,5 +2044,5 @@ h2 em {
 @media (pointer: coarse) {
   body { cursor: auto; }
   .cursor { display: none; }
-  .btn, .faq-q, .menu-toggle, .orb, .node, .signal { cursor: pointer; }
+  .btn, .specular-button, .faq-q, .menu-toggle, .orb, .node, .signal { cursor: pointer; }
 }

@@ -19,6 +19,8 @@
   <link rel="stylesheet" href="css/carousel.css">
   <link rel="stylesheet" href="css/paper-crumple.css">
   <link rel="stylesheet" href="css/elastic-mesh.css">
+  <link rel="stylesheet" href="css/light-tunnel.css">
+  <link rel="stylesheet" href="css/specular-button.css">
 </head>
 <body>
   <div class="grain" aria-hidden="true"></div>
@@ -78,22 +80,23 @@
           </h1>
           <p class="hero-lead load" style="--d:.7s">Пять дней для себя среди осеннего леса, прудов и тишины. Психологические, телесные и энергетические практики, внимание к внутреннему напряжению, мышлению и заботе о собственном теле.</p>
           <div class="hero-actions load" style="--d:.84s">
-            <a class="btn" href="#contact">Узнать подробности</a>
-            <a class="btn btn-ghost" href="#about">Познакомиться с программой</a>
+            <a class="specular-button specular-button--lg specular-button--copper" href="#contact" data-specular="copper">Узнать подробности</a>
+            <a class="specular-button specular-button--lg specular-button--ghost" href="#about" data-specular="ghost">Познакомиться с программой</a>
           </div>
         </div>
         <div class="hero-carousel-shell load" style="--d:.36s">
           <div id="heroCarousel" class="circular-carousel"></div>
         </div>
       </div>
-      <ul class="hero-meta load" style="--d:.96s">
+      <ul class="hero-meta wrap load" style="--d:.96s">
         <li>Лесной домик под Майкопом</li>
         <li>Проживание и питание включены</li>
         <li>Три процедуры аппаратного омоложения</li>
       </ul>
     </section>
 
-    <div class="dates" id="dates" aria-label="Даты интенсива">
+    <div class="dates-band">
+    <div class="dates wrap" id="dates" aria-label="Даты интенсива">
       <span data-day="17" aria-label="17 ноября, заезд">
         <span class="date-mesh" data-elastic="17&#10;заезд"></span>
         <span class="date-fallback"><b>17</b> заезд</span>
@@ -119,6 +122,7 @@
         <span class="date-fallback"><b>22</b> итог</span>
       </span>
     </div>
+    </div>
 
     <section class="ribbon">
       <div class="wrap ribbon-row">
@@ -129,7 +133,8 @@
       </div>
     </section>
 
-    <section class="sheet" id="about">
+    <section class="sheet about-sheet" id="about">
+      <div class="about-tunnel" id="aboutTunnel"></div>
       <div class="wrap about-layout">
         <div class="sheet-card reveal">
           <p class="chapter">01 / время для себя</p>
@@ -754,6 +759,8 @@
   <script src="https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.min.js"></script>
   <script src="js/paper-crumple.js"></script>
   <script src="js/elastic-mesh.js"></script>
+  <script src="js/light-tunnel.js"></script>
+  <script src="js/specular-button.js"></script>
   <script src="js/carousel.js"></script>
   <script src="js/main.js"></script>
 </body>

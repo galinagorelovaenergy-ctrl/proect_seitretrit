@@ -1,0 +1,95 @@
+.light-tunnel-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.light-tunnel-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.about-tunnel {
+  position: absolute;
+  left: -12%;
+  right: -12%;
+  top: 50%;
+  z-index: 0;
+  height: 640px;
+  transform: translateY(-52%);
+  pointer-events: none;
+}
+
+.about-sheet {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 72% 46%, rgba(192, 122, 58, .16), transparent 38%),
+    radial-gradient(circle at 12% 80%, rgba(184, 67, 50, .08), transparent 28%),
+    #12100c;
+}
+
+.about-sheet .about-layout {
+  position: relative;
+  z-index: 1;
+  grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
+  gap: 80px;
+  align-items: center;
+}
+
+.about-sheet .sheet-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 28px 26px;
+  background: rgba(246, 237, 217, .92);
+  backdrop-filter: blur(8px);
+}
+
+.about-sheet .tilt-photo {
+  width: min(480px, 100%);
+  max-width: 480px;
+  justify-self: end;
+}
+
+.about-sheet .photo {
+  width: 100%;
+  min-height: 400px;
+}
+
+@media (max-width: 980px) {
+  .about-tunnel {
+    left: -22%;
+    right: -22%;
+    top: 8%;
+    height: 520px;
+    transform: none;
+  }
+
+  .about-sheet .about-layout {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .about-sheet .sheet-card {
+    max-width: none;
+    width: calc(100% - 32px);
+    margin-inline: auto;
+    padding: 24px 22px;
+  }
+
+  .about-sheet .tilt-photo {
+    width: min(420px, 100%);
+    max-width: min(420px, 86%);
+    justify-self: center;
+  }
+
+  .about-sheet .photo {
+    width: 100%;
+    min-height: 300px;
+  }
+}
