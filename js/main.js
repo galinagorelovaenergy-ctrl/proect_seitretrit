@@ -142,8 +142,6 @@ if (!reduceMotion) {
       }
       if (layer.classList.contains("tilt-photo")) {
         layer.style.transform = "rotate(2.4deg) translateY(" + (28 + offset * speed) + "px)";
-      } else if (layer.classList.contains("hero-slip")) {
-        layer.style.transform = "rotate(-5.2deg) translateY(" + (offset * speed) + "px)";
       } else {
         layer.style.transform = "translateY(" + (offset * speed) + "px)";
       }
@@ -382,8 +380,15 @@ const futureRoot = document.getElementById("futurePractice");
 const futureIntents = document.getElementById("futureIntents");
 const futureForm = document.getElementById("futureForm");
 const futureWish = document.getElementById("futureWish");
+const releaseForm = document.getElementById("releaseForm");
+const releaseText = document.getElementById("releaseText");
+const releaseStage = document.getElementById("releaseStage");
+const releasePaper = document.getElementById("releasePaper");
 let futureIntent = "";
+let futureWishText = "";
+let futureRelease = "";
 let futureSummary = "";
+let paperHandle = null;
 
 const showFuture = (step) => {
   futureRoot.querySelectorAll("[data-future]").forEach((panel) => {
@@ -410,21 +415,156 @@ FUTURE_INTENTS.forEach((label) => {
   futureIntents.appendChild(button);
 });
 
+const wrapPaperLines = (ctx, text, maxWidth) => {
+  const words = String(text).split(/\s+/);
+  const lines = [];
+  let line = "";
+  words.forEach((word) => {
+    const next = line ? line + " " + word : word;
+    if (ctx.measureText(next).width > maxWidth && line) {
+      lines.push(line);
+      line = word;
+    } else {
+      line = next;
+    }
+  });
+  if (line) lines.push(line);
+  return lines;
+};
+
+const drawReleaseSheet = async (text) => {
+  if (document.fonts && document.fonts.load) {
+    await document.fonts.load("600 44px Caveat");
+  }
+  const size = 800;
+  const canvas = document.createElement("canvas");
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = "#f4f0e8";
+  ctx.fillRect(0, 0, size, size);
+  const grain = ctx.getImageData(0, 0, size, size);
+  for (let i = 0; i < grain.data.length; i += 4) {
+    const n = (Math.random() - 0.5) * 16;
+    grain.data[i] += n;
+    grain.data[i + 1] += n;
+    grain.data[i + 2] += n;
+  }
+  ctx.putImageData(grain, 0, 0);
+  ctx.strokeStyle = "rgba(176, 140, 90, .22)";
+  ctx.lineWidth = 1;
+  for (let y = 168; y < 740; y += 44) {
+    ctx.beginPath();
+    ctx.moveTo(72, y);
+    ctx.lineTo(728, y);
+    ctx.stroke();
+  }
+  ctx.strokeStyle = "rgba(184, 67, 50, .2)";
+  ctx.beginPath();
+  ctx.moveTo(108, 52);
+  ctx.lineTo(108, 760);
+  ctx.stroke();
+  ctx.fillStyle = "rgba(192, 122, 58, .82)";
+  ctx.font = "500 22px Geologica, sans-serif";
+  ctx.fillText("уже пора отпустить", 128, 92);
+  ctx.fillStyle = "#3a241c";
+  ctx.font = "600 44px Caveat, cursive";
+  wrapPaperLines(ctx, text, 560).slice(0, 11).forEach((line, index) => {
+    ctx.save();
+    ctx.translate(128, 176 + index * 44);
+    ctx.rotate((index % 2 ? -1 : 1) * 0.012);
+    ctx.fillText(line, 0, 0);
+    ctx.restore();
+  });
+  return canvas.toDataURL("image/png");
+};
+
+const disposePaper = () => {
+  if (paperHandle && paperHandle.dispose) paperHandle.dispose();
+  paperHandle = null;
+  releasePaper.innerHTML = "";
+};
+
+const showReleaseForm = () => {
+  disposePaper();
+  releaseForm.hidden = false;
+  releaseStage.hidden = true;
+};
+
 futureForm.addEventListener("submit", (event) => {
   event.preventDefault();
   if (!futureForm.reportValidity()) return;
   const wish = futureWish.value.trim();
   if (!wish || !futureIntent) return;
-  futureSummary = "намерение — " + futureIntent + ". Когда я вернусь домой, мне хотелось бы " + wish;
+  futureWishText = wish;
+  showReleaseForm();
+  showFuture("release");
+});
+
+releaseForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  if (!releaseForm.reportValidity()) return;
+  const note = releaseText.value.trim();
+  if (!note) return;
+  futureRelease = note;
+  releaseForm.hidden = true;
+  releaseStage.hidden = false;
+  disposePaper();
+  const src = await drawReleaseSheet(note);
+  if (typeof window.mountPaperCrumple === "function") {
+    paperHandle = window.mountPaperCrumple(releasePaper, {
+      src,
+      alt: "Лист с тем, что пора отпустить",
+      width: 400,
+      height: 400,
+      sceneHeight: window.matchMedia("(max-width: 640px)").matches ? 300 : 360,
+      releaseBehavior: "restore",
+      crumpleAmount: 0.85,
+      crumpleDuration: 0.55,
+      releaseDuration: 0.4,
+      foldCount: 6,
+      foldSharpness: 0.6,
+      wrinkleDepth: 0.65,
+      creaseStrength: 0.18,
+      paperColor: "#f4f0e8",
+      paperTexture: 0.08,
+      draggable: true,
+      returnToOrigin: true,
+      imageFit: "contain",
+      roughness: 0.92,
+      lightIntensity: 1.8,
+      lightAngle: -35,
+      shadow: true,
+      shadowOpacity: 0.16,
+      dragRotation: 10,
+      dragRadius: 180,
+      rotation: 0,
+      seed: 7,
+      detail: window.matchMedia("(max-width: 980px)").matches ? 48 : 64
+    });
+  }
+});
+
+document.getElementById("releaseRewrite").addEventListener("click", showReleaseForm);
+
+document.getElementById("releaseToCard").addEventListener("click", () => {
+  futureSummary = "намерение — " + futureIntent +
+    ". Когда я вернусь домой, мне хотелось бы " + futureWishText +
+    ". Уже пора отпустить: " + futureRelease;
   document.getElementById("futureCardIntent").textContent = "намерение · " + futureIntent;
-  document.getElementById("futureCardWish").textContent = wish;
+  document.getElementById("futureCardWish").textContent = futureWishText;
+  document.getElementById("futureCardRelease").textContent = "отпускаю: " + futureRelease;
   showFuture("card");
 });
 
 document.getElementById("futureRestart").addEventListener("click", () => {
   futureIntent = "";
+  futureWishText = "";
+  futureRelease = "";
   futureSummary = "";
   futureWish.value = "";
+  releaseText.value = "";
+  showReleaseForm();
   futureIntents.querySelectorAll(".signal").forEach((item) => item.classList.remove("is-on"));
   showFuture("intro");
 });

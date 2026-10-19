@@ -387,7 +387,7 @@ h2 em {
   display: grid;
   grid-template-columns: 1fr .92fr;
   gap: 24px;
-  align-items: end;
+  align-items: center;
   min-height: calc(100svh - 220px);
 }
 
@@ -445,72 +445,6 @@ h2 em {
   margin-top: 28px;
 }
 
-.hero-collage {
-  position: relative;
-  min-height: 72vh;
-  margin-bottom: -70px;
-}
-
-.hero-shard {
-  position: relative;
-  min-height: 72vh;
-}
-
-.hero-photo,
-.hero-path {
-  position: relative;
-  height: 100%;
-  overflow: hidden;
-  transform: scale(1.07);
-  filter: saturate(.42) contrast(1.2) brightness(.62);
-  animation: print-develop 1.9s var(--ease) forwards;
-}
-
-.hero-photo { animation-delay: .38s; }
-.hero-path { animation-delay: .62s; }
-
-.hero-photo::after,
-.hero-path::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(180deg, rgba(192, 122, 58, .38), rgba(11, 9, 8, .52));
-  mix-blend-mode: multiply;
-  animation: print-wash 1.7s var(--ease) forwards;
-}
-
-.hero-photo::after { animation-delay: .42s; }
-.hero-path::after { animation-delay: .68s; }
-
-.hero-photo {
-  min-height: 72vh;
-  clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 90%);
-  background:
-    linear-gradient(180deg, transparent 46%, rgba(11, 9, 8, .42)),
-    url("../img/adygea-pause.jpg") 42% 28%/cover;
-}
-
-.hero-slip {
-  position: absolute;
-  left: -10%;
-  bottom: 6%;
-  z-index: 2;
-  width: min(280px, 48%);
-  transform: rotate(-5.2deg);
-  box-shadow: 18px 22px 40px rgba(11, 9, 8, .35);
-}
-
-.hero-path {
-  min-height: 42vh;
-  clip-path: polygon(0 7%, 100% 0, 96% 100%, 0 94%);
-  background:
-    linear-gradient(180deg, transparent 50%, rgba(11, 9, 8, .4)),
-    url("../img/adygea-path.jpg") 48% 30%/cover;
-}
-
-.hero-shard figcaption,
-.hero-slip figcaption,
 .tilt-photo figcaption {
   position: absolute;
   right: 14px;
@@ -521,12 +455,6 @@ h2 em {
   color: var(--linen);
   opacity: 0;
   transform: translateY(8px);
-}
-
-.hero-shard figcaption,
-.hero-slip figcaption {
-  animation: caption-in .8s var(--ease) forwards;
-  animation-delay: 1.35s;
 }
 
 .tilt-photo.reveal.is-in figcaption {
@@ -1923,6 +1851,15 @@ h2 em {
   max-width: 16ch;
 }
 
+.future-card-release {
+  margin-top: 18px;
+  max-width: 34ch;
+  font-family: "Caveat", cursive;
+  font-size: 26px;
+  line-height: 1.25;
+  color: rgba(239, 230, 212, .72);
+}
+
 .future-card-stamp {
   margin-top: 26px;
   padding-top: 16px;
@@ -2013,30 +1950,6 @@ h2 em {
     gap: 28px;
   }
 
-  .hero-collage {
-    margin: 8px 0 0;
-    min-height: auto;
-  }
-
-  .hero-shard {
-    display: none;
-  }
-
-  .hero-slip {
-    position: relative;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    transform: none;
-    box-shadow: none;
-  }
-
-  .hero-path {
-    min-height: 62vh;
-    clip-path: polygon(0 3%, 100% 0, 100% 100%, 0 97%);
-    background-position: 48% 46%;
-  }
-
   .photo-about { background-position: center 58%; }
   .photo-method { background-position: center 52%; }
   .photo-bonus { background-position: center 64%; }
@@ -2089,21 +2002,15 @@ h2 em {
   .test-q h3 {
     clip-path: none !important;
   }
-  .photo,
-  .hero-photo,
-  .hero-path {
+  .photo {
     transform: none;
     filter: saturate(1.05) contrast(1.05);
   }
   .photo::after,
-  .hero-photo::after,
-  .hero-path::after,
   .place-photo::after {
     opacity: 0 !important;
   }
   .check-list li,
-  .hero-shard figcaption,
-  .hero-slip figcaption,
   .tilt-photo figcaption {
     opacity: 1;
     transform: none;

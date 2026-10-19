@@ -14,8 +14,10 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230b0908'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='26' fill='%23c07a3a' font-family='Georgia'%3E%D0%9D%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,500;0,600;1,500;1,600&family=Geologica:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,500;0,600;1,500;1,600&family=Caveat:wght@500;600&family=Geologica:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/carousel.css">
+  <link rel="stylesheet" href="css/paper-crumple.css">
 </head>
 <body>
   <div class="grain" aria-hidden="true"></div>
@@ -79,15 +81,8 @@
             <a class="btn btn-ghost" href="#about">Познакомиться с программой</a>
           </div>
         </div>
-        <div class="hero-collage load" style="--d:.36s">
-          <figure class="hero-shard" data-parallax="10">
-            <div class="hero-photo" role="img" aria-label="Пауза на склоне Адыгеи"></div>
-            <figcaption>пауза на хребте</figcaption>
-          </figure>
-          <figure class="hero-slip" data-parallax="6">
-            <div class="hero-path" role="img" aria-label="Тропа в горах Адыгеи"></div>
-            <figcaption>тропа</figcaption>
-          </figure>
+        <div class="hero-carousel-shell load" style="--d:.36s">
+          <div id="heroCarousel" class="circular-carousel"></div>
         </div>
       </div>
       <ul class="hero-meta load" style="--d:.96s">
@@ -379,9 +374,37 @@
               <textarea id="futureWish" name="wish" maxlength="180" required placeholder="например, просыпаться без спешки и слышать себя"></textarea>
               <button class="node" type="submit">
                 <i></i>
-                <span>Собрать карточку</span>
+                <span>Дальше</span>
               </button>
             </form>
+          </div>
+
+          <div class="future-panel" data-future="release" hidden>
+            <p class="practice-mark">отпускание</p>
+            <h2>Что уже пора <em>отпустить</em></h2>
+            <p class="lead">Страх, сомнение, обиду, привычку держать. Напишите коротко — это ляжет на лист рукописью. Затем лист можно смять.</p>
+            <form class="future-form" id="releaseForm">
+              <label for="releaseText">Уже пора отпустить</label>
+              <textarea id="releaseText" name="release" maxlength="220" required placeholder="например, страх, что если я остановлюсь, всё развалится"></textarea>
+              <button class="node" type="submit">
+                <i></i>
+                <span>Написать на листе</span>
+              </button>
+            </form>
+            <div class="release-stage" id="releaseStage" hidden>
+              <p class="lead tight">Зажмите лист, чтобы смять. Отпустите — бумага расправится. Когда будете готовы, идите дальше.</p>
+              <div class="release-paper" id="releasePaper"></div>
+              <div class="node-row">
+                <button class="node" type="button" id="releaseRewrite">
+                  <i></i>
+                  <span>Написать иначе</span>
+                </button>
+                <button class="node" type="button" id="releaseToCard">
+                  <i></i>
+                  <span>Отпустить и собрать карточку</span>
+                </button>
+              </div>
+            </div>
           </div>
 
           <div class="future-panel" data-future="card" hidden>
@@ -395,6 +418,7 @@
               <p class="future-card-intent" id="futureCardIntent"></p>
               <p class="future-card-lead">Когда я вернусь домой, мне хотелось бы</p>
               <p class="future-card-wish" id="futureCardWish"></p>
+              <p class="future-card-release" id="futureCardRelease"></p>
               <p class="future-card-stamp">личный запрос на поездку · Новая точка энергии</p>
             </article>
             <p class="lead tight">Это формулировка для себя. Её можно взять в заявку — чтобы мы поняли, с каким запросом вы едете.</p>
@@ -708,6 +732,9 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.min.js"></script>
+  <script src="js/paper-crumple.js"></script>
+  <script src="js/carousel.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
