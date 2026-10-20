@@ -88,6 +88,17 @@
   margin: 8px 0 10px;
 }
 
+.release-paper[data-status="dissolving"],
+.release-paper[data-status="dissolving"].paper-crumple {
+  overflow: visible;
+  z-index: 3;
+}
+
+.release-paper[data-status="dissolving"] .paper-crumple-hit,
+.release-paper[data-status="dissolved"] .paper-crumple-hit {
+  pointer-events: none;
+}
+
 @media (max-width: 640px) {
   .release-paper { height: 300px; }
 }

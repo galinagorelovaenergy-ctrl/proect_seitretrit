@@ -83,10 +83,13 @@ const UNIFORMS = [
   "uGlow"
 ];
 
+const PRESET_NAMES = ["copper", "ghost", "ink", "mist"];
+
 const PRESETS = {
   copper: {
     tint: "#c07a3a",
-    tintOpacity: 0.55,
+    tintOpacity: 0.52,
+    blur: 12,
     textColor: "#efe6d4",
     lineColor: "#efe6d4",
     baseColor: "#c07a3a",
@@ -94,11 +97,30 @@ const PRESETS = {
   },
   ghost: {
     tint: "#efe6d4",
-    tintOpacity: 0.05,
+    tintOpacity: 0.06,
+    blur: 10,
     textColor: "#efe6d4",
     lineColor: "#ffffff",
     baseColor: "#8a8174",
     idleIntensity: 0.3
+  },
+  ink: {
+    tint: "#14100d",
+    tintOpacity: 0.78,
+    blur: 10,
+    textColor: "#efe6d4",
+    lineColor: "#c07a3a",
+    baseColor: "#c07a3a",
+    idleIntensity: 0.4
+  },
+  mist: {
+    tint: "#14100d",
+    tintOpacity: 0.08,
+    blur: 10,
+    textColor: "#14100d",
+    lineColor: "#c07a3a",
+    baseColor: "#c07a3a",
+    idleIntensity: 0.28
   }
 };
 
@@ -107,7 +129,7 @@ const defaults = {
   radius: 18,
   tint: "#ffffff",
   tintOpacity: 0.04,
-  blur: 0,
+  blur: 10,
   textColor: "#f5f5f5",
   lineColor: "#ffffff",
   baseColor: "#525252",
@@ -227,6 +249,10 @@ const paintVars = (root, settings) => {
   root.style.setProperty("--sb-text-color", settings.textColor);
 };
 
+const applyPresetClass = (root, name) => {
+  PRESET_NAMES.forEach((item) => root.classList.toggle(`specular-button--${item}`, item === name));
+};
+
 const prepareMarkup = (root) => {
   let canvas = root.querySelector(":scope > .specular-button__light");
   if (!canvas) {
@@ -247,52 +273,36 @@ const prepareMarkup = (root) => {
   return { canvas, label };
 };
 
-window.mountSpecularButton = (root, user = {}) => {
-  if (!root) return null;
-  if (root._specular) return root._specular;
+const instances = new Set();
+const pointer = { x: 0, y: 0, known: false };
+const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+let shared = null;
+let raf = 0;
+let last = 0;
 
-  const presetName = user.preset || root.getAttribute("data-specular") || "";
-  const settings = {
-    ...defaults,
-    ...(PRESETS[presetName] || {}),
-    ...fromDataset(root),
-    ...user
-  };
-  settings.radius = Math.max(0, settings.radius);
-  settings.intensity = Math.max(0, settings.intensity);
-  settings.idleIntensity = clamp(settings.idleIntensity, 0, 1);
-  settings.shineSize = Math.max(0, settings.shineSize);
-  settings.shineFade = Math.max(0, settings.shineFade);
-  settings.thickness = Math.max(0, settings.thickness);
-  settings.glow = Math.max(0, settings.glow);
-  settings.proximity = Math.max(1, settings.proximity);
-  settings.followMouse = settings.followMouse !== false;
-
-  root.classList.add("specular-button", `specular-button--${settings.size}`);
-  if (presetName && presetName !== "true") root.classList.add(`specular-button--${presetName}`);
-  paintVars(root, settings);
-
-  const { canvas } = prepareMarkup(root);
-  const settingsRef = { current: settings };
-
+const getShared = () => {
+  if (shared) return shared;
+  const canvas = document.createElement("canvas");
+  canvas.setAttribute("aria-hidden", "true");
+  canvas.style.cssText = "position:fixed;left:-9999px;top:0;width:1px;height:1px;pointer-events:none;";
+  document.body.appendChild(canvas);
   const gl = canvas.getContext("webgl2", {
     alpha: true,
     premultipliedAlpha: true,
     antialias: false,
     depth: false,
-    stencil: false
+    stencil: false,
+    preserveDrawingBuffer: true
   });
   if (!gl) {
-    root._specular = { set() {}, dispose() {} };
-    return root._specular;
+    shared = { failed: true };
+    return shared;
   }
-
   const program = link(gl);
   if (!program) {
-    root._specular = { set() {}, dispose() {} };
-    return root._specular;
+    shared = { failed: true };
+    return shared;
   }
-
   const uniforms = {};
   for (const name of UNIFORMS) uniforms[name] = gl.getUniformLocation(program, name);
   const buffer = gl.createBuffer();
@@ -303,18 +313,8 @@ window.mountSpecularButton = (root, user = {}) => {
   gl.enableVertexAttribArray(0);
   gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
   gl.bindVertexArray(null);
-
   const probe = document.createElement("canvas").getContext("2d", { willReadFrequently: true });
-  const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
   const colors = new Map();
-  const view = { width: 1, height: 1, ratio: 1 };
-  const pointer = { x: 0, y: 0, known: false };
-  const state = { spot: 0, level: 0, press: 0, ready: false };
-  let raf = 0;
-  let last = 0;
-  let visible = true;
-  let alive = true;
-
   const toRgb = (value) => {
     if (colors.has(value)) return colors.get(value);
     let rgb = [1, 1, 1];
@@ -329,111 +329,204 @@ window.mountSpecularButton = (root, user = {}) => {
     colors.set(value, rgb);
     return rgb;
   };
+  shared = { canvas, gl, program, uniforms, vao, toRgb, failed: false };
+  return shared;
+};
 
-  const cornerRadius = (s) => Math.min(s.radius, view.width / 2, view.height / 2);
+const drawInstance = (inst) => {
+  const gpu = getShared();
+  if (!gpu || gpu.failed) return;
+  const { gl, canvas, program, uniforms, vao, toRgb } = gpu;
+  const s = inst.settings;
+  const { width, height, ratio } = inst.view;
+  const outW = Math.max(1, Math.round((width + PAD * 2) * ratio));
+  const outH = Math.max(1, Math.round((height + PAD * 2) * ratio));
+  if (inst.canvas.width !== outW || inst.canvas.height !== outH) {
+    inst.canvas.width = outW;
+    inst.canvas.height = outH;
+  }
+  if (canvas.width !== outW || canvas.height !== outH) {
+    canvas.width = outW;
+    canvas.height = outH;
+  }
+  const scaleX = outW / (width + PAD * 2);
+  const scaleY = outH / (height + PAD * 2);
+  gl.viewport(0, 0, outW, outH);
+  gl.clearColor(0, 0, 0, 0);
+  gl.clear(gl.COLOR_BUFFER_BIT);
+  gl.useProgram(program);
+  gl.uniform2f(uniforms.uCenter, (PAD + width / 2) * scaleX, (PAD + height / 2) * scaleY);
+  gl.uniform2f(uniforms.uHalf, (width / 2) * scaleX, (height / 2) * scaleY);
+  gl.uniform1f(uniforms.uRadius, Math.min(s.radius, width / 2, height / 2) * scaleX);
+  gl.uniform1f(uniforms.uPx, ratio);
+  const r = Math.min(s.radius, width / 2, height / 2);
+  const [rimX, rimY] = rimPoint(inst.state.spot, width / 2, height / 2, r);
+  const pull = 1 - Math.min(0.35 * (height / 2), Math.hypot(rimX, rimY)) / Math.max(Math.hypot(rimX, rimY), 0.0001);
+  gl.uniform1f(uniforms.uSpot, inst.state.spot);
+  gl.uniform2f(uniforms.uEntry, rimX * pull * scaleX, rimY * pull * scaleY);
+  gl.uniform3fv(uniforms.uLineColor, toRgb(s.lineColor));
+  gl.uniform3fv(uniforms.uBaseColor, toRgb(s.baseColor));
+  gl.uniform1f(uniforms.uIntensity, s.intensity * (inst.state.level + inst.state.press * 0.8));
+  gl.uniform2f(uniforms.uWindow, s.shineSize / 360 + inst.state.press * 0.06, s.shineFade / 360 + 0.0001);
+  gl.uniform1f(uniforms.uThickness, s.thickness);
+  gl.uniform1f(uniforms.uGlow, s.glow);
+  gl.bindVertexArray(vao);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+  gl.bindVertexArray(null);
+  const ctx = inst.ctx;
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.clearRect(0, 0, outW, outH);
+  ctx.drawImage(canvas, 0, 0);
+};
 
-  const restSpot = (s) => {
-    const r = cornerRadius(s);
-    const inset = r * (1 - Math.SQRT1_2);
-    return loopPosition(inset - view.width / 2, view.height / 2 - inset, view.width / 2, view.height / 2, r);
+const cornerRadius = (inst, s) => Math.min(s.radius, inst.view.width / 2, inst.view.height / 2);
+
+const restSpot = (inst, s) => {
+  const r = cornerRadius(inst, s);
+  const inset = r * (1 - Math.SQRT1_2);
+  return loopPosition(
+    inset - inst.view.width / 2,
+    inst.view.height / 2 - inset,
+    inst.view.width / 2,
+    inst.view.height / 2,
+    r
+  );
+};
+
+const aim = (inst, s) => {
+  if (!s.followMouse || s.disabled || !pointer.known) return null;
+  const rect = inst.root.getBoundingClientRect();
+  const scale = rect.width / inst.view.width || 1;
+  const halfX = inst.view.width / 2;
+  const halfY = inst.view.height / 2;
+  const x = (pointer.x - rect.left - rect.width / 2) / scale;
+  const y = (rect.top + rect.height / 2 - pointer.y) / scale;
+  const distance = Math.hypot(Math.max(Math.abs(x) - halfX, 0), Math.max(Math.abs(y) - halfY, 0));
+  const t = clamp(1 - distance / s.proximity, 0, 1);
+  const near = t * t * (3 - 2 * t);
+  const nearest = loopPosition(x, y, halfX, halfY, cornerRadius(inst, s));
+  if (distance > 0) return { spot: nearest, near };
+  const depth = clamp(Math.min(halfX - Math.abs(x), halfY - Math.abs(y)) / (halfY * 0.8), 0, 1);
+  const sway = restSpot(inst, s) - (x / halfX) * 0.06 - (y / halfY) * 0.02;
+  const offset = sway - nearest - Math.round(sway - nearest);
+  return { spot: wrap(nearest + offset * depth * depth * (3 - 2 * depth)), near };
+};
+
+const tick = (inst, dt) => {
+  const s = inst.settings;
+  const target = aim(inst, s);
+  const spinning = s.autoAnimate && !reduce;
+  const steering = !!target && target.near > 0;
+  if (!inst.state.ready) {
+    inst.state.spot = restSpot(inst, s);
+    inst.state.level = s.autoAnimate ? 1 : s.idleIntensity;
+    inst.state.ready = true;
+  }
+  let diff = 0;
+  if (spinning && !steering) inst.state.spot = wrap(inst.state.spot + (s.speed / TAU) * dt);
+  else {
+    diff = (steering ? target.spot : restSpot(inst, s)) - inst.state.spot;
+    diff -= Math.round(diff);
+    inst.state.spot = wrap(inst.state.spot + diff * (1 - Math.exp(-dt * 8)));
+  }
+  const level = s.autoAnimate ? 1 : s.idleIntensity + (1 - s.idleIntensity) * (target ? target.near : 0);
+  inst.state.level += (level - inst.state.level) * (1 - Math.exp(-dt * 7));
+  inst.state.press *= Math.exp(-dt * 5);
+  return Math.abs(diff) > 0.0002 || Math.abs(level - inst.state.level) > 0.001 || inst.state.press > 0.002 || (spinning && !steering);
+};
+
+const frame = (now) => {
+  raf = 0;
+  const dt = last ? Math.min(0.05, (now - last) / 1000) : 1 / 60;
+  last = now;
+  let settling = false;
+  instances.forEach((inst) => {
+    if (!inst.alive || !inst.visible) return;
+    if (tick(inst, dt)) settling = true;
+    drawInstance(inst);
+  });
+  if (settling) raf = requestAnimationFrame(frame);
+  else last = 0;
+};
+
+const wake = () => {
+  if (!raf) raf = requestAnimationFrame(frame);
+};
+
+const onPointerMove = (event) => {
+  pointer.x = event.clientX;
+  pointer.y = event.clientY;
+  pointer.known = true;
+  wake();
+};
+
+const onPointerEnd = (event) => {
+  if (event.pointerType === "mouse") return;
+  pointer.known = false;
+  wake();
+};
+
+const onPointerLeave = () => {
+  pointer.known = false;
+  wake();
+};
+
+let listening = false;
+const listen = () => {
+  if (listening) return;
+  listening = true;
+  window.addEventListener("pointermove", onPointerMove, { passive: true });
+  window.addEventListener("pointerup", onPointerEnd, { passive: true });
+  window.addEventListener("pointercancel", onPointerEnd, { passive: true });
+  document.documentElement.addEventListener("pointerleave", onPointerLeave);
+};
+
+window.mountSpecularButton = (root, user = {}) => {
+  if (!root) return null;
+  if (root._specular) return root._specular;
+
+  const presetName = user.preset || root.getAttribute("data-specular") || "copper";
+  const settings = {
+    ...defaults,
+    ...(PRESETS[presetName] || {}),
+    ...fromDataset(root),
+    ...user
   };
+  settings.preset = PRESETS[presetName] ? presetName : "copper";
+  settings.radius = Math.max(0, settings.radius);
+  settings.intensity = Math.max(0, settings.intensity);
+  settings.idleIntensity = clamp(settings.idleIntensity, 0, 1);
+  settings.shineSize = Math.max(0, settings.shineSize);
+  settings.shineFade = Math.max(0, settings.shineFade);
+  settings.thickness = Math.max(0, settings.thickness);
+  settings.glow = Math.max(0, settings.glow);
+  settings.proximity = Math.max(1, settings.proximity);
+  settings.followMouse = settings.followMouse !== false;
+  settings.blur = Math.max(0, settings.blur);
 
-  const aim = (s) => {
-    if (!s.followMouse || s.disabled || !pointer.known) return null;
-    const rect = root.getBoundingClientRect();
-    const scale = rect.width / view.width || 1;
-    const halfX = view.width / 2;
-    const halfY = view.height / 2;
-    const x = (pointer.x - rect.left - rect.width / 2) / scale;
-    const y = (rect.top + rect.height / 2 - pointer.y) / scale;
-    const distance = Math.hypot(Math.max(Math.abs(x) - halfX, 0), Math.max(Math.abs(y) - halfY, 0));
-    const t = clamp(1 - distance / s.proximity, 0, 1);
-    const near = t * t * (3 - 2 * t);
-    const nearest = loopPosition(x, y, halfX, halfY, cornerRadius(s));
-    if (distance > 0) return { spot: nearest, near };
-    const depth = clamp(Math.min(halfX - Math.abs(x), halfY - Math.abs(y)) / (halfY * 0.8), 0, 1);
-    const sway = restSpot(s) - (x / halfX) * 0.06 - (y / halfY) * 0.02;
-    const offset = sway - nearest - Math.round(sway - nearest);
-    return { spot: wrap(nearest + offset * depth * depth * (3 - 2 * depth)), near };
-  };
+  root.classList.add("specular-button", `specular-button--${settings.size}`);
+  applyPresetClass(root, settings.preset);
+  paintVars(root, settings);
 
-  const draw = (s) => {
-    const { width, height } = view;
-    const scaleX = canvas.width / (width + PAD * 2);
-    const scaleY = canvas.height / (height + PAD * 2);
-    gl.viewport(0, 0, canvas.width, canvas.height);
-    gl.clearColor(0, 0, 0, 0);
-    gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.useProgram(program);
-    gl.uniform2f(uniforms.uCenter, (PAD + width / 2) * scaleX, (PAD + height / 2) * scaleY);
-    gl.uniform2f(uniforms.uHalf, (width / 2) * scaleX, (height / 2) * scaleY);
-    gl.uniform1f(uniforms.uRadius, Math.min(s.radius, width / 2, height / 2) * scaleX);
-    gl.uniform1f(uniforms.uPx, view.ratio);
-    const r = Math.min(s.radius, width / 2, height / 2);
-    const [rimX, rimY] = rimPoint(state.spot, width / 2, height / 2, r);
-    const pull = 1 - Math.min(0.35 * (height / 2), Math.hypot(rimX, rimY)) / Math.max(Math.hypot(rimX, rimY), 0.0001);
-    gl.uniform1f(uniforms.uSpot, state.spot);
-    gl.uniform2f(uniforms.uEntry, rimX * pull * scaleX, rimY * pull * scaleY);
-    gl.uniform3fv(uniforms.uLineColor, toRgb(s.lineColor));
-    gl.uniform3fv(uniforms.uBaseColor, toRgb(s.baseColor));
-    gl.uniform1f(uniforms.uIntensity, s.intensity * (state.level + state.press * 0.8));
-    gl.uniform2f(uniforms.uWindow, s.shineSize / 360 + state.press * 0.06, s.shineFade / 360 + 0.0001);
-    gl.uniform1f(uniforms.uThickness, s.thickness);
-    gl.uniform1f(uniforms.uGlow, s.glow);
-    gl.bindVertexArray(vao);
-    gl.drawArrays(gl.TRIANGLES, 0, 3);
-    gl.bindVertexArray(null);
-  };
-
-  const frame = (now) => {
-    raf = 0;
-    if (!visible || !alive) return;
-    const s = settingsRef.current;
-    const dt = last ? Math.min(0.05, (now - last) / 1000) : 1 / 60;
-    last = now;
-    const target = aim(s);
-    const spinning = s.autoAnimate && !reduce;
-    const steering = !!target && target.near > 0;
-    if (!state.ready) {
-      state.spot = restSpot(s);
-      state.level = s.autoAnimate ? 1 : s.idleIntensity;
-      state.ready = true;
-    }
-    let diff = 0;
-    if (spinning && !steering) state.spot = wrap(state.spot + (s.speed / TAU) * dt);
-    else {
-      diff = (steering ? target.spot : restSpot(s)) - state.spot;
-      diff -= Math.round(diff);
-      state.spot = wrap(state.spot + diff * (1 - Math.exp(-dt * 8)));
-    }
-    const level = s.autoAnimate ? 1 : s.idleIntensity + (1 - s.idleIntensity) * (target ? target.near : 0);
-    state.level += (level - state.level) * (1 - Math.exp(-dt * 7));
-    state.press *= Math.exp(-dt * 5);
-    draw(s);
-    const settling = Math.abs(diff) > 0.0002 || Math.abs(level - state.level) > 0.001 || state.press > 0.002;
-    if (settling || (spinning && !steering)) raf = requestAnimationFrame(frame);
-    else last = 0;
-  };
-
-  const wake = () => {
-    if (!raf && visible && alive) raf = requestAnimationFrame(frame);
+  const { canvas } = prepareMarkup(root);
+  const ctx = canvas.getContext("2d");
+  const inst = {
+    root,
+    canvas,
+    ctx,
+    settings,
+    view: { width: 1, height: 1, ratio: 1 },
+    state: { spot: 0, level: 0, press: 0, ready: false },
+    visible: true,
+    alive: true
   };
 
   const measure = (entry) => {
     const box = entry?.borderBoxSize?.[0];
-    view.width = Math.max(1, box ? box.inlineSize : root.offsetWidth);
-    view.height = Math.max(1, box ? box.blockSize : root.offsetHeight);
-    view.ratio = Math.min(window.devicePixelRatio || 1, 3);
-    canvas.width = Math.max(1, Math.round((view.width + PAD * 2) * view.ratio));
-    canvas.height = Math.max(1, Math.round((view.height + PAD * 2) * view.ratio));
-    if (state.ready) draw(settingsRef.current);
-    wake();
-  };
-
-  const onPointerMove = (event) => {
-    pointer.x = event.clientX;
-    pointer.y = event.clientY;
-    pointer.known = true;
+    inst.view.width = Math.max(1, box ? box.inlineSize : root.offsetWidth);
+    inst.view.height = Math.max(1, box ? box.blockSize : root.offsetHeight);
+    inst.view.ratio = Math.min(window.devicePixelRatio || 1, 3);
+    if (inst.state.ready) drawInstance(inst);
     wake();
   };
 
@@ -441,59 +534,47 @@ window.mountSpecularButton = (root, user = {}) => {
     pointer.x = event.clientX;
     pointer.y = event.clientY;
     pointer.known = true;
-    if (!settingsRef.current.disabled) state.press = 1;
-    wake();
-  };
-
-  const onPointerEnd = (event) => {
-    if (event.pointerType === "mouse") return;
-    pointer.known = false;
-    wake();
-  };
-
-  const onPointerLeave = () => {
-    pointer.known = false;
+    if (!inst.settings.disabled) inst.state.press = 1;
     wake();
   };
 
   const resizeObserver = new ResizeObserver((entries) => measure(entries[entries.length - 1]));
   resizeObserver.observe(root);
   const intersection = new IntersectionObserver((entries) => {
-    visible = entries.some((entry) => entry.isIntersecting);
-    if (visible) {
+    inst.visible = entries.some((entry) => entry.isIntersecting);
+    if (inst.visible) {
       last = 0;
       wake();
     }
   });
   intersection.observe(root);
-  window.addEventListener("pointermove", onPointerMove, { passive: true });
-  window.addEventListener("pointerup", onPointerEnd, { passive: true });
-  window.addEventListener("pointercancel", onPointerEnd, { passive: true });
-  document.documentElement.addEventListener("pointerleave", onPointerLeave);
   root.addEventListener("pointerdown", onPointerDown);
+  listen();
+  getShared();
+  instances.add(inst);
   measure();
 
   const api = {
     set(partial = {}) {
-      Object.assign(settings, partial);
-      settingsRef.current = settings;
-      paintVars(root, settings);
+      Object.assign(inst.settings, partial);
+      paintVars(root, inst.settings);
+      wake();
+    },
+    setPreset(name) {
+      const extra = PRESETS[name];
+      if (!extra) return;
+      Object.assign(inst.settings, extra);
+      inst.settings.preset = name;
+      applyPresetClass(root, name);
+      paintVars(root, inst.settings);
       wake();
     },
     dispose() {
-      alive = false;
-      cancelAnimationFrame(raf);
+      inst.alive = false;
+      instances.delete(inst);
       resizeObserver.disconnect();
       intersection.disconnect();
-      window.removeEventListener("pointermove", onPointerMove);
-      window.removeEventListener("pointerup", onPointerEnd);
-      window.removeEventListener("pointercancel", onPointerEnd);
-      document.documentElement.removeEventListener("pointerleave", onPointerLeave);
       root.removeEventListener("pointerdown", onPointerDown);
-      gl.deleteBuffer(buffer);
-      gl.deleteVertexArray(vao);
-      gl.deleteProgram(program);
-      gl.getExtension("WEBGL_lose_context")?.loseContext();
       root._specular = null;
     }
   };
@@ -501,6 +582,8 @@ window.mountSpecularButton = (root, user = {}) => {
   root._specular = api;
   return api;
 };
+
+window.specularPresets = PRESETS;
 
 const boot = () => {
   document.querySelectorAll("[data-specular]").forEach((el) => {

@@ -47,7 +47,7 @@
         <a href="#place">Место</a>
         <a href="#price">Стоимость</a>
       </nav>
-      <a class="btn" href="#contact">Записаться</a>
+      <a class="specular-button specular-button--md specular-button--copper" href="#contact" data-specular="copper">Записаться</a>
       <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="mobileNav" aria-label="Открыть меню">
         <span></span>
       </button>
@@ -63,7 +63,7 @@
     <a href="#practices">Диагностика</a>
     <a href="#place">Место</a>
     <a href="#price">Стоимость</a>
-    <a class="btn btn-ink" href="#contact">Записаться</a>
+    <a class="specular-button specular-button--md specular-button--ink" href="#contact" data-specular="ink">Записаться</a>
   </nav>
 
   <main>
@@ -168,8 +168,8 @@
 
         <div class="hosts-panel reveal">
           <div class="host-switch" role="tablist" aria-label="Ведущие программы">
-            <button class="btn btn-pearl is-on" type="button" id="hostBtnAlex" data-host="alex" role="tab" aria-selected="true" aria-controls="hostAlex">Александр Хурюмов</button>
-            <button class="btn btn-pearl" type="button" id="hostBtnGalina" data-host="galina" role="tab" aria-selected="false" aria-controls="hostGalina">Галина Горелова</button>
+            <button class="specular-button specular-button--md specular-button--copper is-on" type="button" id="hostBtnAlex" data-specular="copper" data-host="alex" role="tab" aria-selected="true" aria-controls="hostAlex">Александр Хурюмов</button>
+            <button class="specular-button specular-button--md specular-button--ghost" type="button" id="hostBtnGalina" data-specular="ghost" data-host="galina" role="tab" aria-selected="false" aria-controls="hostGalina">Галина Горелова</button>
           </div>
 
           <article class="host-bio is-on" id="hostAlex" data-host="alex" role="tabpanel" aria-labelledby="hostBtnAlex">
@@ -236,8 +236,8 @@
             <ol class="test-tips" id="testTips"></ol>
             <p class="disclaimer">Это самопроверка фона напряжения, а не медицинская диагностика. При сильном тревожном состоянии или жалобах на здоровье нужна консультация специалиста.</p>
             <div class="test-actions">
-              <button class="btn btn-ghost" type="button" id="testRestart">Пройти ещё раз</button>
-              <a class="btn" href="#practice">Практика опоры</a>
+              <button class="specular-button specular-button--md specular-button--mist" type="button" id="testRestart" data-specular="mist">Пройти ещё раз</button>
+              <a class="specular-button specular-button--md specular-button--copper" href="#practice" data-specular="copper">Практика опоры</a>
             </div>
           </div>
         </div>
@@ -416,7 +416,7 @@
               </button>
             </form>
             <div class="release-stage" id="releaseStage" hidden>
-              <p class="lead tight">Зажмите лист, чтобы смять. Отпустите — бумага расправится. Когда будете готовы, идите дальше.</p>
+              <p class="lead tight" id="releaseHint">Зажмите лист, чтобы скатать в комок. Отпустите — комок рассыплется в пыль.</p>
               <div class="release-paper" id="releasePaper"></div>
               <div class="node-row">
                 <button class="node" type="button" id="releaseRewrite">
@@ -606,7 +606,7 @@
           <span class="bonus-caption">включены в стоимость участия</span>
           <p>Это дополнительная возможность уделить время эстетическому уходу и познакомиться с аппаратной методикой.</p>
           <p>Перед проведением процедур необходимо уточнить используемое оборудование, протокол, противопоказания и возможность участия с учётом индивидуальных особенностей.</p>
-          <a class="btn" href="#contact">Узнать о процедурах</a>
+          <a class="specular-button specular-button--md specular-button--copper" href="#contact" data-specular="copper">Узнать о процедурах</a>
         </div>
       </div>
     </section>
@@ -624,7 +624,7 @@
           <span>Время для отдыха и прогулок</span>
           <span>Практики и занятия по программе</span>
         </div>
-        <a class="btn" href="#contact">Получить подробности</a>
+        <a class="specular-button specular-button--md specular-button--copper" href="#contact" data-specular="copper">Получить подробности</a>
       </div>
     </section>
 
@@ -654,7 +654,7 @@
               <li>Знакомство с методом мокса-прогревания</li>
               <li>Три процедуры аппаратного омоложения</li>
             </ul>
-            <a class="btn btn-ink" href="#contact">Оставить заявку</a>
+            <a class="specular-button specular-button--md specular-button--ink" href="#contact" data-specular="ink">Оставить заявку</a>
             <p class="price-note">До записи уточните точные даты заезда и выезда, условия размещения, состав питания, порядок оплаты и противопоказания к отдельным процедурам.</p>
           </div>
         </article>
@@ -688,7 +688,7 @@
             <label for="message">Что хотелось бы уточнить?</label>
             <textarea id="message" name="message" placeholder="Например, расскажите подробнее о программе"></textarea>
           </div>
-          <button class="btn btn-ink" type="submit">Подготовить заявку</button>
+          <button class="specular-button specular-button--md specular-button--ink" type="submit" data-specular="ink">Подготовить заявку</button>
           <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
           <p class="privacy">Форма подготовит письмо на почту организатора. Перед отправкой вы сможете проверить сообщение.</p>
         </form>

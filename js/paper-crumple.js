@@ -268,7 +268,11 @@ window.mountPaperCrumple = (root, user) => {
     rotation: 0,
     seed: 7,
     detail: 64,
-    disabled: false
+    disabled: false,
+    dissolveDuration: 2.35,
+    dissolveThreshold: 0.4,
+    onDissolveStart: null,
+    onDissolved: null
   }, user || {});
 
   root.classList.add("paper-crumple");
@@ -286,7 +290,9 @@ window.mountPaperCrumple = (root, user) => {
   const live = root.querySelector(".paper-crumple-sr");
   fallback.src = opts.src || "";
   fallback.alt = opts.alt;
-  hit.setAttribute("aria-label", opts.alt + ". Зажмите, чтобы смять. Клавиши: пробел или Enter, стрелки, Escape — сброс.");
+  hit.setAttribute("aria-label", opts.releaseBehavior === "dissolve"
+    ? opts.alt + ". Зажмите, чтобы скатать в комок. Отпустите — комок рассыплется в пыль."
+    : opts.alt + ". Зажмите, чтобы смять. Клавиши: пробел или Enter, стрелки, Escape — сброс.");
   hit.setAttribute("aria-pressed", "false");
   hit.disabled = true;
 
@@ -306,7 +312,7 @@ window.mountPaperCrumple = (root, user) => {
 
   let renderer;
   try {
-    renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: "low-power" });
+    renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: "low-power", preserveDrawingBuffer: true });
   } catch (error) {
     setStatus("error");
     return { dispose() {}, reset() {} };
@@ -487,6 +493,22 @@ window.mountPaperCrumple = (root, user) => {
   let peak = 0;
   let disposed = false;
   let ready = false;
+  let dissolving = false;
+  let dissolved = false;
+  const dust = {
+    points: null,
+    geometry: null,
+    material: null,
+    map: null,
+    positions: null,
+    velocities: null,
+    sizes: null,
+    born: null,
+    count: 0,
+    time: 0,
+    duration: 2.35,
+    done: false
+  };
   let inView = true;
   let contextLost = false;
   let frame = 0;
@@ -591,14 +613,15 @@ window.mountPaperCrumple = (root, user) => {
   };
 
   const wake = () => {
-    if (!frame && !disposed && ready && inView && !document.hidden && !contextLost) {
+    if (!frame && !disposed && ready && !document.hidden && !contextLost && (inView || dissolving)) {
       frame = requestAnimationFrame(renderFrame);
     }
   };
 
   const renderFrame = (time) => {
     frame = 0;
-    if (disposed || !ready || contextLost || !inView || document.hidden) return;
+    if (disposed || !ready || contextLost || document.hidden) return;
+    if (!inView && !dissolving) return;
     const dt = lastTime ? Math.min(0.04, (time - lastTime) / 1000) : 1 / 60;
     lastTime = time;
     let moving = false;
@@ -608,6 +631,7 @@ window.mountPaperCrumple = (root, user) => {
     });
     peak = Math.max(peak, amount.value);
     deform();
+    if (dissolving) stepDust(dt);
     sheet.rotation.set(tiltX.value, tiltY.value, baseRotation);
     if (held && !keyboard && opts.draggable) {
       const attribute = geometry.attributes.position;
@@ -638,8 +662,8 @@ window.mountPaperCrumple = (root, user) => {
       floor.position.z = backZ - scale * shortSide * 0.08;
     }
     renderer.render(scene, camera);
-    placeHitTarget();
-    if (moving) wake();
+    if (!dissolving) placeHitTarget();
+    if (moving || dissolving) wake();
   };
 
   const resize = () => {
@@ -669,14 +693,236 @@ window.mountPaperCrumple = (root, user) => {
     wake();
   };
 
-  const finish = (instant) => {
-    if (!held) return;
+  const samplePaperColor = (u, v) => {
+    const texture = frontMaterial.map;
+    const fallback = [0.957, 0.941, 0.91];
+    const image = texture && texture.image;
+    if (!image || !image.width) return fallback;
+    if (!dust.pixels) {
+      const probe = document.createElement("canvas");
+      probe.width = image.width;
+      probe.height = image.height;
+      const ctx = probe.getContext("2d", { willReadFrequently: true });
+      if (!ctx) return fallback;
+      ctx.drawImage(image, 0, 0);
+      dust.pixels = ctx.getImageData(0, 0, probe.width, probe.height).data;
+      dust.pixelWidth = probe.width;
+      dust.pixelHeight = probe.height;
+    }
+    const ru = texture.offset.x + u * texture.repeat.x;
+    const rv = texture.offset.y + v * texture.repeat.y;
+    const x = Math.max(0, Math.min(dust.pixelWidth - 1, Math.floor(((ru % 1) + 1) % 1 * dust.pixelWidth)));
+    const y = Math.max(0, Math.min(dust.pixelHeight - 1, Math.floor((1 - (((rv % 1) + 1) % 1)) * dust.pixelHeight)));
+    const i = (y * dust.pixelWidth + x) * 4;
+    return [dust.pixels[i] / 255, dust.pixels[i + 1] / 255, dust.pixels[i + 2] / 255];
+  };
+
+  const makeDotMap = () => {
+    const dot = document.createElement("canvas");
+    dot.width = dot.height = 32;
+    const ctx = dot.getContext("2d");
+    const glow = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
+    glow.addColorStop(0, "rgba(255,255,255,1)");
+    glow.addColorStop(0.28, "rgba(255,255,255,.92)");
+    glow.addColorStop(0.62, "rgba(255,255,255,.28)");
+    glow.addColorStop(1, "rgba(255,255,255,0)");
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, 0, 32, 32);
+    const map = new THREE.CanvasTexture(dot);
+    map.colorSpace = THREE.SRGBColorSpace;
+    return map;
+  };
+
+  const disposeDust = () => {
+    if (dust.points) scene.remove(dust.points);
+    if (dust.geometry) dust.geometry.dispose();
+    if (dust.material) dust.material.dispose();
+    if (dust.map) dust.map.dispose();
+    dust.points = dust.geometry = dust.material = dust.map = null;
+    dust.positions = dust.velocities = dust.sizes = dust.born = dust.pixels = null;
+    dust.count = 0;
+    dust.time = 0;
+    dust.done = false;
+  };
+
+  const startDissolve = () => {
+    if (dissolving || dissolved || disposed) return;
+    dissolving = true;
+    held = false;
+    hit.disabled = true;
+    hit.style.visibility = "hidden";
+    hit.setAttribute("aria-pressed", "false");
+    hit.dataset.held = "false";
+    amount.target = amount.value;
+    amount.velocity = 0;
+    tiltX.target = tiltY.target = 0;
+    if (typeof opts.onDissolveStart === "function") opts.onDissolveStart();
+    live.textContent = "Лист рассыпается в пыль.";
+    root.dataset.status = "dissolving";
+    root.dataset.dust = "0";
+
+    if (reduceMotion) {
+      sheet.visible = false;
+      floor.visible = false;
+      dissolving = false;
+      dissolved = true;
+      root.dataset.status = "dissolved";
+      live.textContent = "Отпущено.";
+      if (typeof opts.onDissolved === "function") opts.onDissolved();
+      wake();
+      return;
+    }
+
+    deform();
+    sheet.updateMatrixWorld(true);
+    const compact = window.matchMedia("(max-width: 980px)").matches;
+    const countDust = compact ? 1600 : 3400;
+    const posArr = new Float32Array(countDust * 3);
+    const colArr = new Float32Array(countDust * 3);
+    const sizeArr = new Float32Array(countDust);
+    const velArr = new Float32Array(countDust * 3);
+    const bornArr = new Float32Array(countDust);
+    const triCount = indices.length / 3;
+    const world = sheet.matrixWorld.elements;
+    const toWorld = (x, y, z, out, i) => {
+      out[i] = world[0] * x + world[4] * y + world[8] * z + world[12];
+      out[i + 1] = world[1] * x + world[5] * y + world[9] * z + world[13];
+      out[i + 2] = world[2] * x + world[6] * y + world[10] * z + world[14];
+    };
+    let cx = 0;
+    let cy = 0;
+    let cz = 0;
+    for (let p = 0; p < countDust; p += 1) {
+      const t = Math.floor(rng() * triCount) * 3;
+      let u = rng();
+      let v = rng();
+      if (u + v > 1) {
+        u = 1 - u;
+        v = 1 - v;
+      }
+      const w = 1 - u - v;
+      const ia = indices[t];
+      const ib = indices[t + 1];
+      const ic = indices[t + 2];
+      const ax = positions[ia * 3];
+      const ay = positions[ia * 3 + 1];
+      const az = positions[ia * 3 + 2];
+      const bx = positions[ib * 3];
+      const by = positions[ib * 3 + 1];
+      const bz = positions[ib * 3 + 2];
+      const cxp = positions[ic * 3];
+      const cyp = positions[ic * 3 + 1];
+      const czp = positions[ic * 3 + 2];
+      toWorld(ax * w + bx * u + cxp * v, ay * w + by * u + cyp * v, az * w + bz * u + czp * v, posArr, p * 3);
+      cx += posArr[p * 3];
+      cy += posArr[p * 3 + 1];
+      cz += posArr[p * 3 + 2];
+      const uu = uvs[ia * 2] * w + uvs[ib * 2] * u + uvs[ic * 2] * v;
+      const vv = uvs[ia * 2 + 1] * w + uvs[ib * 2 + 1] * u + uvs[ic * 2 + 1] * v;
+      const rgb = samplePaperColor(uu, vv);
+      colArr[p * 3] = rgb[0] * (0.86 + rng() * 0.2);
+      colArr[p * 3 + 1] = rgb[1] * (0.86 + rng() * 0.18);
+      colArr[p * 3 + 2] = rgb[2] * (0.86 + rng() * 0.16);
+      sizeArr[p] = (rng() < 0.18 ? 4.6 : 2.1) + rng() * 2.2;
+      bornArr[p] = rng() * 0.1;
+    }
+    cx /= countDust;
+    cy /= countDust;
+    cz /= countDust;
+    for (let p = 0; p < countDust; p += 1) {
+      const i = p * 3;
+      let dx = posArr[i] - cx;
+      let dy = posArr[i + 1] - cy;
+      let dz = posArr[i + 2] - cz;
+      const len = Math.hypot(dx, dy, dz) || 1;
+      dx /= len;
+      dy /= len;
+      dz /= len;
+      const burst = rng() < 0.42 ? 28 + rng() * 70 : 80 + rng() * 240;
+      velArr[i] = dx * burst + (rng() - 0.5) * 90;
+      velArr[i + 1] = dy * burst + (rng() - 0.5) * 80 + 40 + rng() * 120;
+      velArr[i + 2] = dz * burst + (rng() - 0.5) * 70;
+    }
+
+    dust.map = makeDotMap();
+    dust.geometry = new THREE.BufferGeometry();
+    dust.geometry.setAttribute("position", new THREE.BufferAttribute(posArr, 3).setUsage(THREE.DynamicDrawUsage));
+    dust.geometry.setAttribute("color", new THREE.BufferAttribute(colArr, 3));
+    dust.material = new THREE.PointsMaterial({
+      map: dust.map,
+      vertexColors: true,
+      transparent: true,
+      depthWrite: false,
+      size: 10,
+      sizeAttenuation: true,
+      opacity: 1,
+      alphaTest: 0.04,
+      toneMapped: false
+    });
+    dust.points = new THREE.Points(dust.geometry, dust.material);
+    dust.points.frustumCulled = false;
+    dust.positions = posArr;
+    dust.velocities = velArr;
+    dust.sizes = sizeArr;
+    dust.born = bornArr;
+    dust.count = countDust;
+    dust.time = 0;
+    dust.duration = finite(opts.dissolveDuration, 2.35);
+    dust.done = false;
+    scene.add(dust.points);
+    sheet.visible = false;
+    floor.visible = false;
+    root.dataset.dust = String(countDust);
+    wake();
+  };
+
+  const stepDust = (dt) => {
+    if (!dust.points || dust.done) return;
+    dust.time += dt;
+    const fade = 1 - THREE.MathUtils.smoothstep(dust.time / Math.max(dust.duration, 0.001), 0.18, 1);
+    dust.material.opacity = fade;
+    dust.material.size = 10 * (0.45 + 0.55 * fade);
+    const pos = dust.positions;
+    const vel = dust.velocities;
+    const drag = Math.exp(-dt * 1.15);
+    for (let i = 0; i < dust.count; i += 1) {
+      const p = i * 3;
+      const age = dust.time - dust.born[i];
+      if (age < 0) continue;
+      vel[p + 1] -= 260 * dt;
+      vel[p] *= drag;
+      vel[p + 1] *= drag;
+      vel[p + 2] *= drag;
+      pos[p] += vel[p] * dt;
+      pos[p + 1] += vel[p + 1] * dt;
+      pos[p + 2] += vel[p + 2] * dt;
+    }
+    dust.geometry.attributes.position.needsUpdate = true;
+    if (dust.time >= dust.duration + 0.15 && !dust.done) {
+      dust.done = true;
+      dissolving = false;
+      dissolved = true;
+      if (dust.points) dust.points.visible = false;
+      root.dataset.status = "dissolved";
+      live.textContent = "Отпущено.";
+      if (typeof opts.onDissolved === "function") opts.onDissolved();
+    }
+  };
+
+  const finish = (instant, source) => {
+    if (!held || dissolving || dissolved) return;
     held = false;
     hit.setAttribute("aria-pressed", "false");
     hit.dataset.held = "false";
     const captured = pointerId;
     pointerId = null;
     if (captured !== null && hit.hasPointerCapture(captured)) hit.releasePointerCapture(captured);
+    const letGo = source === "release" || source === "keyboard";
+    if (opts.releaseBehavior === "dissolve" && letGo && peak >= clamp(finite(opts.dissolveThreshold, 0.4), 0, 1)) {
+      keyboard = false;
+      startDissolve();
+      return;
+    }
     if (opts.releaseBehavior === "stay") {
       amount.target = amount.value;
       amount.velocity = 0;
@@ -703,6 +949,7 @@ window.mountPaperCrumple = (root, user) => {
   };
 
   const startHold = () => {
+    if (dissolving || dissolved || opts.disabled) return;
     held = true;
     peak = amount.value;
     amount.target = clamp(finite(opts.crumpleAmount, 0.85), 0, 1);
@@ -712,7 +959,7 @@ window.mountPaperCrumple = (root, user) => {
   };
 
   const pointerDown = (event) => {
-    if (!ready || opts.disabled || held || event.button !== 0 || !event.isPrimary) return;
+    if (!ready || opts.disabled || held || dissolving || dissolved || event.button !== 0 || !event.isPrimary) return;
     const rect = root.getBoundingClientRect();
     pointerX = lastX = event.clientX - rect.left;
     pointerY = lastY = event.clientY - rect.top;
@@ -759,14 +1006,14 @@ window.mountPaperCrumple = (root, user) => {
   };
 
   const pointerUp = (event) => {
-    if (event.pointerId === pointerId) finish();
+    if (event.pointerId === pointerId) finish(false, "release");
   };
 
   hit.addEventListener("pointerdown", pointerDown);
   hit.addEventListener("pointermove", pointerMove);
   hit.addEventListener("pointerup", pointerUp);
   hit.addEventListener("pointercancel", (event) => {
-    if (event.pointerId === pointerId) finish(true);
+    if (event.pointerId === pointerId) finish(true, "cancel");
   });
   hit.addEventListener("lostpointercapture", pointerUp);
   hit.addEventListener("keydown", (event) => {
@@ -787,12 +1034,12 @@ window.mountPaperCrumple = (root, user) => {
   hit.addEventListener("keyup", (event) => {
     if (keyboard && (event.key === " " || event.key === "Enter")) {
       event.preventDefault();
-      finish(true);
+      finish(true, "keyboard");
     }
   });
   hit.addEventListener("blur", () => {
     hit.dataset.pointer = "false";
-    finish(true);
+    if (!dissolving) finish(true, "blur");
   });
 
   const observer = new ResizeObserver(resize);
@@ -800,7 +1047,7 @@ window.mountPaperCrumple = (root, user) => {
   const intersectionObserver = new IntersectionObserver((entries) => {
     inView = entries[0].isIntersecting;
     lastTime = 0;
-    if (!inView) finish(true);
+    if (!inView && !dissolving) finish(true, "leave");
     else wake();
   });
   intersectionObserver.observe(root);
@@ -855,6 +1102,7 @@ window.mountPaperCrumple = (root, user) => {
       cancelAnimationFrame(frame);
       observer.disconnect();
       intersectionObserver.disconnect();
+      disposeDust();
       geometry.dispose();
       floorGeometry.dispose();
       frontMaterial.dispose();

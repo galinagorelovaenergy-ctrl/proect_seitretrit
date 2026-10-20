@@ -246,6 +246,7 @@ h2 em {
 .brand-copy,
 .nav,
 .header .btn,
+.header .specular-button,
 .menu-toggle {
   mix-blend-mode: difference;
 }
@@ -259,6 +260,7 @@ h2 em {
 .header.is-solid .brand-copy,
 .header.is-solid .nav,
 .header.is-solid .btn,
+.header.is-solid .specular-button,
 .header.is-solid .menu-toggle {
   mix-blend-mode: normal;
 }
@@ -1893,9 +1895,9 @@ h2 em {
 @media (max-width: 980px) {
   body { cursor: auto; }
   .cursor { display: none; }
-  .nav, .header .btn { display: none; }
+  .nav, .header .btn, .header .specular-button { display: none; }
   .menu-toggle { display: grid; place-items: center; cursor: pointer; }
-  .btn, .faq-q { cursor: pointer; }
+  .btn, .specular-button, .faq-q { cursor: pointer; }
 
   .mobile-nav {
     display: none;
@@ -1923,7 +1925,8 @@ h2 em {
     grid-template-columns: 1fr;
   }
 
-  .host-switch .btn-pearl {
+  .host-switch .btn-pearl,
+  .host-switch .specular-button {
     flex: 1 1 220px;
     cursor: pointer;
   }
@@ -1931,6 +1934,7 @@ h2 em {
   .test-opts button,
   .test-actions .btn,
   .test-actions .btn-ghost,
+  .test-actions .specular-button,
   .orb,
   .node,
   .signal {
@@ -2002,7 +2006,8 @@ h2 em {
   .node i { width: 70px; height: 70px; }
   .orb i { width: 76px; height: 76px; }
   .orb-mini i { width: 46px; height: 46px; }
-  .host-switch .btn-pearl { width: 100%; }
+  .host-switch .btn-pearl,
+  .host-switch .specular-button { width: 100%; }
   .hero-actions .btn,
   .hero-actions .specular-button { width: 100%; }
   .brand { gap: 10px; max-width: calc(100% - 54px); }

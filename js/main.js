@@ -175,7 +175,7 @@ if (cursor && finePointer && !reduceMotion) {
   });
 }
 
-const hostButtons = [...document.querySelectorAll("[data-host].btn-pearl")];
+const hostButtons = [...document.querySelectorAll("[data-host][role='tab']")];
 const hostBios = [...document.querySelectorAll(".host-bio")];
 
 const showHost = (id) => {
@@ -183,6 +183,7 @@ const showHost = (id) => {
     const on = button.dataset.host === id;
     button.classList.toggle("is-on", on);
     button.setAttribute("aria-selected", String(on));
+    button._specular?.setPreset(on ? "copper" : "ghost");
   });
   hostBios.forEach((bio) => {
     const on = bio.dataset.host === id;
@@ -496,6 +497,8 @@ const showReleaseForm = () => {
   disposePaper();
   releaseForm.hidden = false;
   releaseStage.hidden = true;
+  const hint = document.getElementById("releaseHint");
+  if (hint) hint.textContent = "Зажмите лист, чтобы скатать в комок. Отпустите — комок рассыплется в пыль.";
 };
 
 futureForm.addEventListener("submit", (event) => {
@@ -519,15 +522,16 @@ releaseForm.addEventListener("submit", async (event) => {
   disposePaper();
   const src = await drawReleaseSheet(note);
   if (typeof window.mountPaperCrumple === "function") {
+    const hint = document.getElementById("releaseHint");
     paperHandle = window.mountPaperCrumple(releasePaper, {
       src,
       alt: "Лист с тем, что пора отпустить",
       width: 400,
       height: 400,
       sceneHeight: window.matchMedia("(max-width: 640px)").matches ? 300 : 360,
-      releaseBehavior: "restore",
-      crumpleAmount: 0.85,
-      crumpleDuration: 0.55,
+      releaseBehavior: "dissolve",
+      crumpleAmount: 0.92,
+      crumpleDuration: 0.62,
       releaseDuration: 0.4,
       foldCount: 6,
       foldSharpness: 0.6,
@@ -547,7 +551,15 @@ releaseForm.addEventListener("submit", async (event) => {
       dragRadius: 180,
       rotation: 0,
       seed: 7,
-      detail: window.matchMedia("(max-width: 980px)").matches ? 48 : 64
+      detail: window.matchMedia("(max-width: 980px)").matches ? 48 : 64,
+      dissolveDuration: 2.4,
+      dissolveThreshold: 0.38,
+      onDissolveStart() {
+        if (hint) hint.textContent = "Ком рассыпается. То, что написано, уходит в пыль.";
+      },
+      onDissolved() {
+        if (hint) hint.textContent = "Отпущено. Можно собрать карточку или написать иначе.";
+      }
     });
   }
 });
