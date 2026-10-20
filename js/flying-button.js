@@ -2102,12 +2102,8 @@ const boot = () => {
     root.dataset.mounted = "1";
     mountFlyingButton(root, {
       onClick() {
-        const text = "Здравствуйте! Хочу узнать подробности о ретрите «Новая точка энергии», 17–22 ноября, Адыгея.";
-        if (typeof window.openRetreatWhatsApp === "function") {
-          window.openRetreatWhatsApp(text);
-          return;
-        }
-        window.open("https://wa.me/79287720636?text=" + encodeURIComponent(text), "_blank", "noopener,noreferrer");
+        const contact = document.getElementById("contact");
+        if (contact) contact.scrollIntoView({ behavior: "smooth", block: "start" });
       }
     });
   };
