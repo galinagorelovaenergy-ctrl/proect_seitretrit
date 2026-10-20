@@ -684,34 +684,77 @@ document.getElementById("futureToContact").addEventListener("click", () => {
   }
 });
 
-contactForm.addEventListener("submit", (event) => {
+const setFormStatus = (kind, text) => {
+  formStatus.style.display = "block";
+  formStatus.classList.remove("is-wait", "is-err");
+  if (kind) formStatus.classList.add(kind);
+  formStatus.textContent = text;
+};
+
+let sendingApplication = false;
+
+contactForm.addEventListener("submit", async (event) => {
   event.preventDefault();
+  if (sendingApplication) return;
   if (!contactForm.reportValidity()) return;
+
+  const honey = contactForm.querySelector("[name='_gotcha']");
+  if (honey && honey.value.trim()) {
+    setFormStatus("", "Заявка отправлена. Мы перезвоним в указанное время.");
+    return;
+  }
 
   const name = document.getElementById("name").value.trim();
   const phone = document.getElementById("userPhone").value.trim();
   const callbackTime = document.getElementById("callbackTime").value.trim();
   const message = document.getElementById("message").value.trim();
   const subject = "Заявка на интенсив в Адыгее";
-  const body = [
-    "Здравствуйте! Хочу узнать подробности о ретрите «Новая точка энергии», 17–22 ноября, Адыгея.",
-    "",
-    "Имя: " + name,
-    "Телефон: " + phone,
-    "Удобное время для звонка: " + callbackTime,
-    "Вопрос: " + (message || "Нет дополнительных вопросов"),
-    "",
-    "Интенсив: 17–22 ноября",
-    "Стоимость: 50 000 рублей",
-    testSummary ? "Тест на напряжение: " + testSummary : "",
-    practiceSummary ? "Практика опоры: " + practiceSummary : "",
-    futureSummary ? "Запрос из будущего: " + futureSummary : ""
-  ].filter(Boolean).join("\n");
+  const payload = {
+    _subject: subject,
+    _template: "table",
+    _captcha: "false",
+    name,
+    phone,
+    callbackTime,
+    message: message || "Нет дополнительных вопросов",
+    program: "Ретрит Нового Состояния, 17–22 ноября, Адыгея, 50 000 ₽",
+    test: testSummary || "—",
+    practice: practiceSummary || "—",
+    future: futureSummary || "—"
+  };
 
-  formStatus.style.display = "block";
-  formStatus.textContent = "Открываем почтовую программу. Проверьте письмо и нажмите «Отправить».";
-  window.location.href =
-    "mailto:" + ORGANIZER_EMAIL +
-    "?subject=" + encodeURIComponent(subject) +
-    "&body=" + encodeURIComponent(body);
+  sendingApplication = true;
+  setFormStatus("is-wait", "Отправляем заявку…");
+
+  const ctrl = new AbortController();
+  const timer = window.setTimeout(() => ctrl.abort(), 15000);
+  try {
+    const data = new FormData();
+    Object.keys(payload).forEach((key) => data.append(key, payload[key]));
+    const response = await fetch("https://formsubmit.co/ajax/" + ORGANIZER_EMAIL, {
+      method: "POST",
+      body: data,
+      signal: ctrl.signal
+    });
+    const result = await response.json().catch(() => ({}));
+    const note = String(result.message || result.error || "");
+    if (!response.ok) throw new Error(note || "send-failed");
+    if (/activ/i.test(note) || /confirm/i.test(note)) {
+      setFormStatus(
+        "",
+        "На zoodiana@yandex.ru пришло письмо для активации отправки. Откройте его один раз — после этого заявки будут приходить сами."
+      );
+    } else {
+      setFormStatus("", "Заявка отправлена. Мы перезвоним в указанное время.");
+      contactForm.reset();
+    }
+  } catch (error) {
+    setFormStatus(
+      "is-err",
+      "Не удалось отправить автоматически. Напишите, пожалуйста, на zoodiana@yandex.ru — имя, телефон и удобное время для звонка."
+    );
+  } finally {
+    window.clearTimeout(timer);
+    sendingApplication = false;
+  }
 });

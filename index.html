@@ -725,8 +725,25 @@
               <a href="#privacy">Подробнее</a>
             </span>
           </div>
-          <button class="specular-button specular-button--md specular-button--ink" type="submit" data-specular="ink">Подготовить заявку</button>
-          <p class="consent">Нажимая кнопку, вы соглашаетесь с обработкой персональных данных. Откроется письмо на zoodiana@yandex.ru — проверьте текст и нажмите «Отправить».</p>
+          <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <button class="visually-hidden" type="submit">Отправить заявку</button>
+          <div class="letter-fly">
+            <div class="flying-button flying-button--teal" id="submitFly" data-theme="dark" data-trigger="hover">
+              <svg class="flying-button__ramp" aria-hidden="true">
+                <path class="flying-button__ramp-body"></path>
+                <path class="flying-button__ramp-edge"></path>
+              </svg>
+              <canvas class="flying-button__smoke" aria-hidden="true"></canvas>
+              <button class="flying-button__craft" type="button">
+                <span class="flying-button__face" aria-hidden="true"></span>
+                <span class="flying-button__label">Отправить заявку</span>
+              </button>
+              <svg class="flying-button__cursor" viewBox="0 0 24 34" aria-hidden="true">
+                <path d="M2.2 2.1v24.6l6.1-5.9 4.1 9.6 4.4-1.9-4.1-9.4h8.6z" fill="#042f2e" stroke="#ecfeff" stroke-width="1.9" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+          <p class="consent">Нажимая кнопку, вы соглашаетесь с обработкой персональных данных. Заявка уйдёт на zoodiana@yandex.ru автоматически.</p>
           <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
         </form>
       </div>
@@ -765,7 +782,7 @@
           </div>
           <div class="faq-item">
             <button class="faq-q" type="button" aria-expanded="false">Как записаться? <b>+</b></button>
-            <div class="faq-a"><p>Заполните форму: имя, телефон и удобное время для звонка. Нажмите «Подготовить заявку» — откроется письмо на zoodiana@yandex.ru. Проверьте текст и нажмите «Отправить». Можно сразу написать на эту почту.</p></div>
+            <div class="faq-a"><p>Заполните форму: имя, телефон и удобное время для звонка. Нажмите «Отправить заявку» — письмо само уйдёт на zoodiana@yandex.ru. Можно сразу написать на эту почту.</p></div>
           </div>
         </div>
       </div>
@@ -782,7 +799,7 @@
           <p class="policy-req">ИНН 615302064940<br>ОГРНИП 316619600086336<br>Адрес: г. Сальск, Ростовская область, улица Буденного, 54</p>
           <p>В заявке мы обрабатываем только то, что вы сами указываете: имя, телефон, удобное время для обратного звонка и текст обращения. Если на странице вы прошли тест, практику опоры или записку из будущего, к письму может добавиться короткая формулировка, которую вы уже видели на сайте.</p>
           <p>Цель — ответить вам и обсудить участие в ретрите. Основание — ваше согласие. Оно добровольное: без него заявку отправить нельзя, а отозвать его можно письмом на zoodiana@yandex.ru.</p>
-          <p>Заявка уходит на почту zoodiana@yandex.ru. Перед отправкой вы можете проверить текст в почтовой программе.</p>
+          <p>Заявка доставляется на почту zoodiana@yandex.ru через сервис отправки форм. Почтовая программа на вашем устройстве для этого не нужна.</p>
           <p>Данные храним, пока рассматриваем заявку и организуем поездку, либо до отзыва согласия. Вы можете уточнить данные или попросить их удалить.</p>
           <p>Заявку оставляют совершеннолетние. Данные детей через форму не собираем. Программа не является медицинской услугой и не ставит диагноз. Если в тексте вы сами напишете о здоровье, это будет частью переписки, а не медицинской картой.</p>
           <p>Аналитические cookie сайт не ставит. Браузер может хранить только то, что нужно, чтобы страница работала у вас на устройстве.</p>

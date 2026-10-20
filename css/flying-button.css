@@ -209,10 +209,81 @@
   margin: 4px -8px 8px;
 }
 
+.letter-fly {
+  position: relative;
+  height: 300px;
+  margin: 8px -8px 4px;
+}
+
+.flying-button--teal {
+  --fly-bg: #14b8a6;
+  --fly-ink: #ecfeff;
+  --fly-glow: #99f6e4;
+  --fly-pod: #115e59;
+  --fly-ramp: #0f766e;
+}
+
+.flying-button--teal .flying-button__craft {
+  background:
+    linear-gradient(
+      125deg,
+      #7ef0e4 0%,
+      #2dd4bf 22%,
+      #14b8a6 46%,
+      #06b6d4 68%,
+      #67e8f9 86%,
+      #5eead4 100%
+    );
+  background-size: 240% 240%;
+  animation: fly-sheen 5.5s ease-in-out infinite;
+  box-shadow:
+    0 10px 28px rgba(20, 184, 166, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.42);
+}
+
+.flying-button--teal .flying-button__face {
+  background:
+    linear-gradient(
+      115deg,
+      rgba(255, 255, 255, 0.5),
+      transparent 38%,
+      rgba(103, 232, 249, 0.32) 56%,
+      transparent 74%,
+      rgba(255, 255, 255, 0.18)
+    ),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.2), transparent 52%),
+    linear-gradient(
+      0deg,
+      color-mix(in srgb, var(--fly-glow) calc(var(--fly-thrust) * 42%), transparent),
+      transparent 62%
+    );
+  background-size: 180% 100%, 100% 100%, 100% 100%;
+  animation: fly-sheen 4.2s linear infinite;
+}
+
+.flying-button--teal .flying-button__craft[data-hover] {
+  filter: brightness(1.08) saturate(1.08);
+}
+
+@keyframes fly-sheen {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 45%; }
+  100% { background-position: 0% 50%; }
+}
+
 body:has(.flying-button[data-carry]) .cursor {
   opacity: 0;
 }
 
 @media (max-width: 640px) {
   .ticket-fly { height: 360px; }
+  .letter-fly { height: 260px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flying-button--teal .flying-button__craft,
+  .flying-button--teal .flying-button__face {
+    animation: none;
+    background-position: 40% 50%;
+  }
 }

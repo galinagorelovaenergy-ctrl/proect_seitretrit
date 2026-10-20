@@ -996,6 +996,7 @@ h2 em {
 }
 
 .letter {
+  position: relative;
   padding: 36px 32px 32px;
   background:
     repeating-linear-gradient(transparent, transparent 31px, rgba(192, 122, 58, .16) 32px),
@@ -1043,6 +1044,30 @@ h2 em {
   color: #2d3b24;
   font-size: 13px;
 }
+
+.form-status.is-wait {
+  background: #e7f3f1;
+  color: #134e4a;
+}
+
+.form-status.is-err {
+  background: #f8e6e2;
+  color: #6b2a22;
+}
+
+.visually-hidden,
+.hp {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 
 .letter .consent { margin-top: 14px; }
 

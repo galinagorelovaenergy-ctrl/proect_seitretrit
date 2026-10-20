@@ -2028,7 +2028,7 @@ const mountFlyingButton = (root, options = {}) => {
   root.style.setProperty("--fly-bg", cfg.buttonColor);
   root.style.setProperty("--fly-ink", cfg.textColor);
   root.style.setProperty("--fly-glow", cfg.thrustColor);
-  root.style.setProperty("--fly-pod", "#18181b");
+  root.style.setProperty("--fly-pod", cfg.podColor || "#18181b");
   root.style.setProperty("--fly-ramp", cfg.rampColor);
   root.style.setProperty("--fly-h", dims.h + "px");
   root.style.setProperty("--fly-px", dims.px + "px");
@@ -2094,18 +2094,12 @@ const mountFlyingButton = (root, options = {}) => {
   return engine;
 };
 
-const boot = () => {
-  const root = document.getElementById("applyFly");
+const lazyMount = (root, options) => {
   if (!root) return;
   const start = () => {
     if (root.dataset.mounted) return;
     root.dataset.mounted = "1";
-    mountFlyingButton(root, {
-      onClick() {
-        const contact = document.getElementById("contact");
-        if (contact) contact.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    });
+    mountFlyingButton(root, options);
   };
   if (!("IntersectionObserver" in window)) {
     start();
@@ -2117,6 +2111,28 @@ const boot = () => {
     io.disconnect();
   }, { rootMargin: "120px" });
   io.observe(root);
+};
+
+const boot = () => {
+  lazyMount(document.getElementById("applyFly"), {
+    onClick() {
+      const contact = document.getElementById("contact");
+      if (contact) contact.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  });
+  lazyMount(document.getElementById("submitFly"), {
+    buttonColor: "#14b8a6",
+    textColor: "#ecfeff",
+    thrustColor: "#99f6e4",
+    smokeColor: "#e6fffb",
+    rampColor: "#0f766e",
+    podColor: "#115e59",
+    altitude: 150,
+    onClick() {
+      const form = document.getElementById("contactForm");
+      if (form) form.requestSubmit();
+    }
+  });
 };
 
 window.mountFlyingButton = mountFlyingButton;
