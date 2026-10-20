@@ -234,6 +234,7 @@ const TEST_LEVELS = [
 ];
 
 const testCard = document.getElementById("tensionTest");
+const testSection = document.getElementById("test");
 const testSteps = document.getElementById("testSteps");
 const testResult = document.getElementById("testResult");
 const testCount = document.getElementById("testCount");
@@ -241,15 +242,77 @@ const testTips = document.getElementById("testTips");
 let testScores = [null, null, null, null, null];
 let testStep = 0;
 let testSummary = "";
+let testBusy = false;
+const testReduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const stringPlucks = new WeakMap();
 
 const questions = [...testCard.querySelectorAll(".test-q")];
+
+const stringPath = (amp, phase) => {
+  const left = 10;
+  const right = 390;
+  const mid = 20;
+  const segs = 12;
+  let d = "M " + left + " " + mid;
+  for (let i = 1; i <= segs; i += 1) {
+    const t = i / segs;
+    const x = left + (right - left) * t;
+    const y = mid + Math.sin(phase + t * Math.PI * 2) * amp * Math.sin(Math.PI * t);
+    d += " L " + x.toFixed(1) + " " + y.toFixed(1);
+  }
+  return d;
+};
+
+const restPath = stringPath(0, 0);
+
+const pluckString = (button) => {
+  const path = button.querySelector(".test-string-wire");
+  if (!path) return;
+  const tension = Number(button.dataset.tension) || 0;
+  if (testReduce) {
+    path.setAttribute("d", restPath);
+    return;
+  }
+  const prev = stringPlucks.get(path);
+  if (prev) cancelAnimationFrame(prev);
+  const amp = 5 + tension * 5.5;
+  const freq = 9 + tension * 3.2;
+  const start = performance.now();
+  const tick = (now) => {
+    const t = (now - start) / 1000;
+    const decay = Math.exp(-t * (2.4 + (3 - tension) * 0.45));
+    if (decay < 0.02 || t > 1.8) {
+      path.setAttribute("d", restPath);
+      stringPlucks.delete(path);
+      return;
+    }
+    path.setAttribute("d", stringPath(amp * decay, t * freq));
+    stringPlucks.set(path, requestAnimationFrame(tick));
+  };
+  stringPlucks.set(path, requestAnimationFrame(tick));
+};
+
+const paintTestBlot = () => {
+  const filled = testScores.filter((value) => value !== null);
+  const sum = filled.reduce((total, value) => total + Number(value), 0);
+  const t = sum / (questions.length * 3);
+  testSection.style.setProperty("--veil", t.toFixed(3));
+  testCard.style.setProperty("--blot", t.toFixed(3));
+};
 
 questions.forEach((question, index) => {
   const box = question.querySelector(".test-opts");
   TEST_ANSWERS.forEach((label, value) => {
     const button = document.createElement("button");
     button.type = "button";
-    button.textContent = label;
+    button.className = "test-string";
+    button.dataset.tension = String(value);
+    button.setAttribute("aria-pressed", "false");
+    button.innerHTML =
+      "<span class=\"test-string-label\">" + label + "</span>" +
+      "<svg viewBox=\"0 0 400 40\" aria-hidden=\"true\" focusable=\"false\">" +
+      "<path class=\"test-string-wire\" d=\"" + restPath + "\"></path>" +
+      "</svg>";
     button.addEventListener("click", () => chooseTestAnswer(index, value, button));
     box.appendChild(button);
   });
@@ -257,29 +320,45 @@ questions.forEach((question, index) => {
 
 const showTestStep = () => {
   questions.forEach((question, index) => {
-    question.classList.toggle("is-on", index === testStep && !testSummary);
+    const on = index === testStep && !testSummary;
+    const wasOn = question.classList.contains("is-on");
+    if (wasOn && !on && !testReduce) {
+      question.classList.remove("is-on");
+      question.classList.add("is-leaving");
+      window.setTimeout(() => question.classList.remove("is-leaving"), 480);
+      return;
+    }
+    question.classList.toggle("is-on", on);
+    if (!on) question.classList.remove("is-leaving");
   });
   testCount.textContent = "вопрос " + (testStep + 1) + " из " + questions.length;
   testCard.querySelectorAll(".test-track i").forEach((dot, index) => {
     dot.classList.toggle("is-on", index === testStep && !testSummary);
     dot.classList.toggle("is-done", index < testStep || Boolean(testSummary));
   });
+  paintTestBlot();
 };
 
 const chooseTestAnswer = (index, value, button) => {
+  if (testBusy || index !== testStep) return;
   testScores[index] = value;
-  button.parentElement.querySelectorAll("button").forEach((item) => {
-    item.classList.toggle("is-picked", item === button);
+  button.parentElement.querySelectorAll(".test-string").forEach((item) => {
+    const on = item === button;
+    item.classList.toggle("is-picked", on);
+    item.setAttribute("aria-pressed", String(on));
   });
-
+  pluckString(button);
+  paintTestBlot();
+  testBusy = true;
   window.setTimeout(() => {
+    testBusy = false;
     if (index < questions.length - 1) {
       testStep = index + 1;
       showTestStep();
       return;
     }
     finishTest();
-  }, 180);
+  }, testReduce ? 80 : 620);
 };
 
 const finishTest = () => {
@@ -295,6 +374,7 @@ const finishTest = () => {
   testSteps.hidden = true;
   testCount.hidden = true;
   testResult.hidden = false;
+  testCard.classList.add("is-settled");
   showTestStep();
 };
 
@@ -302,10 +382,19 @@ document.getElementById("testRestart").addEventListener("click", () => {
   testScores = [null, null, null, null, null];
   testStep = 0;
   testSummary = "";
+  testBusy = false;
   testSteps.hidden = false;
   testCount.hidden = false;
   testResult.hidden = true;
-  testCard.querySelectorAll(".test-opts button").forEach((button) => button.classList.remove("is-picked"));
+  testCard.classList.remove("is-settled");
+  testCard.querySelectorAll(".test-string").forEach((button) => {
+    button.classList.remove("is-picked");
+    button.setAttribute("aria-pressed", "false");
+    const path = button.querySelector(".test-string-wire");
+    if (path) path.setAttribute("d", restPath);
+  });
+  testSection.style.setProperty("--veil", "0");
+  testCard.style.setProperty("--blot", "0");
   showTestStep();
 });
 
