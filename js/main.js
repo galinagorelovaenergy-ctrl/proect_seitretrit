@@ -9,7 +9,17 @@ const formStatus = document.getElementById("formStatus");
 const cursor = document.getElementById("cursor");
 const progress = document.getElementById("progress");
 const datePins = [...document.querySelectorAll(".dates [data-day]")];
-const ORGANIZER_EMAIL = "galinagorelovaenergy@gmail.com";
+const WHATSAPP_NUMBER = "79287720636";
+const WHATSAPP_INTRO =
+  "Здравствуйте! Хочу узнать подробности о ретрите «Новая точка энергии», 17–22 ноября, Адыгея.";
+
+const openWhatsApp = (text) => {
+  const url = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(text);
+  const popup = window.open(url, "_blank", "noopener,noreferrer");
+  if (!popup) window.location.href = url;
+};
+
+window.openRetreatWhatsApp = openWhatsApp;
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const finePointer = window.matchMedia("(pointer: fine)").matches;
 
@@ -691,9 +701,8 @@ contactForm.addEventListener("submit", (event) => {
   const name = document.getElementById("name").value.trim();
   const contact = document.getElementById("userContact").value.trim();
   const message = document.getElementById("message").value.trim();
-  const subject = "Заявка на интенсив в Адыгее";
   const body = [
-    "Здравствуйте! Хочу узнать подробнее об интенсиве.",
+    WHATSAPP_INTRO,
     "",
     "Имя: " + name,
     "Телефон или Telegram: " + contact,
@@ -704,12 +713,9 @@ contactForm.addEventListener("submit", (event) => {
     testSummary ? "Тест на напряжение: " + testSummary : "",
     practiceSummary ? "Практика опоры: " + practiceSummary : "",
     futureSummary ? "Запрос из будущего: " + futureSummary : ""
-  ].join("\n");
+  ].filter(Boolean).join("\n");
 
   formStatus.style.display = "block";
-  formStatus.textContent = "Открываем почтовую программу. Проверьте письмо и нажмите «Отправить».";
-  window.location.href =
-    "mailto:" + ORGANIZER_EMAIL +
-    "?subject=" + encodeURIComponent(subject) +
-    "&body=" + encodeURIComponent(body);
+  formStatus.textContent = "Открываем WhatsApp. Проверьте текст и нажмите «Отправить».";
+  openWhatsApp(body);
 });

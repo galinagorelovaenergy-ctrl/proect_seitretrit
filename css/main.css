@@ -924,6 +924,69 @@ h2 em {
 
 .price-note { margin-top: 16px; color: #6b6156; font-size: 12px; }
 
+.consent {
+  margin-top: 12px;
+  color: #6b6156;
+  font-size: 12px;
+  line-height: 1.55;
+  max-width: 42em;
+}
+
+.consent a,
+.consent-check a,
+.plain-link,
+.policy-body a {
+  color: inherit;
+  border-bottom: 1px solid color-mix(in srgb, var(--copper) 70%, transparent);
+}
+
+.consent-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 6px 0 16px;
+  color: #5d5348;
+  font-size: 13px;
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.consent-check input {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  margin-top: 3px;
+  accent-color: var(--dried);
+  cursor: pointer;
+}
+
+.policy { padding-top: 80px; }
+
+.policy-body {
+  max-width: 720px;
+  color: var(--fog);
+  font-size: 15px;
+}
+
+.policy-body p + p { margin-top: 16px; }
+
+.policy-req {
+  margin-top: 16px;
+  padding: 16px 0 4px;
+  border-top: 1px solid rgba(239, 230, 212, .12);
+  color: rgba(239, 230, 212, .72);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.footer-legal {
+  margin-top: 12px;
+  max-width: 28em;
+  font-size: 12px;
+  line-height: 1.55;
+  color: rgba(239, 230, 212, .42);
+}
+
 .contact-copy p + p { margin-top: 16px; color: #5d5348; }
 
 .facts {
@@ -981,7 +1044,7 @@ h2 em {
   font-size: 13px;
 }
 
-.privacy { margin-top: 14px; color: #6b6156; font-size: 12px; }
+.letter .consent { margin-top: 14px; }
 
 .faq-list { max-width: 860px; }
 
@@ -1045,6 +1108,7 @@ h2 em {
 }
 
 .footer .brand { color: var(--linen); font-size: 26px; display: block; }
+.footer-inner > div:first-child { min-width: min(280px, 100%); }
 
 .load {
   opacity: 0;
