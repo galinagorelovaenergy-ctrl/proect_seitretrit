@@ -417,15 +417,6 @@ h2 em {
   display: block;
   width: fit-content;
   max-width: 100%;
-  overflow: hidden;
-}
-
-.hero h1 .line.load {
-  opacity: 1;
-  transform: none;
-  clip-path: inset(0 108% 0 0);
-  animation: ink-write 1.2s var(--ease) forwards;
-  animation-delay: var(--d, 0s);
 }
 
 .hero h1 .italic {

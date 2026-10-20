@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="css/elastic-mesh.css">
   <link rel="stylesheet" href="css/light-tunnel.css">
   <link rel="stylesheet" href="css/specular-button.css">
+  <link rel="stylesheet" href="css/warp-text.css">
 </head>
 <body>
   <div class="grain" aria-hidden="true"></div>
@@ -73,10 +74,14 @@
         <div class="hero-type">
           <p class="hero-kicker load" style="--d:.08s">17–22 ноября · Адыгея</p>
           <h1>
-            <span class="line load" style="--d:.18s">Здоровье,</span>
-            <span class="line load" style="--d:.3s">красота,</span>
-            <span class="line load italic" style="--d:.42s">молодость</span>
-            <span class="line load" style="--d:.54s">и стройность</span>
+            <span class="hero-warp" id="heroWarp" data-warp>
+              <span class="warp-text__copy">
+                <span class="line">Здоровье,</span>
+                <span class="line">красота,</span>
+                <span class="line italic">молодость</span>
+                <span class="line">и стройность</span>
+              </span>
+            </span>
           </h1>
           <p class="hero-lead load" style="--d:.7s">Пять дней для себя среди осеннего леса, прудов и тишины. Психологические, телесные и энергетические практики, внимание к внутреннему напряжению, мышлению и заботе о собственном теле.</p>
           <div class="hero-actions load" style="--d:.84s">
@@ -763,6 +768,7 @@
   <script src="js/elastic-mesh.js"></script>
   <script src="js/light-tunnel.js"></script>
   <script src="js/specular-button.js"></script>
+  <script src="js/warp-text.js"></script>
   <script src="js/carousel.js"></script>
   <script src="js/main.js"></script>
 </body>

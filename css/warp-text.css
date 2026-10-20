@@ -1,0 +1,33 @@
+.warp-text {
+  position: relative;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.warp-text canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: auto;
+}
+
+.warp-text.is-live .warp-text__copy {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.warp-text.is-failed canvas {
+  display: none;
+}
+
+.hero-warp {
+  min-height: 4.4em;
+}
+
+.hero-warp .warp-text__copy {
+  padding: 10px 8px 14px 0;
+}
