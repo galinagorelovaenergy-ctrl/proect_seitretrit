@@ -10,6 +10,13 @@ const cursor = document.getElementById("cursor");
 const progress = document.getElementById("progress");
 const datePins = [...document.querySelectorAll(".dates [data-day]")];
 const ORGANIZER_EMAIL = "zoodiana@yandex.ru";
+const WHATSAPP_NUMBER = "79287720636";
+
+const openWhatsApp = (text) => {
+  const url = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(text);
+  const popup = window.open(url, "_blank", "noopener,noreferrer");
+  if (!popup) window.location.href = url;
+};
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const finePointer = window.matchMedia("(pointer: fine)").matches;
 
@@ -693,68 +700,63 @@ const setFormStatus = (kind, text) => {
 
 let sendingApplication = false;
 
-contactForm.addEventListener("submit", async (event) => {
-  event.preventDefault();
-  if (sendingApplication) return;
-  if (!contactForm.reportValidity()) return;
+const sendApplication = async () => {
+  if (sendingApplication) return false;
+  if (!contactForm.reportValidity()) return false;
 
   const honey = contactForm.querySelector("[name='_gotcha']");
   if (honey && honey.value.trim()) {
     setFormStatus("", "Заявка отправлена. Мы перезвоним в указанное время.");
-    return;
+    return true;
   }
 
   const name = document.getElementById("name").value.trim();
   const phone = document.getElementById("userPhone").value.trim();
   const callbackTime = document.getElementById("callbackTime").value.trim();
   const message = document.getElementById("message").value.trim();
-  const subject = "Заявка на интенсив в Адыгее";
-  const payload = {
-    _subject: subject,
-    _template: "table",
-    _captcha: "false",
-    name,
-    phone,
-    callbackTime,
-    message: message || "Нет дополнительных вопросов",
-    program: "Ретрит Нового Состояния, 17–22 ноября, Адыгея, 50 000 ₽",
-    test: testSummary || "—",
-    practice: practiceSummary || "—",
-    future: futureSummary || "—"
-  };
+  const body = [
+    "Здравствуйте! Заявка с сайта «Новая точка энергии».",
+    "",
+    "Имя: " + name,
+    "Телефон: " + phone,
+    "Удобное время для звонка: " + callbackTime,
+    "Вопрос: " + (message || "Нет дополнительных вопросов"),
+    "",
+    "Интенсив: 17–22 ноября, Адыгея",
+    "Стоимость: 50 000 рублей",
+    testSummary ? "Тест на напряжение: " + testSummary : "",
+    practiceSummary ? "Практика опоры: " + practiceSummary : "",
+    futureSummary ? "Запрос из будущего: " + futureSummary : ""
+  ].filter(Boolean).join("\n");
 
   sendingApplication = true;
-  setFormStatus("is-wait", "Отправляем заявку…");
-
-  const ctrl = new AbortController();
-  const timer = window.setTimeout(() => ctrl.abort(), 15000);
+  setFormStatus("is-wait", "Открываем WhatsApp с текстом заявки…");
   try {
-    const data = new FormData();
-    Object.keys(payload).forEach((key) => data.append(key, payload[key]));
-    const response = await fetch("https://formsubmit.co/ajax/" + ORGANIZER_EMAIL, {
-      method: "POST",
-      body: data,
-      signal: ctrl.signal
-    });
-    const result = await response.json().catch(() => ({}));
-    const note = String(result.message || result.error || "");
-    if (!response.ok) throw new Error(note || "send-failed");
-    if (/activ/i.test(note) || /confirm/i.test(note)) {
-      setFormStatus(
-        "",
-        "На zoodiana@yandex.ru пришло письмо для активации отправки. Откройте его один раз — после этого заявки будут приходить сами."
-      );
-    } else {
-      setFormStatus("", "Заявка отправлена. Мы перезвоним в указанное время.");
-      contactForm.reset();
-    }
+    openWhatsApp(body);
+    setFormStatus("", "Открылся WhatsApp. Проверьте текст и нажмите «Отправить» — заявка придёт на +7 928 772-06-36.");
+    return true;
   } catch (error) {
     setFormStatus(
       "is-err",
-      "Не удалось отправить автоматически. Напишите, пожалуйста, на zoodiana@yandex.ru — имя, телефон и удобное время для звонка."
+      "Не удалось открыть WhatsApp. Напишите, пожалуйста, на +7 928 772-06-36 или на zoodiana@yandex.ru."
     );
+    return false;
   } finally {
-    window.clearTimeout(timer);
     sendingApplication = false;
   }
+};
+
+contactForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  sendApplication();
 });
+
+const submitFly = document.getElementById("submitFly");
+if (submitFly) {
+  submitFly.addEventListener("click", (event) => {
+    if (!event.target.closest(".flying-button__craft")) return;
+    event.preventDefault();
+    event.stopPropagation();
+    sendApplication();
+  }, true);
+}
