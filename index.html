@@ -23,6 +23,7 @@
   <link rel="stylesheet" href="css/specular-button.css">
   <link rel="stylesheet" href="css/warp-text.css">
   <link rel="stylesheet" href="css/flying-button.css">
+  <link rel="stylesheet" href="css/crystalized-ball.css">
 </head>
 <body>
   <div class="grain" aria-hidden="true"></div>
@@ -194,8 +195,12 @@
       </div>
     </section>
 
-    <section class="ink test-section" id="test">
-      <div class="test-veil" aria-hidden="true"></div>
+    <section class="practice-section test-section" id="test">
+      <div class="practice-bg" data-parallax="6" role="img" aria-label="Склоны Адыгеи"></div>
+      <div class="practice-mist" aria-hidden="true"></div>
+      <div class="practice-fireflies" aria-hidden="true">
+        <i></i><i></i><i></i><i></i><i></i>
+      </div>
       <div class="wrap test-layout">
         <div class="test-intro reveal">
           <p class="chapter">на полях</p>
@@ -203,8 +208,7 @@
           <p class="lead">Пять коротких вопросов о привычном фоне. Это не диагноз и не оценка характера — только способ заметить, насколько день уже держит вас.</p>
         </div>
 
-        <div class="test-card reveal" id="tensionTest">
-          <div class="test-blot" id="testBlot" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="practice-glass test-card reveal" id="tensionTest">
           <div class="test-track" aria-hidden="true">
             <i data-dot="0" class="is-on"></i>
             <i data-dot="1"></i>
@@ -212,40 +216,46 @@
             <i data-dot="3"></i>
             <i data-dot="4"></i>
           </div>
-          <p class="test-count" id="testCount">вопрос 1 из 5</p>
+          <p class="practice-mark" id="testCount">вопрос 1 из 5</p>
 
           <div class="test-steps" id="testSteps">
             <div class="test-q is-on" data-q="0">
               <h3>Как часто утро начинается с ощущения, что день уже давит?</h3>
-              <div class="test-opts"></div>
+              <div class="test-opts orb-scale"></div>
             </div>
             <div class="test-q" data-q="1">
               <h3>Как часто чувствуете зажим в теле — шея, плечи или челюсть?</h3>
-              <div class="test-opts"></div>
+              <div class="test-opts orb-scale"></div>
             </div>
             <div class="test-q" data-q="2">
               <h3>Как часто день проходит без настоящей паузы для себя?</h3>
-              <div class="test-opts"></div>
+              <div class="test-opts orb-scale"></div>
             </div>
             <div class="test-q" data-q="3">
               <h3>Как часто вечером мысли крутятся и не отпускают день?</h3>
-              <div class="test-opts"></div>
+              <div class="test-opts orb-scale"></div>
             </div>
             <div class="test-q" data-q="4">
               <h3>Как часто свои желания откладываете «на потом»?</h3>
-              <div class="test-opts"></div>
+              <div class="test-opts orb-scale"></div>
             </div>
           </div>
 
           <div class="test-result" id="testResult" hidden>
-            <p class="chapter" id="testLevelMark">результат</p>
+            <p class="practice-mark" id="testLevelMark">результат</p>
             <h3 id="testLevel"></h3>
-            <p id="testLead"></p>
+            <p class="lead" id="testLead"></p>
             <ol class="test-tips" id="testTips"></ol>
             <p class="disclaimer">Это самопроверка фона напряжения, а не медицинская диагностика. При сильном тревожном состоянии или жалобах на здоровье нужна консультация специалиста.</p>
-            <div class="test-actions">
-              <button class="specular-button specular-button--md specular-button--mist" type="button" id="testRestart" data-specular="mist">Пройти ещё раз</button>
-              <a class="specular-button specular-button--md specular-button--copper" href="#practice" data-specular="copper">Практика опоры</a>
+            <div class="orb-row">
+              <button class="orb" type="button" id="testRestart">
+                <i></i>
+                <span>Ещё раз</span>
+              </button>
+              <a class="orb" href="#practice">
+                <i></i>
+                <span>Практика опоры</span>
+              </a>
             </div>
           </div>
         </div>
@@ -411,6 +421,18 @@
             </form>
           </div>
 
+          <div class="future-panel" data-future="charge" hidden>
+            <p class="practice-mark">заряд</p>
+            <h2>Желание уже <em>внутри</em></h2>
+            <p class="lead">Бумажка ушла в шар. Буквы набирают свет, шар наполняется энергией и переливается цветом. Можно коснуться его — и идти дальше.</p>
+            <div class="node-row">
+              <button class="node" type="button" data-future-next="release">
+                <i></i>
+                <span>Дальше</span>
+              </button>
+            </div>
+          </div>
+
           <div class="future-panel" data-future="release" hidden>
             <p class="practice-mark">отпускание</p>
             <h2>Что уже пора <em>отпустить</em></h2>
@@ -466,8 +488,25 @@
             </div>
           </div>
         </div>
+
+        <div class="future-orb-wrap" id="futureOrbWrap">
+          <div class="orb-glass" aria-hidden="true">
+            <span class="orb-glass-aura"></span>
+            <span class="orb-glass-bowl"></span>
+            <span class="orb-glass-rim"></span>
+            <span class="orb-glass-shine"></span>
+          </div>
+          <canvas class="orb-fallback" id="orbFallback" aria-hidden="true"></canvas>
+          <div class="future-orb" id="futureBall"></div>
+          <p class="orb-wish" id="orbWish" aria-live="polite"></p>
+        </div>
       </div>
     </section>
+
+    <div class="wish-sheet" id="wishSheet" hidden>
+      <p class="wish-sheet-kicker">когда я вернусь домой</p>
+      <p class="wish-sheet-body" id="wishSheetBody"></p>
+    </div>
 
     <section class="ink" id="program">
       <div class="wrap">
@@ -841,6 +880,7 @@
   <script src="js/warp-text.js"></script>
   <script src="js/flying-button.js"></script>
   <script src="js/carousel.js"></script>
+  <script type="module" src="js/crystalized-ball.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

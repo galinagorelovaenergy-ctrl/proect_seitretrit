@@ -251,53 +251,8 @@ let testStep = 0;
 let testSummary = "";
 let testBusy = false;
 const testReduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const stringPlucks = new WeakMap();
 
 const questions = [...testCard.querySelectorAll(".test-q")];
-
-const stringPath = (amp, phase) => {
-  const left = 10;
-  const right = 390;
-  const mid = 20;
-  const segs = 12;
-  let d = "M " + left + " " + mid;
-  for (let i = 1; i <= segs; i += 1) {
-    const t = i / segs;
-    const x = left + (right - left) * t;
-    const y = mid + Math.sin(phase + t * Math.PI * 2) * amp * Math.sin(Math.PI * t);
-    d += " L " + x.toFixed(1) + " " + y.toFixed(1);
-  }
-  return d;
-};
-
-const restPath = stringPath(0, 0);
-
-const pluckString = (button) => {
-  const path = button.querySelector(".test-string-wire");
-  if (!path) return;
-  const tension = Number(button.dataset.tension) || 0;
-  if (testReduce) {
-    path.setAttribute("d", restPath);
-    return;
-  }
-  const prev = stringPlucks.get(path);
-  if (prev) cancelAnimationFrame(prev);
-  const amp = 5 + tension * 5.5;
-  const freq = 9 + tension * 3.2;
-  const start = performance.now();
-  const tick = (now) => {
-    const t = (now - start) / 1000;
-    const decay = Math.exp(-t * (2.4 + (3 - tension) * 0.45));
-    if (decay < 0.02 || t > 1.8) {
-      path.setAttribute("d", restPath);
-      stringPlucks.delete(path);
-      return;
-    }
-    path.setAttribute("d", stringPath(amp * decay, t * freq));
-    stringPlucks.set(path, requestAnimationFrame(tick));
-  };
-  stringPlucks.set(path, requestAnimationFrame(tick));
-};
 
 const paintTestBlot = () => {
   const filled = testScores.filter((value) => value !== null);
@@ -312,14 +267,11 @@ questions.forEach((question, index) => {
   TEST_ANSWERS.forEach((label, value) => {
     const button = document.createElement("button");
     button.type = "button";
-    button.className = "test-string";
+    button.className = "orb orb-mini";
     button.dataset.tension = String(value);
+    button.style.setProperty("--heat", String(value / 3));
     button.setAttribute("aria-pressed", "false");
-    button.innerHTML =
-      "<span class=\"test-string-label\">" + label + "</span>" +
-      "<svg viewBox=\"0 0 400 40\" aria-hidden=\"true\" focusable=\"false\">" +
-      "<path class=\"test-string-wire\" d=\"" + restPath + "\"></path>" +
-      "</svg>";
+    button.innerHTML = "<i></i><span>" + label + "</span>";
     button.addEventListener("click", () => chooseTestAnswer(index, value, button));
     box.appendChild(button);
   });
@@ -349,12 +301,11 @@ const showTestStep = () => {
 const chooseTestAnswer = (index, value, button) => {
   if (testBusy || index !== testStep) return;
   testScores[index] = value;
-  button.parentElement.querySelectorAll(".test-string").forEach((item) => {
+  button.parentElement.querySelectorAll(".orb").forEach((item) => {
     const on = item === button;
-    item.classList.toggle("is-picked", on);
+    item.classList.toggle("is-on", on);
     item.setAttribute("aria-pressed", String(on));
   });
-  pluckString(button);
   paintTestBlot();
   testBusy = true;
   window.setTimeout(() => {
@@ -394,11 +345,9 @@ document.getElementById("testRestart").addEventListener("click", () => {
   testCount.hidden = false;
   testResult.hidden = true;
   testCard.classList.remove("is-settled");
-  testCard.querySelectorAll(".test-string").forEach((button) => {
-    button.classList.remove("is-picked");
+  testCard.querySelectorAll(".test-opts .orb").forEach((button) => {
+    button.classList.remove("is-on");
     button.setAttribute("aria-pressed", "false");
-    const path = button.querySelector(".test-string-wire");
-    if (path) path.setAttribute("d", restPath);
   });
   testSection.style.setProperty("--veil", "0");
   testCard.style.setProperty("--blot", "0");
@@ -493,8 +442,358 @@ let futureWishText = "";
 let futureRelease = "";
 let futureSummary = "";
 let paperHandle = null;
+const futureStage = document.querySelector(".future-stage");
+const futureOrbWrap = document.getElementById("futureOrbWrap");
+const futureBallRoot = document.getElementById("futureBall");
+const orbFallback = document.getElementById("orbFallback");
+const orbWish = document.getElementById("orbWish");
+const wishSheet = document.getElementById("wishSheet");
+const wishSheetBody = document.getElementById("wishSheetBody");
+const WISH_COLORS = ["#F25BD0", "#9fe3df", "#FFD36E", "#9478FF", "#c07a3a"];
+let crystalBall = null;
+let fallbackBall = null;
+let chargeRaf = 0;
+let chargeStarted = 0;
+
+const hexToRgb = (hex) => {
+  const n = parseInt(String(hex).replace("#", ""), 16);
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+};
+
+const mountFallbackBall = (canvas) => {
+  if (!canvas) return null;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return null;
+  const state = {
+    fill: 0.32,
+    color: hexToRgb("#F25BD0"),
+    glow: 0.9,
+    crackle: 0.85,
+    flares: 0.65,
+    surge: 0,
+    t: 0
+  };
+  const dust = Array.from({ length: 240 }, () => {
+    const angle = Math.random() * Math.PI * 2;
+    const radius = Math.pow(Math.random(), 0.55);
+    return {
+      a: angle,
+      r: radius,
+      y: (Math.random() * 2 - 1) * 0.85,
+      s: 0.7 + Math.random() * 2.2,
+      sp: 0.12 + Math.random() * 0.5,
+      ph: Math.random() * Math.PI * 2,
+      tone: Math.random()
+    };
+  });
+  let raf = 0;
+  let last = performance.now();
+  const resize = () => {
+    const box = canvas.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.max(1, Math.round(box.width * dpr));
+    canvas.height = Math.max(1, Math.round(box.height * dpr));
+  };
+  const draw = (now) => {
+    raf = requestAnimationFrame(draw);
+    const dt = Math.min(0.05, (now - last) / 1000);
+    last = now;
+    state.t += dt;
+    state.surge *= Math.exp(-dt / 0.7);
+    const { width, height } = canvas;
+    const cx = width / 2;
+    const cy = height / 2;
+    const R = Math.min(cx, cy) * 0.98;
+    const [cr, cg, cb] = state.color;
+    ctx.clearRect(0, 0, width, height);
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx, cy, R, 0, Math.PI * 2);
+    ctx.clip();
+    const haze = ctx.createRadialGradient(cx, cy + R * 0.28, R * 0.08, cx, cy, R);
+    haze.addColorStop(0, `rgba(${cr}, ${cg}, ${cb}, ${0.18 + state.fill * 0.28})`);
+    haze.addColorStop(0.55, `rgba(${Math.max(0, cr - 40)}, ${Math.min(255, cg + 30)}, ${Math.min(255, cb + 40)}, ${0.1 + state.fill * 0.16})`);
+    haze.addColorStop(1, "rgba(7, 9, 13, 0)");
+    ctx.fillStyle = haze;
+    ctx.fillRect(0, 0, width, height);
+    dust.forEach((p) => {
+      const rise = ((state.t * p.sp + p.ph) % 1);
+      const bowl = Math.pow((p.y + 1) * 0.5, 1.15 + (0.5 - state.fill) * 1.4);
+      const y = (bowl * 2 - 1) - (rise - 0.5) * 0.22;
+      const sway = Math.sin(state.t * 0.7 + p.ph) * 0.04;
+      const x = Math.cos(p.a + sway) * p.r * Math.sqrt(Math.max(0, 1 - y * y));
+      const px = cx + x * R;
+      const py = cy - y * R;
+      const inside = x * x + y * y;
+      if (inside > 0.96) return;
+      const twinkle = 0.45 + 0.55 * (0.5 + 0.5 * Math.sin(state.t * 3 + p.ph));
+      const size = p.s * (0.6 + state.fill * 0.8) * (width / 420);
+      ctx.fillStyle = p.tone > 0.7
+        ? `rgba(255, 236, 196, ${0.35 + twinkle * 0.45})`
+        : `rgba(${cr}, ${cg}, ${cb}, ${0.28 + twinkle * 0.5})`;
+      ctx.fillRect(px, py, size, size);
+    });
+    const rim = 2 + state.crackle * 4 + state.surge * 6;
+    ctx.strokeStyle = `rgba(${Math.min(255, cr + 80)}, ${Math.min(255, cg + 40)}, ${Math.min(255, cb + 40)}, ${0.7 + state.glow * 0.2})`;
+    ctx.lineWidth = Math.max(1.4, R * 0.012);
+    ctx.beginPath();
+    for (let i = 0; i <= 220; i++) {
+      const th = (i / 220) * Math.PI * 2;
+      const wave = Math.sin(th * 7 + state.t * 2.2) * 0.35 + Math.sin(th * 13 + state.t * 3.1) * 0.2;
+      const off = (rim + wave * rim * 1.8) * (0.4 + state.crackle);
+      const rr = R - 2 + off;
+      const x = cx + Math.cos(th) * rr;
+      const y = cy + Math.sin(th) * rr;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.stroke();
+    ctx.restore();
+    const glow = ctx.createRadialGradient(cx, cy, R * 0.82, cx, cy, R * 1.08);
+    glow.addColorStop(0, "rgba(255,255,255,0)");
+    glow.addColorStop(0.7, `rgba(${cr}, ${cg}, ${cb}, ${0.12 + state.glow * 0.08})`);
+    glow.addColorStop(1, "rgba(255,255,255,0)");
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, 0, width, height);
+  };
+  resize();
+  raf = requestAnimationFrame(draw);
+  window.addEventListener("resize", resize);
+  return {
+    set(partial = {}) {
+      if (partial.fill != null) state.fill = partial.fill;
+      if (partial.glow != null) state.glow = partial.glow;
+      if (partial.crackle != null) state.crackle = partial.crackle;
+      if (partial.flares != null) state.flares = partial.flares;
+      if (partial.color) state.color = hexToRgb(partial.color);
+    },
+    kick() {
+      state.surge = 1.2;
+    },
+    dispose() {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", resize);
+    }
+  };
+};
+
+const ballOptions = () => {
+  const compact = window.matchMedia("(max-width: 640px)").matches;
+  return {
+    preset: "plasma",
+    color: "#F25BD0",
+    size: 1,
+    crackle: 0.85,
+    fill: 0.32,
+    interactive: true,
+    hoverStrength: 0.7,
+    strands: 6,
+    flares: 0.65,
+    glow: 0.9,
+    sparks: 0.6,
+    particleCount: compact ? 7000 : 12000,
+    motion: "rise",
+    particleShape: "square",
+    depth: 0.6,
+    sway: 0.5,
+    twinkle: 0.5,
+    haze: 0.7,
+    dustSpeed: 1,
+    speed: 1,
+    intro: true,
+    paused: false
+  };
+};
+
+const parkForeignWebGL = () => {
+  document.querySelectorAll("canvas").forEach((canvas) => {
+    if (canvas.closest("#futureBall, #futureOrbWrap, #releasePaper")) return;
+    try {
+      const gl = canvas.getContext("webgl2") || canvas.getContext("webgl");
+      gl?.getExtension("WEBGL_lose_context")?.loseContext();
+    } catch (_) {}
+  });
+};
+
+const setBall = (partial) => {
+  fallbackBall?.set(partial);
+  crystalBall?.set(partial);
+};
+
+const kickBall = () => {
+  fallbackBall?.kick();
+  crystalBall?.kick(0, 0.15, 1.15);
+};
+
+const mountFutureBall = () => {
+  if (!fallbackBall) fallbackBall = mountFallbackBall(orbFallback);
+  if (crystalBall || !futureBallRoot) return;
+  if (typeof window.mountCrystalizedBall !== "function") return;
+  parkForeignWebGL();
+  try {
+    crystalBall = window.mountCrystalizedBall(futureBallRoot, ballOptions());
+  } catch (_) {
+    crystalBall = null;
+  }
+  if (crystalBall && orbFallback) orbFallback.style.opacity = "0";
+};
+
+const whenBallReady = (fn) => {
+  if (typeof window.mountCrystalizedBall === "function") fn();
+  else window.addEventListener("crystal-ball-ready", fn, { once: true });
+};
+
+fallbackBall = mountFallbackBall(orbFallback);
+whenBallReady(() => {
+  const section = document.getElementById("future");
+  if (!section) {
+    mountFutureBall();
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    if (entries.some((entry) => entry.isIntersecting)) {
+      mountFutureBall();
+      io.disconnect();
+    }
+  }, { rootMargin: "240px" });
+  io.observe(section);
+});
+
+const mixHex = (a, b, t) => {
+  const parse = (hex) => {
+    const n = parseInt(String(hex).slice(1), 16);
+    return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  };
+  const A = parse(a);
+  const B = parse(b);
+  const m = (i) => Math.round(A[i] + (B[i] - A[i]) * t);
+  return "#" + [m(0), m(1), m(2)].map((v) => v.toString(16).padStart(2, "0")).join("");
+};
+
+const stopCharge = () => {
+  if (chargeRaf) cancelAnimationFrame(chargeRaf);
+  chargeRaf = 0;
+};
+
+const startCharge = () => {
+  stopCharge();
+  futureOrbWrap?.classList.add("is-lit");
+  chargeStarted = performance.now();
+  const tick = (now) => {
+    const t = (now - chargeStarted) / 1000;
+    const fill = 0.32 + 0.52 * (1 - Math.exp(-t / 1.35));
+    const cycle = t / 1.8;
+    const i = Math.floor(cycle) % WISH_COLORS.length;
+    const n = (i + 1) % WISH_COLORS.length;
+    const u = cycle - Math.floor(cycle);
+    setBall({
+      fill: Math.min(0.86, fill),
+      color: mixHex(WISH_COLORS[i], WISH_COLORS[n], u),
+      glow: 0.85 + 0.35 * Math.sin(t * 1.4),
+      crackle: 0.7 + 0.35 * (0.5 + 0.5 * Math.sin(t * 0.9)),
+      flares: 0.55 + 0.3 * (0.5 + 0.5 * Math.sin(t * 1.1))
+    });
+    chargeRaf = requestAnimationFrame(tick);
+  };
+  chargeRaf = requestAnimationFrame(tick);
+};
+
+const resetBallRitual = () => {
+  stopCharge();
+  futureStage?.classList.remove("is-ritual");
+  futureOrbWrap?.classList.remove("is-lit");
+  if (orbWish) {
+    orbWish.classList.remove("is-on");
+    orbWish.innerHTML = "";
+  }
+  if (wishSheet) {
+    wishSheet.hidden = true;
+    wishSheet.classList.remove("is-fly");
+    wishSheet.style.transform = "";
+  }
+  setBall({
+    fill: 0.32,
+    color: "#F25BD0",
+    glow: 0.9,
+    crackle: 0.85,
+    flares: 0.65
+  });
+};
+
+const fillOrbWish = (text) => {
+  if (!orbWish) return;
+  orbWish.innerHTML = "";
+  const line = document.createElement("span");
+  line.className = "orb-wish-line";
+  let index = 0;
+  String(text).split(/(\s+)/).forEach((chunk) => {
+    if (!chunk) return;
+    if (/^\s+$/.test(chunk)) {
+      const space = document.createElement("span");
+      space.className = "orb-space";
+      space.style.setProperty("--i", String(index++));
+      space.innerHTML = "&nbsp;";
+      line.appendChild(space);
+      return;
+    }
+    const word = document.createElement("span");
+    word.className = "orb-word";
+    [...chunk].forEach((ch) => {
+      const span = document.createElement("span");
+      span.textContent = ch;
+      span.style.setProperty("--i", String(index++));
+      word.appendChild(span);
+    });
+    line.appendChild(word);
+  });
+  orbWish.appendChild(line);
+  orbWish.classList.add("is-on");
+};
+
+const flyWishIntoBall = (text) => {
+  const target = futureOrbWrap || futureBallRoot;
+  if (!wishSheet || !wishSheetBody || !futureWish || !target) {
+    fillOrbWish(text);
+    kickBall();
+    startCharge();
+    return;
+  }
+  wishSheetBody.textContent = text;
+  wishSheet.hidden = false;
+  wishSheet.classList.remove("is-fly");
+  wishSheet.style.visibility = "hidden";
+  wishSheet.style.transform = "translate(0, 0)";
+  const sheetW = wishSheet.offsetWidth;
+  const sheetH = wishSheet.offsetHeight;
+  const from = futureWish.getBoundingClientRect();
+  const to = target.getBoundingClientRect();
+  const startX = from.left + from.width / 2 - sheetW / 2;
+  const startY = from.top + Math.min(20, from.height / 6);
+  const targetX = to.left + to.width / 2 - sheetW / 2;
+  const targetY = to.top + to.height / 2 - sheetH / 2;
+  wishSheet.style.visibility = "";
+  wishSheet.style.transform = `translate(${startX}px, ${startY}px) rotate(-4deg)`;
+  const finish = () => {
+    wishSheet.hidden = true;
+    wishSheet.classList.remove("is-fly");
+    fillOrbWish(text);
+    kickBall();
+    startCharge();
+  };
+  if (reduceMotion) {
+    finish();
+    return;
+  }
+  window.requestAnimationFrame(() => {
+    wishSheet.classList.add("is-fly");
+    wishSheet.style.transform = `translate(${targetX}px, ${targetY}px) scale(0.16) rotate(12deg)`;
+  });
+  window.setTimeout(finish, 1180);
+};
 
 const showFuture = (step) => {
+  futureStage?.classList.toggle("is-ritual", step === "charge");
   futureRoot.querySelectorAll("[data-future]").forEach((panel) => {
     const on = panel.dataset.future === step;
     panel.hidden = !on;
@@ -603,8 +902,10 @@ futureForm.addEventListener("submit", (event) => {
   const wish = futureWish.value.trim();
   if (!wish || !futureIntent) return;
   futureWishText = wish;
-  showReleaseForm();
-  showFuture("release");
+  mountFutureBall();
+  showFuture("charge");
+  futureOrbWrap?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
+  window.setTimeout(() => flyWishIntoBall(wish), reduceMotion ? 0 : 380);
 });
 
 releaseForm.addEventListener("submit", async (event) => {
@@ -680,6 +981,7 @@ document.getElementById("futureRestart").addEventListener("click", () => {
   futureWish.value = "";
   releaseText.value = "";
   showReleaseForm();
+  resetBallRitual();
   futureIntents.querySelectorAll(".signal").forEach((item) => item.classList.remove("is-on"));
   showFuture("intro");
 });
