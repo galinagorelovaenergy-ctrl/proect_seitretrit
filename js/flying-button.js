@@ -2131,6 +2131,17 @@ const lazyMount = (root, options) => {
 
 const boot = () => {
   lazyMount(document.getElementById("applyFly"), {
+    size: "large",
+    smoke: 2.6,
+    turbulence: 1.35,
+    jets: 3,
+    buttonColor: "#c6ee3a",
+    textColor: "#14261e",
+    thrustColor: "#e8ff6a",
+    smokeColor: "#f3ffd4",
+    rampColor: "#6fa032",
+    podColor: "#3f6f14",
+    altitude: 190,
     onClick() {
       const contact = document.getElementById("contact");
       if (contact) contact.scrollIntoView({ behavior: "smooth", block: "start" });

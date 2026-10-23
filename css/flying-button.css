@@ -217,6 +217,58 @@
   margin: 8px -8px 4px;
 }
 
+.flying-button--lime {
+  --fly-bg: #c6ee3a;
+  --fly-ink: #14261e;
+  --fly-glow: #e8ff6a;
+  --fly-pod: #3f6f14;
+  --fly-ramp: #6fa032;
+}
+
+.flying-button--lime .flying-button__craft {
+  background:
+    linear-gradient(
+      125deg,
+      #f7ff9a 0%,
+      #ddf24a 22%,
+      #c6ee3a 46%,
+      #a8dc28 68%,
+      #eaff70 86%,
+      #d4f25a 100%
+    );
+  background-size: 240% 240%;
+  animation: fly-sheen 5.5s ease-in-out infinite;
+  box-shadow:
+    0 0 18px rgba(232, 255, 106, .55),
+    0 0 42px rgba(166, 204, 58, .42),
+    0 12px 28px rgba(198, 238, 58, .28),
+    inset 0 1px 0 rgba(255, 255, 255, .55);
+}
+
+.flying-button--lime .flying-button__face {
+  background:
+    linear-gradient(
+      115deg,
+      rgba(255, 255, 255, 0.62),
+      transparent 38%,
+      rgba(232, 255, 106, 0.45) 56%,
+      transparent 74%,
+      rgba(255, 255, 255, 0.22)
+    ),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.28), transparent 52%),
+    linear-gradient(
+      0deg,
+      color-mix(in srgb, var(--fly-glow) calc(var(--fly-thrust) * 48%), transparent),
+      transparent 62%
+    );
+  background-size: 180% 100%, 100% 100%, 100% 100%;
+  animation: fly-sheen 4.2s linear infinite;
+}
+
+.flying-button--lime .flying-button__craft[data-hover] {
+  filter: brightness(1.1) saturate(1.12);
+}
+
 .flying-button--teal {
   --fly-bg: #14b8a6;
   --fly-ink: #ecfeff;
@@ -283,6 +335,8 @@ body:has(.flying-button[data-carry]) .cursor {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .flying-button--lime .flying-button__craft,
+  .flying-button--lime .flying-button__face,
   .flying-button--teal .flying-button__craft,
   .flying-button--teal .flying-button__face {
     animation: none;
