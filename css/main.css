@@ -7,6 +7,14 @@
   --dried: #b84332;
   --moss: #3a4634;
   --fog: #8a8174;
+  --pond-deep: #14261e;
+  --pond-shadow: #0a1612;
+  --pond-moss: #1e3a2c;
+  --pond-leaf: #5c8f32;
+  --pond-pad: #8fbf3a;
+  --pond-wave: #2a8fa3;
+  --pond-wave-deep: #12586a;
+  --pond-foam: #6ecad6;
   --ease: cubic-bezier(.16, 1, .3, 1);
 }
 
@@ -774,114 +782,153 @@ h2 em {
   font-size: 13px;
 }
 
-.practices {
-  --lotus: #d7edc0;
-  --lotus-mid: #b6d889;
-  --lotus-leaf: #8fbf5a;
-  --wave: #3c8fa6;
-  --wave-deep: #1f6276;
-  --wave-mist: #c9e7ea;
+.pond-section {
   position: relative;
   isolation: isolate;
   overflow: hidden;
+  color: var(--linen);
   background:
-    linear-gradient(180deg, #eaf6de 0%, #e0f0c8 34%, #d4ebe3 70%, #c3e3e8 100%);
+    radial-gradient(ellipse at 16% 8%, rgba(92, 143, 50, .32), transparent 42%),
+    radial-gradient(ellipse at 88% 82%, rgba(18, 88, 106, .48), transparent 48%),
+    linear-gradient(180deg, #1a3328 0%, #13241c 46%, #0f2a2c 100%);
 }
 
-.practices-pads,
-.practices-wave {
-  pointer-events: none;
-  position: absolute;
-  z-index: 0;
-  border-radius: 50%;
-}
-
-.practices-pads {
-  left: -16%;
-  top: -6%;
-  width: min(84vw, 920px);
-  height: min(64vw, 680px);
-  background: radial-gradient(circle at 46% 48%, #e7f6c8 0 28%, #cfe89a 48%, rgba(182, 216, 137, .18) 72%, transparent 78%);
-  filter: blur(42px);
-  opacity: .9;
-}
-
-.practices-wave {
-  right: -16%;
-  top: 42%;
-  width: min(90vw, 1080px);
-  height: min(80vw, 900px);
-  background: radial-gradient(circle at 42% 40%, #7ec9d4 0 14%, #3c8fa6 38%, #1f6276 56%, transparent 74%);
-  filter: blur(72px);
-  opacity: .78;
-}
-
-.practices::before {
-  content: "";
-  pointer-events: none;
-  position: absolute;
-  z-index: 0;
-  left: 32%;
-  top: 18%;
-  width: min(58vw, 620px);
-  height: min(46vw, 460px);
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(60, 143, 166, .38), rgba(126, 201, 212, .16) 52%, transparent 74%);
-  filter: blur(58px);
-}
-
-.practices .wrap {
+.pond-section .wrap {
   position: relative;
   z-index: 1;
 }
 
-.practices .chapter {
-  color: var(--wave-deep);
+.pond-pads,
+.pond-wave,
+.pond-energy {
+  pointer-events: none;
+  position: absolute;
+  z-index: 0;
 }
 
-.practices .chapter::after {
-  background: var(--wave);
+.pond-pads,
+.pond-wave {
+  border-radius: 50%;
 }
 
-.practices .lead {
-  color: #466056;
+.pond-pads {
+  left: -18%;
+  top: -10%;
+  width: min(88vw, 960px);
+  height: min(68vw, 720px);
+  background: radial-gradient(circle at 46% 48%, #b6dc4a 0 16%, #6fa032 42%, rgba(30, 58, 44, .2) 70%, transparent 78%);
+  filter: blur(46px);
+  opacity: .72;
+}
+
+.pond-wave {
+  right: -16%;
+  top: 38%;
+  width: min(92vw, 1100px);
+  height: min(82vw, 920px);
+  background: radial-gradient(circle at 42% 40%, #5ec8d6 0 12%, #1f7a8e 36%, #0d3f4c 58%, transparent 74%);
+  filter: blur(70px);
+  opacity: .8;
+}
+
+.pond-energy {
+  inset: -28% -18%;
+  background:
+    conic-gradient(
+      from 110deg at 42% 48%,
+      transparent 0deg,
+      rgba(143, 191, 58, .22) 48deg,
+      transparent 108deg,
+      rgba(46, 173, 190, .28) 172deg,
+      transparent 236deg,
+      rgba(192, 122, 58, .14) 292deg,
+      transparent 360deg
+    );
+  filter: blur(52px);
+  mix-blend-mode: screen;
+  animation: pond-shift 22s ease-in-out infinite;
+}
+
+.pond-section .chapter {
+  color: #c5de7a;
+}
+
+.pond-section .chapter::after {
+  background: var(--pond-wave);
+}
+
+.pond-section .lead {
+  color: rgba(239, 230, 212, .78);
+}
+
+.price-section .pond-pads {
+  left: auto;
+  right: -22%;
+  top: -14%;
+}
+
+.price-section .pond-wave {
+  right: auto;
+  left: -20%;
+  top: 18%;
+}
+
+.contact.pond-section .pond-pads {
+  left: 36%;
+  top: 42%;
+  width: min(70vw, 760px);
+  height: min(58vw, 620px);
+}
+
+.contact.pond-section .pond-wave {
+  right: auto;
+  left: -24%;
+  top: -12%;
+}
+
+@keyframes pond-shift {
+  0%, 100% { transform: rotate(0deg) scale(1); opacity: .72; }
+  50% { transform: rotate(26deg) scale(1.08); opacity: 1; }
 }
 
 .practices .leaf {
-  background: color-mix(in srgb, #f6fbea 86%, var(--wave-mist));
-  border: 1px solid rgba(143, 191, 90, .22);
-  box-shadow: 0 18px 44px rgba(31, 98, 118, .08);
+  background: color-mix(in srgb, var(--pond-moss) 82%, transparent);
+  border: 1px solid rgba(214, 232, 180, .16);
+  box-shadow: 0 24px 56px rgba(6, 16, 12, .48);
+  backdrop-filter: blur(8px);
 }
 
 .practices .pin {
-  background: var(--wave-deep);
-  color: #eaf6de;
+  background: var(--pond-shadow);
+  color: #d8ee8a;
+  box-shadow: 0 8px 18px rgba(6, 16, 12, .4);
 }
 
 .practices .stage-tag {
-  color: var(--wave);
+  color: var(--pond-foam);
 }
 
 .practices .stem::before {
-  background: linear-gradient(var(--wave), var(--lotus-leaf), transparent);
+  background: linear-gradient(var(--pond-wave), var(--pond-leaf), transparent);
 }
 
 .practices .leaf p,
 .practices .method p {
-  color: #4a5f54;
+  color: rgba(239, 230, 212, .74);
 }
 
 .practices .method b {
-  color: var(--wave-deep);
+  color: #c5de7a;
 }
 
 .practices .quote {
-  background: color-mix(in srgb, #f3fae8 78%, var(--wave-mist));
-  border-left-color: var(--wave);
+  background: color-mix(in srgb, var(--pond-moss) 78%, #000);
+  border-left-color: var(--pond-wave);
+  box-shadow: 0 18px 40px rgba(6, 16, 12, .32);
 }
 
 .practices .disclaimer {
-  color: #4a6458;
+  color: rgba(239, 230, 212, .55);
 }
 
 .practices .lotus-frame {
@@ -896,8 +943,8 @@ h2 em {
   z-index: -1;
   inset: 30px -38px -42px 22px;
   background:
-    linear-gradient(165deg, #eaf6c4 0%, #c8e27a 46%, #a6cc58 100%);
-  box-shadow: 0 28px 54px rgba(31, 98, 118, .18);
+    linear-gradient(165deg, #c6e06a 0%, #7aaa32 52%, #3f6f24 100%);
+  box-shadow: 0 30px 64px rgba(6, 16, 12, .52);
   transform: rotate(-5.2deg);
 }
 
@@ -910,7 +957,7 @@ h2 em {
   width: 116%;
   height: 46%;
   border-radius: 50%;
-  background: radial-gradient(circle at 50% 40%, #6ec2d0 0 24%, #2f7f96 54%, transparent 74%);
+  background: radial-gradient(circle at 50% 40%, #5ec8d6 0 22%, #15586a 54%, transparent 74%);
   filter: blur(32px);
 }
 
@@ -919,7 +966,82 @@ h2 em {
 }
 
 .practices .lotus-frame .photo {
-  box-shadow: 0 16px 40px rgba(31, 98, 118, .18);
+  box-shadow: 0 20px 48px rgba(6, 16, 12, .42);
+}
+
+.pond-section .ticket {
+  position: relative;
+  background: color-mix(in srgb, var(--pond-moss) 78%, transparent);
+  color: var(--linen);
+  border: 1px solid rgba(214, 232, 180, .14);
+  box-shadow: 0 32px 80px rgba(6, 16, 12, .5);
+  backdrop-filter: blur(12px);
+}
+
+.pond-section .ticket-side {
+  background:
+    radial-gradient(circle at left 40px, var(--pond-deep) 10px, transparent 11px) 0 0 / 100% 36px,
+    linear-gradient(180deg, #244a38, #163028);
+}
+
+.pond-section .price-label {
+  color: var(--pond-foam);
+}
+
+.pond-section .price {
+  color: #d8ee8a;
+}
+
+.pond-section .ticket-side p:not(.price-label) {
+  color: rgba(239, 230, 212, .72);
+}
+
+.pond-section .included li::before {
+  background: var(--pond-wave);
+}
+
+.pond-section .price-note,
+.pond-section .consent,
+.pond-section .consent-check {
+  color: rgba(239, 230, 212, .58);
+}
+
+.pond-section .consent-check input {
+  accent-color: var(--pond-wave);
+}
+
+.contact.pond-section .contact-copy p + p {
+  color: rgba(239, 230, 212, .74);
+}
+
+.contact.pond-section .facts {
+  border-top-color: rgba(239, 230, 212, .14);
+}
+
+.contact.pond-section .letter {
+  background:
+    repeating-linear-gradient(transparent, transparent 31px, rgba(143, 191, 58, .12) 32px),
+    color-mix(in srgb, #1c3a2e 88%, var(--linen));
+  color: var(--linen);
+  border: 1px solid rgba(214, 232, 180, .14);
+  box-shadow: 0 28px 70px rgba(6, 16, 12, .48);
+}
+
+.contact.pond-section .field input,
+.contact.pond-section .field textarea {
+  color: var(--linen);
+  border-bottom-color: rgba(239, 230, 212, .22);
+  caret-color: var(--pond-foam);
+}
+
+.contact.pond-section .field input::placeholder,
+.contact.pond-section .field textarea::placeholder {
+  color: rgba(239, 230, 212, .38);
+}
+
+.contact.pond-section .field input:focus,
+.contact.pond-section .field textarea:focus {
+  border-bottom-color: var(--pond-foam);
 }
 
 .bonus {
