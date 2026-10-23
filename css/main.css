@@ -971,11 +971,10 @@ h2 em {
 
 .pond-section .ticket {
   position: relative;
-  background: color-mix(in srgb, var(--pond-moss) 78%, transparent);
+  background: #163028;
   color: var(--linen);
   border: 1px solid rgba(214, 232, 180, .14);
   box-shadow: 0 32px 80px rgba(6, 16, 12, .5);
-  backdrop-filter: blur(12px);
 }
 
 .pond-section .ticket-side {
@@ -1021,7 +1020,7 @@ h2 em {
 .contact.pond-section .letter {
   background:
     repeating-linear-gradient(transparent, transparent 31px, rgba(143, 191, 58, .12) 32px),
-    color-mix(in srgb, #1c3a2e 88%, var(--linen));
+    #163028;
   color: var(--linen);
   border: 1px solid rgba(214, 232, 180, .14);
   box-shadow: 0 28px 70px rgba(6, 16, 12, .48);
@@ -1140,8 +1139,8 @@ h2 em {
 .ticket {
   display: grid;
   grid-template-columns: .7fr 1.3fr;
-  background: var(--sheet);
-  color: var(--ink);
+  background: #163028;
+  color: var(--linen);
   overflow: hidden;
 }
 
@@ -1152,8 +1151,8 @@ h2 em {
 
 .ticket-side {
   background:
-    radial-gradient(circle at left 40px, var(--ink) 10px, transparent 11px) 0 0 / 100% 36px,
-    var(--linen);
+    radial-gradient(circle at left 40px, var(--pond-deep) 10px, transparent 11px) 0 0 / 100% 36px,
+    linear-gradient(180deg, #244a38, #163028);
 }
 
 .price-label {
@@ -1269,8 +1268,8 @@ h2 em {
   position: relative;
   padding: 36px 32px 32px;
   background:
-    repeating-linear-gradient(transparent, transparent 31px, rgba(192, 122, 58, .16) 32px),
-    #fffaf0;
+    repeating-linear-gradient(transparent, transparent 31px, rgba(143, 191, 58, .12) 32px),
+    #163028;
   box-shadow: 0 20px 50px rgba(11, 9, 8, .08);
 }
 

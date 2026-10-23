@@ -608,7 +608,7 @@ const ballOptions = () => {
 
 const parkForeignWebGL = () => {
   document.querySelectorAll("canvas").forEach((canvas) => {
-    if (canvas.closest("#futureBall, #futureOrbWrap, #releasePaper")) return;
+    if (canvas.closest("#futureBall, #futureOrbWrap, #releasePaper, .flying-button")) return;
     try {
       const gl = canvas.getContext("webgl2") || canvas.getContext("webgl");
       gl?.getExtension("WEBGL_lose_context")?.loseContext();

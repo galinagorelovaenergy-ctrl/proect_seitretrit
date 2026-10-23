@@ -619,8 +619,10 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
  antialias: false,
  depth: false,
  stencil: false,
+ preserveDrawingBuffer: false,
  powerPreference: 'high-performance'
  });
+ if (!gl) return null;
  const motionQuery =
  typeof window !== 'undefined' && window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
  const s = {
@@ -2088,7 +2090,20 @@ const mountFlyingButton = (root, options = {}) => {
 
   const props = { current: cfg };
   const engine = createEngine({ root, canvas, button, cursor, ramp, props });
-  if (typeof cfg.onClick === "function") {
+  if (!root.dataset.glGuard) {
+    root.dataset.glGuard = "1";
+    canvas.addEventListener("webglcontextlost", (event) => {
+      event.preventDefault();
+      root.dataset.mounted = "";
+    });
+    canvas.addEventListener("webglcontextrestored", () => {
+      if (root.dataset.mounted) return;
+      root.dataset.mounted = "1";
+      mountFlyingButton(root, options);
+    });
+  }
+  if (typeof cfg.onClick === "function" && !button.dataset.clickBound) {
+    button.dataset.clickBound = "1";
     button.addEventListener("click", (event) => cfg.onClick(event));
   }
   return engine;
@@ -2099,7 +2114,8 @@ const lazyMount = (root, options) => {
   const start = () => {
     if (root.dataset.mounted) return;
     root.dataset.mounted = "1";
-    mountFlyingButton(root, options);
+    const engine = mountFlyingButton(root, options);
+    if (!engine) root.dataset.mounted = "";
   };
   if (!("IntersectionObserver" in window)) {
     start();
