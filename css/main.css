@@ -439,20 +439,19 @@ h2 em {
   color: rgba(239, 230, 212, .72);
 }
 
-.hero-catalog {
-  margin-top: 18px;
-  font-size: 13px;
-}
-
-.hero-catalog a {
-  color: var(--copper);
-}
-
 .hero-actions {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 12px;
   margin-top: 28px;
+  width: 100%;
+  max-width: 520px;
+}
+
+.hero-actions .specular-button {
+  width: 100%;
+  min-height: 56px;
+  box-sizing: border-box;
 }
 
 .tilt-photo figcaption {
@@ -2442,6 +2441,7 @@ h2 em {
   .orb-mini i { width: 46px; height: 46px; }
   .host-switch .btn-pearl,
   .host-switch .specular-button { width: 100%; }
+  .hero-actions { grid-template-columns: 1fr; max-width: none; }
   .hero-actions .btn,
   .hero-actions .specular-button { width: 100%; }
   .test-steps { min-height: 0; }

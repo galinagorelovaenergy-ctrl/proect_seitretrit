@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ШАБЛОН СТАТЬИ — скопируйте файл и заполните факты</title>
+  <meta name="description" content="Уникальное описание статьи, 120–160 знаков. Без вымышленных исследований и обещания лечения.">
+  <link rel="canonical" href="https://retritbest.ru/articles/ИМЯ.html">
+  <meta property="og:title" content="Уникальный Title статьи">
+  <meta property="og:description" content="Уникальный Description статьи.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://retritbest.ru/articles/ИМЯ.html">
+  <meta property="og:image" content="https://retritbest.ru/img/adygea-place.jpg">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/specular-button.css">
+  <link rel="stylesheet" href="/css/programs.css">
+  <link rel="stylesheet" href="/css/articles.css">
+</head>
+<body class="page-article">
+  <!--
+    Как опубликовать статью:
+    1. Сохраните как articles/имя-файла.html и уберите noindex.
+    2. Заполните уникальные Title и Description. Один H1 на страницу.
+    3. Категория: psychology | body | methods | programs
+       (Осознанность и психология / Тело и саморегуляция /
+       Китайская медицина и Су-Джок / Выездные программы).
+    4. Дата: <time datetime="ГГГГ-ММ-ДД">.
+    5. Текст: H2 и H3, без вымышленных исследований, отзывов и обещания лечения.
+    6. Изображения: <figure class="article-figure"><img src="/img/файл.jpg" alt="честное описание"></figure>
+    7. Добавьте карточку .article-card на articles.html с data-category.
+    8. Добавьте URL в sitemap.xml.
+    9. Обновите блок «Читайте также» в соседних статьях.
+    10. Кнопку «Актуальные выездные программы» не удаляйте.
+  -->
+  <header class="header" id="header">
+    <div class="wrap header-inner">
+      <a class="brand" href="/">Новая точка энергии</a>
+      <nav class="nav">
+        <a href="/">Главная</a>
+        <a href="/programs.html">Программы</a>
+        <a href="/articles.html">Статьи</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <article>
+      <header class="article-hero">
+        <div class="wrap">
+          <p class="chapter">категория</p>
+          <h1>Заголовок статьи — один H1</h1>
+          <p class="lead">Краткое описание без выдуманных фактов.</p>
+          <p class="program-hero-meta">
+            <span>Название категории</span>
+            <time datetime="2026-11-07">7 ноября 2026</time>
+          </p>
+        </div>
+        <div class="wrap article-hero-cover">
+          <img src="/img/adygea-place.jpg" alt="Честное описание фото" width="1200" height="700">
+        </div>
+      </header>
+      <section class="sheet program-block">
+        <div class="wrap article-body">
+          <h2>Первый смысловой блок</h2>
+          <p>Текст.</p>
+          <h3>Подзаголовок</h3>
+          <p>Текст.</p>
+          <figure class="article-figure">
+            <img src="/img/adygea-path.jpg" alt="Честное описание фото" width="1200" height="700">
+            <figcaption>Подпись к фото</figcaption>
+          </figure>
+          <p class="article-note">Если тема касается тела или методов программы, повторите оговорку с сайта: не диагностика, не лечение, не замена врача.</p>
+        </div>
+      </section>
+    </article>
+    <section class="ink program-block">
+      <div class="wrap">
+        <h2>Читайте также</h2>
+        <div class="article-related-grid">
+          <!-- Вставьте 2–3 карточки других опубликованных статей -->
+        </div>
+      </div>
+    </section>
+    <section class="sheet program-block">
+      <div class="wrap article-cta">
+        <div>
+          <h2>Актуальные выездные программы</h2>
+          <p>Ссылка на каталог, без выдуманных дат.</p>
+        </div>
+        <a class="specular-button specular-button--lg specular-button--copper" href="/programs.html" data-specular="copper">Актуальные выездные программы</a>
+      </div>
+    </section>
+  </main>
+  <script src="/js/site.js"></script>
+</body>
+</html>

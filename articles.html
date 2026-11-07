@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0908">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="description" content="Статьи о выездных программах, внимании к напряжению, теле и методах, которые встречаются на ретритах «Новая точка энергии». Без обещаний лечения.">
+  <meta name="author" content="Новая точка энергии">
+  <link rel="canonical" href="https://retritbest.ru/articles.html">
+  <meta property="og:title" content="Статьи — выездные программы и внимание к состоянию">
+  <meta property="og:description" content="Тексты о паузе, теле, формате ретритов и методах программы. Это не медицинские рекомендации.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:url" content="https://retritbest.ru/articles.html">
+  <meta property="og:site_name" content="Новая точка энергии">
+  <meta property="og:image" content="https://retritbest.ru/img/adygea-pause.jpg">
+  <title>Статьи — выездные программы и внимание к состоянию</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,500;0,600;0,800;1,500;1,600&family=Geologica:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/specular-button.css">
+  <link rel="stylesheet" href="/css/programs.css">
+  <link rel="stylesheet" href="/css/articles.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Статьи",
+    "url": "https://retritbest.ru/articles.html",
+    "description": "Статьи о выездных программах и внимании к состоянию.",
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "url": "https://retritbest.ru/articles/chto-takoe-vyezdnaya-programma.html" },
+        { "@type": "ListItem", "position": 2, "url": "https://retritbest.ru/articles/napryazhenie-i-pauza.html" },
+        { "@type": "ListItem", "position": 3, "url": "https://retritbest.ru/articles/opora-i-telo.html" },
+        { "@type": "ListItem", "position": 4, "url": "https://retritbest.ru/articles/metody-na-programme.html" }
+      ]
+    }
+  }
+  </script>
+</head>
+<body class="page-articles page-catalog">
+  <!--
+    Как опубликовать статью:
+    1. Скопируйте articles/_template.html в articles/имя.html.
+    2. Заполните Title, Description, H1, дату, категорию и текст.
+    3. Добавьте карточку .article-card на эту страницу.
+    4. Добавьте URL в sitemap.xml.
+    5. Обновите блок «Читайте также» в соседних статьях.
+    Не публикуйте вымышленные исследования, диагнозы и обещания лечения.
+  -->
+  <div class="grain" aria-hidden="true"></div>
+  <header class="header" id="header">
+    <div class="wrap header-inner">
+      <a class="brand" href="/">
+        <span class="brand-mark" role="img" aria-label="Пауза на склоне Адыгеи"></span>
+        <span class="brand-copy">
+          Новая точка энергии
+          <small>выездные программы</small>
+          <small class="brand-retreat">ретрит нового состояния</small>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Основная навигация">
+        <a href="/">Главная</a>
+        <a href="/programs.html">Программы</a>
+        <a href="/articles.html" aria-current="page">Статьи</a>
+        <a href="/#hosts">Ведущие</a>
+        <a href="/#price">Стоимость</a>
+      </nav>
+      <a class="specular-button specular-button--md specular-button--copper" href="/programs.html" data-specular="copper">Программы</a>
+      <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="mobileNav" aria-label="Открыть меню"><span></span></button>
+    </div>
+  </header>
+  <nav class="mobile-nav" id="mobileNav" hidden>
+    <a href="/">Главная</a>
+    <a href="/programs.html">Программы</a>
+    <a href="/articles.html" aria-current="page">Статьи</a>
+    <a href="/#hosts">Ведущие</a>
+    <a class="specular-button specular-button--md specular-button--ink" href="/programs.html" data-specular="ink">Программы</a>
+  </nav>
+
+  <main>
+    <section class="programs-hero">
+      <div class="wrap">
+        <p class="chapter">журнал</p>
+        <h1>Статьи</h1>
+        <p class="lead">Тексты о формате выездных программ, внимании к напряжению и практиках, которые встречаются на ретрите. Это не медицинские рекомендации и не обещание лечения.</p>
+      </div>
+    </section>
+
+    <section class="program-block" style="padding-top:0">
+      <div class="wrap">
+        <div class="programs-tabs" role="tablist" aria-label="Категории статей">
+          <button class="programs-tab is-on" type="button" role="tab" aria-selected="true" data-articles-tab="all">Все</button>
+          <button class="programs-tab" type="button" role="tab" aria-selected="false" data-articles-tab="psychology">Осознанность и психология</button>
+          <button class="programs-tab" type="button" role="tab" aria-selected="false" data-articles-tab="body">Тело и саморегуляция</button>
+          <button class="programs-tab" type="button" role="tab" aria-selected="false" data-articles-tab="methods">Китайская медицина и Су-Джок</button>
+          <button class="programs-tab" type="button" role="tab" aria-selected="false" data-articles-tab="programs">Выездные программы</button>
+        </div>
+
+        <div class="programs-grid">
+          <article class="article-card" data-category="programs">
+            <div class="article-card__photo">
+              <img src="/img/adygea-place.jpg" alt="Горный пейзаж Адыгеи" width="800" height="500">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__meta">
+                <span>Выездные программы</span>
+                <time datetime="2026-11-07">7 ноября 2026</time>
+              </div>
+              <h2>Что такое выездная программа</h2>
+              <p>Как устроен ретрит «Новая точка энергии»: дни вдали от привычного ритма, практики, проживание и питание. Без обещания вылечить заболевание.</p>
+            </div>
+            <div class="article-card__foot">
+              <a class="specular-button specular-button--md specular-button--copper" href="/articles/chto-takoe-vyezdnaya-programma.html" data-specular="copper">Читать</a>
+            </div>
+          </article>
+
+          <article class="article-card" data-category="psychology">
+            <div class="article-card__photo">
+              <img src="/img/adygea-pause.jpg" alt="Пауза на склоне Адыгеи" width="800" height="500">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__meta">
+                <span>Осознанность и психология</span>
+                <time datetime="2026-11-07">7 ноября 2026</time>
+              </div>
+              <h2>Когда день уже держит</h2>
+              <p>Как заметить привычное напряжение. Короткая самопроверка с сайта — не диагноз и не оценка характера.</p>
+            </div>
+            <div class="article-card__foot">
+              <a class="specular-button specular-button--md specular-button--copper" href="/articles/napryazhenie-i-pauza.html" data-specular="copper">Читать</a>
+            </div>
+          </article>
+
+          <article class="article-card" data-category="body">
+            <div class="article-card__photo">
+              <img src="/img/adygea-practice.jpg" alt="Склоны Адыгеи" width="800" height="500">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__meta">
+                <span>Тело и саморегуляция</span>
+                <time datetime="2026-11-07">7 ноября 2026</time>
+              </div>
+              <h2>Практика опоры</h2>
+              <p>Четыре тихих шага: стопы, пространство, зажим и вопрос «чего я сейчас хочу». Можно сидеть или стоять.</p>
+            </div>
+            <div class="article-card__foot">
+              <a class="specular-button specular-button--md specular-button--copper" href="/articles/opora-i-telo.html" data-specular="copper">Читать</a>
+            </div>
+          </article>
+
+          <article class="article-card" data-category="methods">
+            <div class="article-card__photo">
+              <img src="/img/adygea-pond.jpg" alt="Лотосы на пруду в Адыгее" width="800" height="500">
+            </div>
+            <div class="article-card__body">
+              <div class="article-card__meta">
+                <span>Китайская медицина и Су-Джок</span>
+                <time datetime="2026-11-07">7 ноября 2026</time>
+              </div>
+              <h2>Методы на программе</h2>
+              <p>Метод Фолля, Су-Джок и мокса, как они названы на сайте. Чем они не являются и какие оговорки важны до участия.</p>
+            </div>
+            <div class="article-card__foot">
+              <a class="specular-button specular-button--md specular-button--copper" href="/articles/metody-na-programme.html" data-specular="copper">Читать</a>
+            </div>
+          </article>
+        </div>
+        <p class="programs-empty" id="articlesEmpty" hidden>В этой категории пока нет статей.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div>
+        <div class="brand">Новая точка энергии</div>
+        <div>Выездные программы</div>
+        <p class="footer-legal">ИП Горелова Г. Н. · ИНН 615302064940 · ОГРНИП 316619600086336<br>г. Сальск, Ростовская область, улица Буденного, 54</p>
+      </div>
+      <div class="footer-links">
+        <a href="/">Главная</a>
+        <a href="/programs.html">Программы</a>
+        <a href="/articles.html">Статьи</a>
+        <a href="/#privacy">Данные</a>
+        <a href="https://wa.me/79287720636" rel="noopener noreferrer" target="_blank">WhatsApp</a>
+      </div>
+      <div>© <span id="currentYear">2026</span></div>
+    </div>
+  </footer>
+  <script src="/js/specular-button.js"></script>
+  <script src="/js/site.js"></script>
+  <script src="/js/articles-catalog.js"></script>
+</body>
+</html>

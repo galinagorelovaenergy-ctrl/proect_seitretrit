@@ -1,6 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /programs/_template.html
+Disallow: /articles/_template.html
 
 User-agent: Yandex
 Allow: /
