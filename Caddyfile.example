@@ -1,0 +1,23 @@
+# Образец конфигурации Caddy для retritbest.ru
+# Это НЕ рабочий файл сервера: скопируйте нужные блоки в Caddyfile Timeweb Cloud.
+# Подставьте фактический путь к файлам сайта вместо /var/www/retritbest.ru
+# Инструкция: CADDY_SETUP.md
+#
+# Важно:
+# - не использовать try_files {path} /index.html
+# - не перенаправлять неизвестные URL на главную
+# - {uri} сохраняет путь и query-строку
+
+www.retritbest.ru {
+	redir https://retritbest.ru{uri} permanent
+}
+
+retritbest.ru {
+	root * /var/www/retritbest.ru
+	encode gzip
+	file_server
+	handle_errors {
+		rewrite * /404.html
+		file_server
+	}
+}
