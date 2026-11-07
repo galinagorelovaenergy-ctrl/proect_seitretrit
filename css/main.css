@@ -439,6 +439,15 @@ h2 em {
   color: rgba(239, 230, 212, .72);
 }
 
+.hero-catalog {
+  margin-top: 18px;
+  font-size: 13px;
+}
+
+.hero-catalog a {
+  color: var(--copper);
+}
+
 .hero-actions {
   display: flex;
   flex-wrap: wrap;

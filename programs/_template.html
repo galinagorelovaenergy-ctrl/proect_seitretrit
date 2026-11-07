@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ШАБЛОН — скопируйте файл и заполните факты</title>
+  <link rel="canonical" href="https://retritbest.ru/programs/ИМЯ.html">
+  <meta name="description" content="Уникальное описание программы.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/specular-button.css">
+  <link rel="stylesheet" href="/css/programs.css">
+</head>
+<body class="page-program">
+  <!--
+    1. Сохраните как programs/имя.html и уберите noindex.
+    2. Заполните только известные факты. Пустые блоки можно оставить с «уточняется».
+    3. Отзывы вставьте в #reviews, если они есть. Иначе удалите секцию.
+    4. Добавьте карточку в programs.html и URL в sitemap.xml.
+    5. Архив: у карточки data-archived="true". Завершено: data-status="closed".
+  -->
+  <header class="header" id="header">
+    <div class="wrap header-inner">
+      <a class="brand" href="/">Новая точка энергии</a>
+      <nav class="nav">
+        <a href="/">Главная</a>
+        <a href="/programs.html">Программы</a>
+        <a href="#contact">Заявка</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section class="program-hero">
+      <div class="wrap">
+        <p class="chapter">город</p>
+        <h1>Название программы</h1>
+        <p class="lead">Краткое описание без выдуманных деталей.</p>
+        <div class="program-hero-meta">
+          <span class="program-status is-open">набор открыт</span>
+          <!-- is-soon | is-closed -->
+          <span>даты</span>
+          <span>место</span>
+          <span>стоимость</span>
+        </div>
+      </div>
+    </section>
+    <section class="sheet program-block" id="for-whom"><div class="wrap"><h2>Для кого программа</h2></div></section>
+    <section class="ink program-block" id="topics"><div class="wrap"><h2>Какие задачи и темы рассматриваем</h2></div></section>
+    <section class="sheet program-block" id="included"><div class="wrap"><h2>Что входит в программу</h2></div></section>
+    <section class="ink program-block" id="methods"><div class="wrap"><h2>Практики и методики</h2></div></section>
+    <section class="sheet program-block" id="hosts"><div class="wrap"><h2>Знакомство с ведущими</h2></div></section>
+    <section class="ink program-block" id="place"><div class="wrap"><h2>Место проведения</h2></div></section>
+    <section class="sheet program-block" id="stay"><div class="wrap"><h2>Проживание и питание</h2></div></section>
+    <section class="ink program-block" id="price"><div class="wrap"><h2>Даты и стоимость</h2></div></section>
+    <section class="sheet program-block" id="photos"><div class="wrap"><h2>Фотографии</h2></div></section>
+    <section class="ink program-block" id="reviews" hidden><div class="wrap"><h2>Отзывы</h2></div></section>
+    <section class="sheet program-block" id="faq"><div class="wrap"><h2>Частые вопросы</h2></div></section>
+    <section class="ink contact pond-section" id="contact">
+      <div class="wrap">
+        <h2>Оставить заявку</h2>
+        <form id="contactForm">
+          <input type="hidden" name="program" value="Название программы">
+        </form>
+      </div>
+    </section>
+  </main>
+  <script src="/js/site.js"></script>
+</body>
+</html>
