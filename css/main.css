@@ -1035,7 +1035,8 @@ h2 em {
 }
 
 .contact.pond-section .field input,
-.contact.pond-section .field textarea {
+.contact.pond-section .field textarea,
+.contact.pond-section .field select {
   color: var(--linen);
   border-bottom-color: rgba(239, 230, 212, .22);
   caret-color: var(--pond-foam);
@@ -1047,8 +1048,49 @@ h2 em {
 }
 
 .contact.pond-section .field input:focus,
-.contact.pond-section .field textarea:focus {
+.contact.pond-section .field textarea:focus,
+.contact.pond-section .field select:focus {
   border-bottom-color: var(--pond-foam);
+}
+
+.contact.pond-section .field select option {
+  color: var(--ink);
+  background: var(--linen);
+}
+
+.how-steps {
+  display: grid;
+  gap: 18px;
+  margin-top: 28px;
+  max-width: 820px;
+}
+
+.how-steps article {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px 18px;
+  align-items: start;
+}
+
+.how-steps .num {
+  font-family: "Alegreya", serif;
+  font-size: 28px;
+  color: var(--copper);
+  line-height: 1;
+}
+
+.how-steps h3 {
+  margin: 0 0 6px;
+  font-size: 22px;
+}
+
+.how-steps p {
+  margin: 0;
+  color: rgba(239, 230, 212, .72);
+}
+
+.sheet .how-steps p {
+  color: inherit;
 }
 
 .bonus {
@@ -1299,17 +1341,21 @@ h2 em {
 }
 
 .field input,
-.field textarea {
+.field textarea,
+.field select {
   width: 100%;
   padding: 10px 0;
   border: 0;
   border-bottom: 1px solid rgba(20, 16, 13, .2);
   background: transparent;
   outline: none;
+  color: inherit;
+  font: inherit;
 }
 
 .field input:focus,
-.field textarea:focus { border-bottom-color: var(--dried); }
+.field textarea:focus,
+.field select:focus { border-bottom-color: var(--dried); }
 
 .field textarea { min-height: 96px; resize: vertical; }
 

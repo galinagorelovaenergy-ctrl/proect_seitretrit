@@ -2,14 +2,14 @@
 
 (() => {
 const ADYGEA_ITEMS = [
-  { src: "img/adygea-pause.jpg", alt: "Пауза на склоне Адыгеи", title: "Пауза", subtitle: "хребет" },
-  { src: "img/adygea-path.jpg", alt: "Тропа в горах Адыгеи", title: "Тропа", subtitle: "тропа" },
-  { src: "img/adygea-about.jpg", alt: "Пруд с лотосами в Адыгее", title: "Пруд", subtitle: "лотосы" },
-  { src: "img/adygea-pond.jpg", alt: "Лотосы на воде", title: "Вода", subtitle: "тишина" },
-  { src: "img/adygea-lotus.jpg", alt: "Цветок лотоса в Адыгее", title: "Цветок", subtitle: "лотос" },
-  { src: "img/adygea-practice.jpg", alt: "Склоны Адыгеи", title: "Склон", subtitle: "лес" },
-  { src: "img/adygea-place.jpg", alt: "Плато и пихты Адыгеи", title: "Место", subtitle: "плато" },
-  { src: "img/adygea-hero.jpg", alt: "Сосны Адыгеи", title: "Сосны", subtitle: "лес" }
+  { src: "/img/adygea-pause.jpg", alt: "Пауза на склоне Адыгеи", title: "Пауза", subtitle: "хребет" },
+  { src: "/img/adygea-path.jpg", alt: "Тропа в горах Адыгеи", title: "Тропа", subtitle: "тропа" },
+  { src: "/img/adygea-about.jpg", alt: "Пруд с лотосами в Адыгее", title: "Пруд", subtitle: "лотосы" },
+  { src: "/img/adygea-pond.jpg", alt: "Лотосы на воде", title: "Вода", subtitle: "тишина" },
+  { src: "/img/adygea-lotus.jpg", alt: "Цветок лотоса в Адыгее", title: "Цветок", subtitle: "лотос" },
+  { src: "/img/adygea-practice.jpg", alt: "Склоны Адыгеи", title: "Склон", subtitle: "лес" },
+  { src: "/img/adygea-place.jpg", alt: "Плато и пихты Адыгеи", title: "Место", subtitle: "плато" },
+  { src: "/img/adygea-hero.jpg", alt: "Сосны Адыгеи", title: "Сосны", subtitle: "лес" }
 ];
 
 const PRESETS = {

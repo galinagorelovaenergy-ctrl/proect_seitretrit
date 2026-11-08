@@ -1,3 +1,7 @@
+[data-show-when][hidden] {
+  display: none !important;
+}
+
 .page-catalog,
 .page-program {
   cursor: auto;
@@ -17,7 +21,7 @@
 .programs-hero h1,
 .program-hero h1 {
   font-size: clamp(42px, 6vw, 84px);
-  max-width: 14ch;
+  max-width: 18ch;
   margin-bottom: 18px;
 }
 

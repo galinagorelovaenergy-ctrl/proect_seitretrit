@@ -1016,16 +1016,25 @@ const sendApplication = async () => {
   const phone = document.getElementById("userPhone").value.trim();
   const callbackTime = document.getElementById("callbackTime").value.trim();
   const message = document.getElementById("message").value.trim();
+  const choiceNode = contactForm.querySelector("[name='programChoice']");
+  const choice = choiceNode ? choiceNode.value : "";
+  let programLine = "Запрос информации о программах";
+  if (choice === "adygea") {
+    programLine = (window.nteAdygeaMeta && window.nteAdygeaMeta().application)
+      || "Ретрит Нового Состояния в Адыгее";
+  } else if (choice === "sochi") {
+    programLine = "Интересует будущая выездная программа в Сочи";
+  } else if (choice === "unknown") {
+    programLine = "Пока не знаю, хочу узнать о программах";
+  }
   const body = [
     "Здравствуйте! Заявка с сайта «Новая точка энергии».",
     "",
+    "Программа: " + programLine,
     "Имя: " + name,
     "Телефон: " + phone,
     "Удобное время для звонка: " + callbackTime,
     "Вопрос: " + (message || "Нет дополнительных вопросов"),
-    "",
-    "Интенсив: 17–22 ноября, Адыгея",
-    "Стоимость: 50 000 рублей",
     testSummary ? "Тест на напряжение: " + testSummary : "",
     practiceSummary ? "Практика опоры: " + practiceSummary : "",
     futureSummary ? "Запрос из будущего: " + futureSummary : ""

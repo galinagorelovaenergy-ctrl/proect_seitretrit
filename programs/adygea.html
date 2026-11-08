@@ -5,26 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0b0908">
   <meta name="robots" content="index, follow, max-image-preview:large">
-  <meta name="description" content="Ретрит Нового Состояния в Адыгее, 17–22 ноября под Майкопом. Выездная программа для восстановления энергии: практики, проживание, питание и три процедуры аппаратного омоложения. 50 000 ₽.">
+  <meta name="description" content="Ретрит Нового Состояния под Майкопом, 17–22 ноября: практики, проживание и питание. 50 000 ₽. Запись на выездную программу.">
   <meta name="author" content="Новая точка энергии">
   <link rel="canonical" href="https://retritbest.ru/programs/adygea.html">
-  <meta property="og:title" content="Ретрит в Адыгее 17–22 ноября — выездная программа для восстановления энергии">
-  <meta property="og:description" content="Ретрит Нового Состояния под Майкопом: психологические, телесные и энергетические практики, проживание и питание. 50 000 ₽.">
+  <meta property="og:title" content="Ретрит в Адыгее 17–22 ноября — Новая точка энергии">
+  <meta property="og:description" content="Ретрит Нового Состояния под Майкопом: практики, проживание и питание. 50 000 ₽.">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ru_RU">
   <meta property="og:url" content="https://retritbest.ru/programs/adygea.html">
   <meta property="og:site_name" content="Новая точка энергии">
   <meta property="og:image" content="https://retritbest.ru/img/adygea-place.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <title>Ретрит в Адыгее 17–22 ноября — выездная программа для восстановления энергии</title>
+  <meta name="twitter:title" content="Ретрит в Адыгее 17–22 ноября — Новая точка энергии">
+  <meta name="twitter:description" content="Ретрит Нового Состояния под Майкопом, 17–22 ноября: практики, проживание и питание. 50 000 ₽.">
+  <title>Ретрит в Адыгее 17–22 ноября — Новая точка энергии</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,500;0,600;0,800;1,500;1,600&family=Geologica:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/specular-button.css">
-  <link rel="stylesheet" href="/css/programs.css?v=2">
-  <script type="application/ld+json">
+  <link rel="stylesheet" href="/css/programs.css?v=5">
+  <script src="/js/program-config.js"></script>
+  <script type="application/ld+json" id="adygeaEventJson">
   {
     "@context": "https://schema.org",
     "@type": "Event",
@@ -61,7 +64,7 @@
   }
   </script>
 </head>
-<body class="page-program">
+<body class="page-program page-program-adygea">
   <div class="grain" aria-hidden="true"></div>
   <header class="header" id="header">
     <div class="wrap header-inner">
@@ -81,7 +84,7 @@
         <a href="#place">Место</a>
         <a href="#price">Стоимость</a>
       </nav>
-      <a class="specular-button specular-button--md specular-button--copper" href="#contact" data-specular="copper">Записаться</a>
+      <a class="specular-button specular-button--md specular-button--copper" href="#contact" data-specular="copper"><span data-adygea-cta>Записаться</span></a>
       <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="mobileNav" aria-label="Открыть меню"><span></span></button>
     </div>
   </header>
@@ -92,7 +95,7 @@
     <a href="#hosts">Ведущие</a>
     <a href="#place">Место</a>
     <a href="#price">Стоимость</a>
-    <a class="specular-button specular-button--md specular-button--ink" href="#contact" data-specular="ink">Записаться</a>
+    <a class="specular-button specular-button--md specular-button--ink" href="#contact" data-specular="ink"><span data-adygea-cta>Записаться</span></a>
   </nav>
 
   <main>
@@ -100,15 +103,17 @@
       <div class="wrap program-hero-grid">
         <div>
           <p class="chapter">Адыгея · ноябрь</p>
-          <h1>Ретрит Нового Состояния в Адыгее</h1>
-          <p class="lead">Выездная программа для восстановления энергии. Пять дней среди осеннего леса, прудов и тишины.</p>
+          <h1 id="adygeaH1">Ретрит Нового Состояния в Адыгее</h1>
+          <p class="lead" data-show-when="open">Выездная программа для восстановления энергии. Пять дней среди осеннего леса, прудов и тишины.</p>
+          <p class="lead" data-show-when="wait" hidden>Направление Адыгеи остаётся. Следующие даты уточняются. Можно оставить запрос — напишем, когда откроется набор.</p>
           <div class="program-hero-meta">
-            <span class="program-status is-open">набор открыт</span>
-            <span>17–22 ноября 2026</span>
+            <span class="program-status is-open" data-adygea-status>набор открыт</span>
+            <span data-show-when="open">17–22 ноября 2026</span>
             <span>под Майкопом</span>
-            <span>50 000 ₽</span>
+            <span data-show-when="open">50 000 ₽</span>
+            <span data-show-when="wait" hidden>следующие даты уточняются</span>
           </div>
-          <a class="specular-button specular-button--md specular-button--copper" href="#contact" data-specular="copper">Оставить заявку</a>
+          <a class="specular-button specular-button--md specular-button--copper" href="#contact" data-specular="copper"><span data-adygea-cta>Оставить заявку</span></a>
         </div>
         <div class="program-hero-photo">
           <img src="/img/adygea-place.jpg" alt="Горный пейзаж Адыгеи, место ретрита под Майкопом" width="1200" height="800">
@@ -142,7 +147,7 @@
     </section>
 
     <section class="sheet program-block" id="included">
-      <div class="wrap reveal">
+      <div class="wrap reveal" data-show-when="open">
         <p class="chapter">03 / состав</p>
         <h2>Что входит в программу</h2>
         <ul class="check-list">
@@ -158,6 +163,11 @@
           <li>Три процедуры аппаратного омоложения</li>
         </ul>
         <p class="program-note">До записи уточните точные даты заезда и выезда, условия размещения, состав питания, порядок оплаты и противопоказания к отдельным процедурам.</p>
+      </div>
+      <div class="wrap reveal program-copy" data-show-when="wait" hidden>
+        <p class="chapter">03 / состав</p>
+        <h2>Что входит в программу</h2>
+        <p>Состав следующего заезда объявим вместе с датами. Подход направления сохраняется: психологические и телесные практики, внимание к состоянию и времени для себя.</p>
       </div>
     </section>
 
@@ -238,16 +248,21 @@
     </section>
 
     <section class="sheet program-block" id="stay">
-      <div class="wrap program-copy reveal">
+      <div class="wrap program-copy reveal" data-show-when="open">
         <p class="chapter">07 / быт</p>
         <h2>Проживание и питание</h2>
         <p>В стоимость входят проживание в лесном домике и питание на время участия.</p>
         <p>Точные условия размещения и состав питания уточняются до записи.</p>
       </div>
+      <div class="wrap program-copy reveal" data-show-when="wait" hidden>
+        <p class="chapter">07 / быт</p>
+        <h2>Проживание и питание</h2>
+        <p>Условия следующей программы опубликуем вместе с датами. Не считайте прошлый пакет проживания и питания заранее подтверждённым.</p>
+      </div>
     </section>
 
     <section class="ink price-section pond-section program-block" id="price">
-      <div class="wrap reveal">
+      <div class="wrap reveal" data-show-when="open">
         <p class="chapter">08 / участие</p>
         <h2>Даты и стоимость</h2>
         <article class="ticket">
@@ -262,6 +277,13 @@
             <p><a class="specular-button specular-button--md specular-button--copper" href="#contact" data-specular="copper">Оставить заявку</a></p>
           </div>
         </article>
+      </div>
+      <div class="wrap reveal program-copy" data-show-when="wait" hidden>
+        <p class="chapter">08 / участие</p>
+        <h2>Следующие даты уточняются</h2>
+        <p>Конкретный заезд сейчас не предлагаем к записи. Стоимость будущей программы не объявлена — не считайте прежнюю цену актуальной.</p>
+        <p>Направление Адыгеи сохраняется. Можно оставить запрос — сообщим, когда появятся новые даты.</p>
+        <p><a class="specular-button specular-button--md specular-button--copper" href="#contact" data-specular="copper">Оставить запрос</a></p>
       </div>
     </section>
 
@@ -313,9 +335,13 @@
           <h2>Частые вопросы</h2>
         </div>
         <div class="faq-list">
-          <div class="faq-item">
+          <div class="faq-item" data-show-when="open">
             <button class="faq-q" type="button" aria-expanded="false">Что входит в стоимость 50 000 рублей? <b>+</b></button>
             <div class="faq-a"><p>В стоимость входят программа интенсива, проживание, питание и три процедуры аппаратного омоложения. Также программа включает входную и итоговую оценку по методу Фолля и предусмотренные занятия и практики.</p></div>
+          </div>
+          <div class="faq-item" data-show-when="wait" hidden>
+            <button class="faq-q" type="button" aria-expanded="false">Когда будут следующие даты? <b>+</b></button>
+            <div class="faq-a"><p>Даты следующего заезда уточняются. Оставьте запрос на этой странице — мы напишем, когда набор откроется. Прежнюю стоимость не считайте актуальной для будущей программы.</p></div>
           </div>
           <div class="faq-item">
             <button class="faq-q" type="button" aria-expanded="false">Можно ли считать интенсив лечением? <b>+</b></button>
@@ -337,19 +363,25 @@
       <div class="wrap contact-grid">
         <div class="contact-copy reveal">
           <p class="chapter">11 / связь</p>
-          <h2>Оставить заявку</h2>
-          <p>Укажите телефон и удобное время — мы перезвоним. Можно задать вопросы о диагностике, практиках, проживании, питании и аппаратных процедурах.</p>
-          <p class="facts">
+          <h2 data-show-when="open">Оставить заявку</h2>
+          <h2 data-show-when="wait" hidden>Оставить запрос на следующие даты</h2>
+          <p data-show-when="open">Укажите телефон и удобное время — мы перезвоним. Можно задать вопросы о диагностике, практиках, проживании, питании и аппаратных процедурах.</p>
+          <p data-show-when="wait" hidden>Заезд к записи сейчас не предлагаем. Оставьте запрос — напишем, когда появятся следующие даты в Адыгее.</p>
+          <p class="facts" data-show-when="open">
             <strong>Программа</strong> Ретрит Нового Состояния в Адыгее<br>
             <strong>Даты</strong> 17–22 ноября 2026<br>
             <strong>Место</strong> Адыгея, под Майкопом<br>
             <strong>Стоимость</strong> 50 000 ₽<br>
             <strong>WhatsApp</strong> <a class="plain-link" href="https://wa.me/79287720636" rel="noopener noreferrer" target="_blank">+7 928 772-06-36</a>
           </p>
+          <p class="facts" data-show-when="wait" hidden>
+            <strong>Программа</strong> запрос на следующие даты в Адыгее<br>
+            <strong>WhatsApp</strong> <a class="plain-link" href="https://wa.me/79287720636" rel="noopener noreferrer" target="_blank">+7 928 772-06-36</a>
+          </p>
         </div>
         <form class="letter reveal" id="contactForm">
           <p class="letter-head">черновик заявки</p>
-          <input type="hidden" name="program" value="Ретрит Нового Состояния в Адыгее, 17–22 ноября 2026">
+          <input type="hidden" name="program" data-adygea-program value="Ретрит Нового Состояния в Адыгее, 17–22 ноября 2026">
           <div class="field">
             <label for="name">Как к вам обращаться?</label>
             <input id="name" name="name" type="text" placeholder="Ваше имя" autocomplete="name" required>
@@ -394,7 +426,6 @@
         <a href="/programs.html">Все программы</a>
         <a href="/articles.html">Статьи</a>
         <a href="/programs/sochi.html">Сочи</a>
-        <a href="/programs/vladikavkaz.html">Владикавказ</a>
         <a href="/#privacy">Данные</a>
         <a href="https://wa.me/79287720636" rel="noopener noreferrer" target="_blank">WhatsApp</a>
       </div>
