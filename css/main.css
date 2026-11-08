@@ -80,8 +80,13 @@ button, input, textarea { font: inherit; }
 
 .cursor.is-system,
 body:has(.specular-button:hover) .cursor {
+  display: none;
   opacity: 0;
   visibility: hidden;
+}
+
+body:has(.specular-button:hover) {
+  cursor: pointer;
 }
 
 .progress {

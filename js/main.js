@@ -167,11 +167,11 @@ if (cursor && finePointer && !reduceMotion) {
   window.addEventListener("pointermove", (event) => {
     cursor.style.left = event.clientX + "px";
     cursor.style.top = event.clientY + "px";
+    cursor.classList.toggle("is-system", Boolean(event.target.closest(".specular-button")));
   });
 
   document.addEventListener("pointerover", (event) => {
-    const overSpecular = event.target.closest(".specular-button");
-    cursor.classList.toggle("is-system", Boolean(overSpecular));
+    cursor.classList.toggle("is-system", Boolean(event.target.closest(".specular-button")));
     if (event.target.closest("a, button, input, textarea, label, select")) {
       cursor.classList.add("is-on");
     }
