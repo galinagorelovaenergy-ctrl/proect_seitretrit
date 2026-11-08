@@ -170,13 +170,18 @@ if (cursor && finePointer && !reduceMotion) {
   });
 
   document.addEventListener("pointerover", (event) => {
-    if (event.target.closest("a, button, input, textarea, label")) {
+    const overSpecular = event.target.closest(".specular-button");
+    cursor.classList.toggle("is-system", Boolean(overSpecular));
+    if (event.target.closest("a, button, input, textarea, label, select")) {
       cursor.classList.add("is-on");
     }
   });
 
   document.addEventListener("pointerout", (event) => {
-    if (event.target.closest("a, button, input, textarea, label")) {
+    if (event.target.closest(".specular-button") && !event.relatedTarget?.closest?.(".specular-button")) {
+      cursor.classList.remove("is-system");
+    }
+    if (event.target.closest("a, button, input, textarea, label, select")) {
       cursor.classList.remove("is-on");
     }
   });
@@ -441,7 +446,23 @@ let futureIntent = "";
 let futureWishText = "";
 let futureRelease = "";
 let futureSummary = "";
+const personalRequest = document.getElementById("personalRequest");
+const personalWishField = document.getElementById("personalWish");
+const personalFearField = document.getElementById("personalFear");
 let paperHandle = null;
+
+const syncPersonalRequest = (wish, fear) => {
+  if (personalWishField && typeof wish === "string") personalWishField.value = wish;
+  if (personalFearField && typeof fear === "string") personalFearField.value = fear;
+  const hasWish = Boolean(personalWishField && personalWishField.value.trim());
+  const hasFear = Boolean(personalFearField && personalFearField.value.trim());
+  if (personalRequest) personalRequest.hidden = !(hasWish || hasFear);
+};
+
+const readPersonalRequest = () => ({
+  wish: personalWishField ? personalWishField.value.trim() : "",
+  fear: personalFearField ? personalFearField.value.trim() : ""
+});
 const futureStage = document.querySelector(".future-stage");
 const futureOrbWrap = document.getElementById("futureOrbWrap");
 const futureBallRoot = document.getElementById("futureBall");
@@ -970,6 +991,7 @@ document.getElementById("releaseToCard").addEventListener("click", () => {
   document.getElementById("futureCardIntent").textContent = "намерение · " + futureIntent;
   document.getElementById("futureCardWish").textContent = futureWishText;
   document.getElementById("futureCardRelease").textContent = "отпускаю: " + futureRelease;
+  syncPersonalRequest(futureWishText, futureRelease);
   showFuture("card");
 });
 
@@ -980,6 +1002,7 @@ document.getElementById("futureRestart").addEventListener("click", () => {
   futureSummary = "";
   futureWish.value = "";
   releaseText.value = "";
+  syncPersonalRequest("", "");
   showReleaseForm();
   resetBallRitual();
   futureIntents.querySelectorAll(".signal").forEach((item) => item.classList.remove("is-on"));
@@ -987,10 +1010,7 @@ document.getElementById("futureRestart").addEventListener("click", () => {
 });
 
 document.getElementById("futureToContact").addEventListener("click", () => {
-  const field = document.getElementById("message");
-  if (field && futureSummary && !field.value.trim()) {
-    field.value = futureSummary;
-  }
+  syncPersonalRequest(futureWishText, futureRelease);
 });
 
 const setFormStatus = (kind, text) => {
@@ -1002,7 +1022,7 @@ const setFormStatus = (kind, text) => {
 
 let sendingApplication = false;
 
-const sendApplication = async () => {
+const sendApplication = () => {
   if (sendingApplication) return false;
   if (!contactForm.reportValidity()) return false;
 
@@ -1016,6 +1036,7 @@ const sendApplication = async () => {
   const phone = document.getElementById("userPhone").value.trim();
   const callbackTime = document.getElementById("callbackTime").value.trim();
   const message = document.getElementById("message").value.trim();
+  const personal = readPersonalRequest();
   const choiceNode = contactForm.querySelector("[name='programChoice']");
   const choice = choiceNode ? choiceNode.value : "";
   let programLine = "Запрос информации о программах";
@@ -1029,15 +1050,15 @@ const sendApplication = async () => {
   }
   const body = [
     "Здравствуйте! Заявка с сайта «Новая точка энергии».",
-    "",
     "Программа: " + programLine,
     "Имя: " + name,
     "Телефон: " + phone,
-    "Удобное время для звонка: " + callbackTime,
+    callbackTime ? "Удобное время для звонка: " + callbackTime : "",
     "Вопрос: " + (message || "Нет дополнительных вопросов"),
+    personal.wish ? "Моё желание: " + personal.wish : "",
+    personal.fear ? "Страх, который я хочу отпустить: " + personal.fear : "",
     testSummary ? "Тест на напряжение: " + testSummary : "",
-    practiceSummary ? "Практика опоры: " + practiceSummary : "",
-    futureSummary ? "Запрос из будущего: " + futureSummary : ""
+    practiceSummary ? "Практика опоры: " + practiceSummary : ""
   ].filter(Boolean).join("\n");
 
   sendingApplication = true;

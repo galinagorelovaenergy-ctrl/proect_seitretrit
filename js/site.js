@@ -92,13 +92,12 @@ if (contactForm) {
     const message = document.getElementById("message").value.trim();
     const body = [
       "Здравствуйте! Заявка с сайта «Новая точка энергии».",
-      "",
       "Программа: " + program,
       "Имя: " + name,
       "Телефон: " + phone,
-      "Удобное время для звонка: " + callbackTime,
+      callbackTime ? "Удобное время для звонка: " + callbackTime : "",
       "Вопрос: " + (message || "Нет дополнительных вопросов")
-    ].join("\n");
+    ].filter(Boolean).join("\n");
     sendingApplication = true;
     setFormStatus("is-wait", "Открываем WhatsApp с текстом заявки…");
     try {

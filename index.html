@@ -149,6 +149,7 @@
         <a href="#contact">Заявка</a>
       </nav>
       <a class="specular-button specular-button--md specular-button--copper" href="#contact" data-specular="copper">Записаться</a>
+      <a class="header-book" href="#contact">Записаться</a>
       <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="mobileNav" aria-label="Открыть меню">
         <span></span>
       </button>
@@ -185,8 +186,8 @@
           </h1>
           <p class="hero-lead load" style="--d:.7s">Авторские выездные программы, которые помогают выйти из привычной суеты, восстановить внутренний ресурс, почувствовать себя по-новому и создать пространство для перемен в жизни.</p>
           <div class="hero-actions load" style="--d:.84s">
+            <a class="specular-button specular-button--lg specular-button--copper" href="#contact" data-specular="copper">Оставить заявку</a>
             <a class="specular-button specular-button--lg specular-button--copper" href="/programs.html" data-specular="copper">Смотреть программы</a>
-            <a class="specular-button specular-button--lg specular-button--copper" href="#destinations" data-specular="copper">Узнать о ближайших ретритах</a>
           </div>
         </div>
         <div class="hero-carousel-shell load" style="--d:.36s">
@@ -718,6 +719,17 @@
         </div>
         <form class="letter reveal" id="contactForm">
           <p class="letter-head">черновик заявки</p>
+          <div class="personal-request" id="personalRequest" hidden>
+            <p class="personal-request-kicker">Ваш личный запрос</p>
+            <div class="field">
+              <label for="personalWish">Моё желание</label>
+              <textarea id="personalWish" name="personalWish" rows="3" autocomplete="off"></textarea>
+            </div>
+            <div class="field">
+              <label for="personalFear">Страх, который я хочу отпустить</label>
+              <textarea id="personalFear" name="personalFear" rows="3" autocomplete="off"></textarea>
+            </div>
+          </div>
           <div class="field">
             <label for="programChoice">Какое направление вам ближе?</label>
             <select id="programChoice" name="programChoice" required>
@@ -737,7 +749,7 @@
           </div>
           <div class="field">
             <label for="callbackTime">Удобное время для звонка</label>
-            <input id="callbackTime" name="callbackTime" type="text" placeholder="Например, будни после 18:00" required>
+            <input id="callbackTime" name="callbackTime" type="text" placeholder="Например, будни после 18:00">
           </div>
           <div class="field">
             <label for="message">Что хотелось бы уточнить?</label>

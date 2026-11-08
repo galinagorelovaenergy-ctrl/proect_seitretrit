@@ -78,6 +78,12 @@ button, input, textarea { font: inherit; }
   height: 44px;
 }
 
+.cursor.is-system,
+body:has(.specular-button:hover) .cursor {
+  opacity: 0;
+  visibility: hidden;
+}
+
 .progress {
   position: fixed;
   z-index: 50;
@@ -255,6 +261,7 @@ h2 em {
 .nav,
 .header .btn,
 .header .specular-button,
+.header-book,
 .menu-toggle {
   mix-blend-mode: difference;
 }
@@ -269,6 +276,7 @@ h2 em {
 .header.is-solid .nav,
 .header.is-solid .btn,
 .header.is-solid .specular-button,
+.header.is-solid .header-book,
 .header.is-solid .menu-toggle {
   mix-blend-mode: normal;
 }
@@ -1330,6 +1338,33 @@ h2 em {
   font-size: 28px;
 }
 
+.personal-request {
+  margin: 0 0 22px;
+  padding: 16px 16px 8px;
+  border: 1px solid rgba(239, 230, 212, .18);
+  background: rgba(11, 9, 8, .18);
+}
+
+.personal-request[hidden] {
+  display: none !important;
+}
+
+.personal-request-kicker {
+  margin: 0 0 14px;
+  font-size: 11px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(239, 230, 212, .7);
+}
+
+.personal-request .field textarea {
+  min-height: 64px;
+}
+
+.header-book {
+  display: none;
+}
+
 .field { margin-bottom: 16px; }
 
 .field label {
@@ -2361,6 +2396,24 @@ h2 em {
   body { cursor: auto; }
   .cursor { display: none; }
   .nav, .header .btn, .header .specular-button { display: none; }
+  .header-inner { gap: 10px; }
+  .header-book {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    margin-left: auto;
+    min-height: 36px;
+    padding: 0 12px;
+    border: 1px solid color-mix(in srgb, var(--copper) 72%, transparent);
+    color: inherit;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    cursor: pointer;
+  }
   .menu-toggle { display: grid; place-items: center; cursor: pointer; }
   .btn, .specular-button, .faq-q { cursor: pointer; }
 
