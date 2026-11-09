@@ -605,7 +605,7 @@
             <p class="practice-mark">фраза</p>
             <h2>Когда я вернусь домой, мне хотелось бы…</h2>
             <p class="lead">Допишите тихо. Коротко. Так, как сказали бы себе из будущего.</p>
-            <form class="future-form" id="futureForm">
+            <form class="future-form ym-disable-keys ym-hide-content" id="futureForm">
               <label for="futureWish">Когда я вернусь домой, мне хотелось бы</label>
               <textarea id="futureWish" name="wish" maxlength="180" required placeholder="например, просыпаться без спешки и слышать себя"></textarea>
               <button class="node" type="submit">
@@ -631,7 +631,7 @@
             <p class="practice-mark">отпускание</p>
             <h2>Что уже пора <em>отпустить</em></h2>
             <p class="lead">Страх, сомнение, обиду, привычку держать. Напишите коротко — это ляжет на лист рукописью. Затем лист можно смять.</p>
-            <form class="future-form" id="releaseForm">
+            <form class="future-form ym-disable-keys ym-hide-content" id="releaseForm">
               <label for="releaseText">Уже пора отпустить</label>
               <textarea id="releaseText" name="release" maxlength="220" required placeholder="например, страх, что если я остановлюсь, всё развалится"></textarea>
               <button class="node" type="submit">
@@ -717,7 +717,7 @@
             <strong>WhatsApp</strong> <a class="plain-link" href="https://wa.me/79287720636" rel="noopener noreferrer" target="_blank">+7 928 772-06-36</a>
           </p>
         </div>
-        <form class="letter reveal" id="contactForm">
+        <form class="letter reveal ym-disable-keys ym-hide-content" id="contactForm">
           <p class="letter-head">черновик заявки</p>
           <div class="personal-request" id="personalRequest" hidden>
             <p class="personal-request-kicker">Ваш личный запрос</p>
@@ -835,7 +835,10 @@
           <p>Заявка открывается в WhatsApp на номер +7 928 772-06-36. Почта zoodiana@yandex.ru остаётся дополнительным способом связи.</p>
           <p>Данные храним, пока рассматриваем заявку и организуем поездку, либо до отзыва согласия. Вы можете уточнить данные или попросить их удалить.</p>
           <p>Заявку оставляют совершеннолетние. Данные детей через форму не собираем. Программа не является медицинской услугой и не ставит диагноз. Если в тексте вы сами напишете о здоровье, это будет частью переписки, а не медицинской картой.</p>
-          <p>Аналитические cookie сайт не ставит. Браузер может хранить только то, что нужно, чтобы страница работала у вас на устройстве.</p>
+          <p>Сайт может использовать необязательную аналитику — счётчик Яндекс Метрики (номер 114153116). Он ставит аналитические cookie, считает открытия страниц и переходы по ссылкам. Если вы согласитесь, Метрика может также вести карту кликов и Вебвизор — запись обезличенных действий на странице. Цель — понять, какие разделы открывают, и улучшить сайт. Для заявки, теста и практик аналитика не нужна.</p>
+          <p>Имя, телефон, удобное время звонка, текст обращения, желание и страх из практики в Вебвизор не передаются: у этих полей включена защита записи. Содержимое заявки уходит только в WhatsApp, когда вы сами нажимаете «Отправить».</p>
+          <p>Обработку данных в Метрике ведёт Яндекс по своей <a href="https://yandex.ru/legal/confidential/" rel="noopener noreferrer" target="_blank">политике конфиденциальности</a> и <a href="https://yandex.ru/legal/metrica_termsofuse/" rel="noopener noreferrer" target="_blank">условиям использования Метрики</a>.</p>
+          <p>Счётчик запускается только после согласия. Его можно дать или отозвать позже: <button type="button" class="policy-consent-btn" data-analytics-consent>изменить согласие на аналитику</button>. Пока согласия нет, код Метрики не загружается. Отдельно браузер может хранить только то, без чего страница работает на вашем устройстве.</p>
         </div>
       </div>
     </section>
@@ -877,5 +880,6 @@
   <script src="/js/carousel.js"></script>
   <script type="module" src="/js/crystalized-ball.js"></script>
   <script src="/js/main.js"></script>
+  <script src="/js/metrika-consent.js"></script>
 </body>
 </html>

@@ -2420,7 +2420,7 @@ h2 em {
     cursor: pointer;
   }
   .menu-toggle { display: grid; place-items: center; cursor: pointer; }
-  .btn, .specular-button, .faq-q { cursor: pointer; }
+  .btn, .specular-button, .faq-q, .analytics-consent-btn, .analytics-consent-more, .policy-consent-btn { cursor: pointer; }
 
   .mobile-nav {
     display: none;
@@ -2590,8 +2590,108 @@ h2 em {
   .cursor { display: none; }
 }
 
+body.has-analytics-consent {
+  padding-bottom: 200px;
+}
+
+.analytics-consent {
+  position: fixed;
+  z-index: 60;
+  left: 50%;
+  bottom: 16px;
+  width: min(720px, calc(100% - 32px));
+  transform: translateX(-50%);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px 20px;
+  align-items: center;
+  padding: 16px 18px;
+  border: 1px solid rgba(239, 230, 212, .16);
+  background: color-mix(in srgb, var(--ink) 92%, transparent);
+  color: var(--linen);
+  box-shadow: 0 18px 40px rgba(11, 9, 8, .35);
+  backdrop-filter: blur(16px);
+}
+
+.analytics-consent-kicker {
+  margin-bottom: 4px;
+  font-size: 11px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(239, 230, 212, .62);
+}
+
+.analytics-consent-copy p {
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(239, 230, 212, .82);
+}
+
+.analytics-consent-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.analytics-consent-more,
+.analytics-consent-btn,
+.policy-consent-btn {
+  font: inherit;
+  cursor: pointer;
+}
+
+.analytics-consent-more,
+.policy-consent-btn {
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--copper) 70%, transparent);
+  background: none;
+  color: inherit;
+}
+
+.analytics-consent-btn {
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid rgba(239, 230, 212, .22);
+  background: transparent;
+  color: var(--linen);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.analytics-consent-btn.is-accept {
+  border-color: color-mix(in srgb, var(--copper) 72%, transparent);
+  background: color-mix(in srgb, var(--copper) 42%, transparent);
+}
+
+.policy-consent-btn {
+  display: inline;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+@media (max-width: 720px) {
+  .analytics-consent {
+    grid-template-columns: 1fr;
+    bottom: 12px;
+    width: calc(100% - 24px);
+  }
+
+  .analytics-consent-actions {
+    justify-content: stretch;
+  }
+
+  .analytics-consent-btn {
+    flex: 1 1 auto;
+  }
+}
+
 @media (pointer: coarse) {
   body { cursor: auto; }
   .cursor { display: none; }
-  .btn, .specular-button, .faq-q, .menu-toggle, .orb, .node, .signal { cursor: pointer; }
+  .btn, .specular-button, .faq-q, .menu-toggle, .orb, .node, .signal, .analytics-consent-btn, .analytics-consent-more, .policy-consent-btn { cursor: pointer; }
 }
