@@ -16,6 +16,9 @@ const openWhatsApp = (text) => {
   const url = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(text);
   const popup = window.open(url, "_blank", "noopener,noreferrer");
   if (!popup) window.location.href = url;
+  if (typeof window.nteReachWhatsAppApplicationGoal === "function") {
+    window.nteReachWhatsAppApplicationGoal();
+  }
 };
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const finePointer = window.matchMedia("(pointer: fine)").matches;
@@ -1074,7 +1077,9 @@ const sendApplication = () => {
     );
     return false;
   } finally {
-    sendingApplication = false;
+    window.setTimeout(() => {
+      sendingApplication = false;
+    }, 1200);
   }
 };
 
