@@ -12,6 +12,9 @@ const openWhatsApp = (text) => {
   const url = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(text);
   const popup = window.open(url, "_blank", "noopener,noreferrer");
   if (!popup) window.location.href = url;
+  if (typeof window.nteReachWhatsAppApplicationGoal === "function") {
+    window.nteReachWhatsAppApplicationGoal();
+  }
 };
 
 if (header) {
@@ -108,7 +111,9 @@ if (contactForm) {
       setFormStatus("is-err", "Не удалось открыть WhatsApp. Напишите, пожалуйста, на +7 928 772-06-36 или на zoodiana@yandex.ru.");
       return false;
     } finally {
-      sendingApplication = false;
+      window.setTimeout(() => {
+        sendingApplication = false;
+      }, 1200);
     }
   };
 

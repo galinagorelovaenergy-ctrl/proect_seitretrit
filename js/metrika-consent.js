@@ -6,6 +6,9 @@
   const TAG_SRC = "https://mc.yandex.ru/metrika/tag.js?id=" + COUNTER_ID;
   const ACCEPTED = "accepted";
   const DECLINED = "declined";
+  const WHATSAPP_APPLICATION_GOAL = "whatsapp_application";
+  const WHATSAPP_GOAL_LOCK_MS = 2000;
+  let lastWhatsAppGoalAt = 0;
 
   const readChoice = () => {
     try {
@@ -175,6 +178,15 @@
       stopMetrika();
       location.reload();
     }
+  };
+
+  window.nteReachWhatsAppApplicationGoal = () => {
+    if (window.__nteMetrikaStopped || readChoice() !== ACCEPTED) return;
+    if (typeof window.ym !== "function") return;
+    const now = Date.now();
+    if (now - lastWhatsAppGoalAt < WHATSAPP_GOAL_LOCK_MS) return;
+    lastWhatsAppGoalAt = now;
+    window.ym(COUNTER_ID, "reachGoal", WHATSAPP_APPLICATION_GOAL);
   };
 
   const boot = () => {
