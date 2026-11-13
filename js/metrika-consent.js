@@ -7,8 +7,11 @@
   const ACCEPTED = "accepted";
   const DECLINED = "declined";
   const WHATSAPP_APPLICATION_GOAL = "whatsapp_application";
+  const OPEN_APPLICATION_FORM_GOAL = "open_application_form";
   const WHATSAPP_GOAL_LOCK_MS = 2000;
+  const OPEN_FORM_GOAL_LOCK_MS = 2000;
   let lastWhatsAppGoalAt = 0;
+  let lastOpenFormGoalAt = 0;
 
   const readChoice = () => {
     try {
@@ -107,6 +110,7 @@
       accurateTrackBounce: true,
       trackLinks: true
     });
+    reachOpenApplicationFormGoalFromHash();
   };
 
   const stopMetrika = () => {
@@ -180,14 +184,42 @@
     }
   };
 
+  const canReachGoal = () => (
+    !window.__nteMetrikaStopped
+    && readChoice() === ACCEPTED
+    && typeof window.ym === "function"
+  );
+
   window.nteReachWhatsAppApplicationGoal = () => {
-    if (window.__nteMetrikaStopped || readChoice() !== ACCEPTED) return;
-    if (typeof window.ym !== "function") return;
+    if (!canReachGoal()) return;
     const now = Date.now();
     if (now - lastWhatsAppGoalAt < WHATSAPP_GOAL_LOCK_MS) return;
     lastWhatsAppGoalAt = now;
     window.ym(COUNTER_ID, "reachGoal", WHATSAPP_APPLICATION_GOAL);
   };
+
+  const reachOpenApplicationFormGoal = () => {
+    if (!canReachGoal()) return;
+    const now = Date.now();
+    if (now - lastOpenFormGoalAt < OPEN_FORM_GOAL_LOCK_MS) return;
+    lastOpenFormGoalAt = now;
+    window.ym(COUNTER_ID, "reachGoal", OPEN_APPLICATION_FORM_GOAL);
+  };
+
+  const isApplicationFormHref = (href) => {
+    if (!href) return false;
+    try {
+      return new URL(href, location.href).hash === "#contact";
+    } catch (error) {
+      return false;
+    }
+  };
+
+  const reachOpenApplicationFormGoalFromHash = () => {
+    if (location.hash === "#contact") reachOpenApplicationFormGoal();
+  };
+
+  window.nteReachOpenApplicationFormGoal = reachOpenApplicationFormGoal;
 
   const boot = () => {
     const choice = readChoice();
@@ -195,10 +227,16 @@
     else if (choice !== DECLINED) showBar();
 
     document.addEventListener("click", (event) => {
-      const trigger = event.target.closest("[data-analytics-consent]");
-      if (!trigger) return;
-      event.preventDefault();
-      showBar();
+      const consentTrigger = event.target.closest("[data-analytics-consent]");
+      if (consentTrigger) {
+        event.preventDefault();
+        showBar();
+        return;
+      }
+      const link = event.target.closest("a[href]");
+      if (link && isApplicationFormHref(link.getAttribute("href"))) {
+        reachOpenApplicationFormGoal();
+      }
     });
   };
 
